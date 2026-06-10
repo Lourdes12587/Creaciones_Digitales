@@ -23,6 +23,11 @@ import {
   Sparkles,
   Workflow,
 } from "lucide-react";
+import logoCreaciones from "./assets/logo-creaciones-digitales.png";
+import logoNavbar from "./assets/logo-creaciones-navbar.png";
+import portfolioBlueIsland from "./assets/portfolio-blue-island.png";
+import portfolioYouEyes from "./assets/portfolio-you-eyes.png";
+import portfolioDogDreams from "./assets/portfolio-dogdreams.png";
 
 const services = [
   {
@@ -194,8 +199,48 @@ const faqs = [
   },
 ];
 
+const portfolioProjects = [
+  {
+    title: "Blue Island Boats",
+    category: "Experiencias nauticas",
+    url: "https://blue-island-boat.vercel.app/",
+    summary:
+      "Landing premium para reservas privadas en Ibiza y Formentera, con formulario automatizado, captador de leads y agente de IA para responder consultas iniciales.",
+    tags: ["Formulario automatizado", "Captador de leads", "Agente IA", "Reservas"],
+    result: "Consultas ordenadas para convertir reservas sin perder oportunidades.",
+    image: portfolioBlueIsland,
+  },
+  {
+    title: "You Eyes.Net",
+    category: "Diario digital",
+    url: "https://you-eyes-net.vercel.app/",
+    summary:
+      "Web de noticias desarrollada desde cero con React, pensada para una lectura editorial clara, jerarquia de contenidos y experiencia de medio digital.",
+    tags: ["React", "Desarrollo desde cero", "Noticias", "Diseño editorial"],
+    result: "Una portada viva para publicar contenido con identidad propia.",
+    image: portfolioYouEyes,
+  },
+  {
+    title: "DogDreams",
+    category: "Veterinaria, hotel y cuidado integral",
+    url: "https://veterinaria-dd.vercel.app/",
+    summary:
+      "Web para veterinaria, peluqueria, hotel y servicios de mascotas, con formulario automatizado y agente de IA que responde consultas y ayuda a gestionar turnos.",
+    tags: ["Formulario automatizado", "Agente IA", "Gestion de turnos", "Servicios"],
+    result: "Atencion mas rapida para familias que necesitan reservar o consultar servicios.",
+    image: portfolioDogDreams,
+  },
+];
+
 function App() {
   const rootRef = useRef(null);
+  const [route, setRoute] = useState(() => window.location.pathname);
+
+  function navigate(path) {
+    window.history.pushState({}, "", path);
+    setRoute(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -218,24 +263,38 @@ function App() {
     }, rootRef);
 
     return () => ctx.revert();
+  }, [route]);
+
+  useEffect(() => {
+    function handlePopState() {
+      setRoute(window.location.pathname);
+    }
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
   return (
     <div ref={rootRef} className="min-h-[100dvh] overflow-hidden bg-canvas text-ink">
       <SkipLink />
-      <Nav />
+      <Nav route={route} navigate={navigate} />
       <main id="contenido">
-        <Hero />
-        <Services />
-        <Audience />
-        <AutomationLab />
-        <UseCases />
-        <Process />
-        <StackTrust />
-        <FAQ />
-        <Contact />
+        {route === "/portfolio" ? (
+          <PortfolioPage navigate={navigate} />
+        ) : (
+          <>
+            <Hero navigate={navigate} />
+            <Services />
+            <AutomationLab />
+            <UseCases />
+            <Process />
+            <StackTrust />
+            <FAQ />
+            <Contact />
+          </>
+        )}
       </main>
-      <Footer />
+      <Footer navigate={navigate} />
     </div>
   );
 }
@@ -251,24 +310,55 @@ function SkipLink() {
   );
 }
 
-function Nav() {
+function Nav({ route, navigate }) {
   const links = [
     ["Servicios", "#servicios"],
-    ["Clientes", "#para-quien"],
+    ["Portfolio", "/portfolio"],
     ["Sistema", "#sistema"],
     ["Proceso", "#proceso"],
     ["Contacto", "#contacto"],
   ];
 
+  function handleNav(event, href) {
+    if (href === "/portfolio") {
+      event.preventDefault();
+      navigate("/portfolio");
+      return;
+    }
+
+    if (route !== "/") {
+      event.preventDefault();
+      navigate("/");
+      window.setTimeout(() => {
+        document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+      }, 80);
+    }
+  }
+
   return (
     <header className="fixed inset-x-0 top-0 z-30 border-b border-slate-200/70 bg-canvas/86 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <a href="#" className="group flex items-center gap-3">
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-ink font-display text-sm font-black text-white ring-1 ring-soft/40 transition-transform duration-300 group-hover:-translate-y-0.5">
-            CD
+        <a
+          href="#"
+          aria-label="Creaciones Digitales"
+          className="group flex items-center gap-3 rounded-2xl border border-slate-200/80 bg-white/78 px-2.5 py-2 shadow-[0_18px_45px_-32px_rgba(15,23,42,0.55)] backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-soft/80 hover:bg-white"
+        >
+          <span className="relative flex h-14 w-[5.75rem] shrink-0 overflow-hidden rounded-xl bg-[#d9d8d5] p-1.5 ring-1 ring-slate-900/10">
+            <span className="absolute inset-x-2 top-1 h-px bg-white/80" />
+            <img
+              src={logoNavbar}
+              alt=""
+              className="relative h-full w-full object-contain"
+              aria-hidden="true"
+            />
           </span>
-          <span className="font-display text-sm font-black uppercase tracking-[0.16em] text-ink">
-            Creaciones Digitales
+          <span className="hidden leading-none sm:block">
+            <span className="block font-display text-[0.72rem] font-black uppercase tracking-[0.16em] text-ink">
+              Creaciones
+            </span>
+            <span className="mt-1 block text-[0.62rem] font-black uppercase tracking-[0.22em] text-electric">
+              Digitales
+            </span>
           </span>
         </a>
         <div className="hidden items-center gap-1 rounded-xl border border-slate-200 bg-white/70 p-1 shadow-panel lg:flex">
@@ -276,7 +366,10 @@ function Nav() {
             <a
               key={href}
               href={href}
-              className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 transition duration-300 hover:bg-soft/20 hover:text-ink active:scale-[0.98]"
+              onClick={(event) => handleNav(event, href)}
+              className={`rounded-lg px-4 py-2 text-sm font-semibold transition duration-300 hover:bg-soft/20 hover:text-ink active:scale-[0.98] ${
+                route === href ? "bg-soft/25 text-ink" : "text-slate-600"
+              }`}
             >
               {label}
             </a>
@@ -284,6 +377,7 @@ function Nav() {
         </div>
         <a
           href="#contacto"
+          onClick={(event) => handleNav(event, "#contacto")}
           className="hidden rounded-xl bg-electric px-5 py-3 text-sm font-bold text-white shadow-panel transition duration-300 hover:-translate-y-0.5 hover:bg-ink active:scale-[0.98] sm:inline-flex"
         >
           Auditoria gratis
@@ -293,7 +387,7 @@ function Nav() {
   );
 }
 
-function Hero() {
+function Hero({ navigate }) {
   return (
     <section className="relative min-h-[100dvh] bg-ink pt-28 text-white">
       <div className="noise-overlay absolute inset-0 opacity-95" />
@@ -315,8 +409,15 @@ function Hero() {
               Pedir auditoria gratis
               <ArrowRight size={18} strokeWidth={1.9} className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
-            <a href="#servicios" className="inline-flex items-center justify-center rounded-xl border border-white/14 bg-white/8 px-6 py-4 font-bold text-white glass-edge transition duration-300 hover:-translate-y-0.5 hover:bg-white/14 active:scale-[0.98]">
-              Ver servicios
+            <a
+              href="/portfolio"
+              onClick={(event) => {
+                event.preventDefault();
+                navigate("/portfolio");
+              }}
+              className="inline-flex items-center justify-center rounded-xl border border-white/14 bg-white/8 px-6 py-4 font-bold text-white glass-edge transition duration-300 hover:-translate-y-0.5 hover:bg-white/14 active:scale-[0.98]"
+            >
+              Ver portfolio
             </a>
           </div>
         </div>
@@ -876,7 +977,131 @@ function ContactLine({ icon: Icon, text, href }) {
   );
 }
 
-function Footer() {
+function PortfolioPage({ navigate }) {
+  return (
+    <section className="min-h-[100dvh] bg-ink pt-28 text-white">
+      <div className="noise-overlay absolute inset-x-0 top-0 h-[520px] opacity-80" />
+      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <div data-reveal>
+            <p className="text-sm font-black uppercase tracking-[0.18em] text-soft">Portfolio</p>
+            <h1 className="mt-5 font-display text-4xl font-black leading-none tracking-tight sm:text-5xl lg:text-6xl">
+              Proyectos que combinan diseño, codigo y automatizacion.
+            </h1>
+            <p className="mt-6 max-w-2xl text-base leading-7 text-slate-300">
+              Una muestra inicial de webs, captadores de leads, formularios automatizados y agentes de IA creados para negocios reales. Esta pagina queda preparada para seguir agregando nuevos casos.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="#proyectos"
+                className="inline-flex items-center justify-center gap-3 rounded-xl bg-electric px-6 py-4 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]"
+              >
+                Ver proyectos
+                <ArrowRight size={18} strokeWidth={1.9} />
+              </a>
+              <button
+                type="button"
+                onClick={() => navigate("/")}
+                className="inline-flex items-center justify-center rounded-xl border border-white/14 bg-white/8 px-6 py-4 font-bold text-white glass-edge transition duration-300 hover:-translate-y-0.5 hover:bg-white/14 active:scale-[0.98]"
+              >
+                Volver al inicio
+              </button>
+            </div>
+          </div>
+
+          <div data-reveal className="grid grid-cols-3 gap-3 rounded-[2rem] border border-white/10 bg-white/[0.05] p-4 glass-edge">
+            {[
+              ["3", "proyectos publicados"],
+              ["2", "agentes IA integrados"],
+              ["React", "codigo a medida"],
+            ].map(([metric, label]) => (
+              <div key={label} className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+                <p className="font-display text-2xl font-black text-soft">{metric}</p>
+                <p className="mt-2 text-xs font-bold text-slate-400">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div id="proyectos" className="mt-14 grid gap-6">
+          {portfolioProjects.map((project, index) => (
+            <PortfolioCard key={project.title} project={project} index={index} />
+          ))}
+        </div>
+
+        <div data-reveal className="mt-10 rounded-[2rem] border border-white/10 bg-white/[0.05] p-6 text-center glass-edge">
+          <p className="font-display text-2xl font-black text-white">Mas proyectos en camino.</p>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+            Esta pagina ya tiene la estructura lista para sumar nuevas webs, automatizaciones, agentes y casos de negocio cuando quieras ampliar el portfolio.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PortfolioCard({ project, index }) {
+  return (
+    <article
+      data-reveal
+      className="grid gap-0 overflow-hidden rounded-[2rem] border border-white/10 bg-white text-ink shadow-diffusion lg:grid-cols-[0.68fr_1.32fr]"
+    >
+      <div className="flex flex-col justify-between p-5 sm:p-6 lg:p-7">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-lg bg-electric/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-electric">
+              {project.category}
+            </span>
+            <span className="rounded-lg bg-ink px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-white">
+              Proyecto {String(index + 1).padStart(2, "0")}
+            </span>
+          </div>
+          <h2 className="mt-4 font-display text-2xl font-black leading-tight tracking-tight text-ink sm:text-3xl">
+            {project.title}
+          </h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">{project.summary}</p>
+          <div className="mt-5 grid gap-2">
+            {project.tags.map((tag) => (
+              <span key={tag} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-canvas px-3 py-2 text-xs font-bold text-slate-700">
+                <Check size={14} strokeWidth={2} className="shrink-0 text-electric" />
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="mt-6 rounded-2xl bg-ink p-4 text-white">
+          <p className="text-[10px] font-black uppercase tracking-[0.16em] text-soft">Resultado</p>
+          <p className="mt-2 text-xs leading-5 text-slate-300">{project.result}</p>
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-electric px-4 py-3 text-xs font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]"
+          >
+            Ver proyecto en Vercel
+            <ArrowRight size={16} strokeWidth={1.9} />
+          </a>
+        </div>
+      </div>
+      <PortfolioPreview image={project.image} title={project.title} />
+    </article>
+  );
+}
+
+function PortfolioPreview({ image, title }) {
+  return (
+    <div className="flex min-h-[360px] items-center justify-center overflow-hidden bg-slate-950 p-3 sm:p-4">
+      <img
+        src={image}
+        alt={`Captura real de ${title}`}
+        className="max-h-[520px] w-full object-contain"
+        loading="lazy"
+      />
+    </div>
+  );
+}
+
+function Footer({ navigate }) {
   const footerServices = services.map(({ title }) => title);
   const socialLinks = [
     ["Instagram", Instagram, "https://www.instagram.com/"],
@@ -896,8 +1121,13 @@ function Footer() {
         <div className="grid gap-5 rounded-3xl border border-white/10 bg-white/[0.04] p-5 glass-edge sm:p-6 lg:grid-cols-[0.95fr_1.05fr] lg:p-6">
           <div>
             <a href="#" className="group inline-flex items-center gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-white font-display text-sm font-black text-ink ring-1 ring-soft/60 transition duration-300 group-hover:-translate-y-0.5 group-hover:bg-soft">
-                CD
+              <span className="flex h-16 w-24 shrink-0 overflow-hidden rounded-2xl bg-[#d9d8d5] p-1.5 ring-1 ring-soft/60 transition duration-300 group-hover:-translate-y-0.5">
+                <img
+                  src={logoCreaciones}
+                  alt=""
+                  className="h-full w-full object-contain"
+                  aria-hidden="true"
+                />
               </span>
               <span>
                 <span className="block font-display text-sm font-black uppercase tracking-[0.16em] text-white">

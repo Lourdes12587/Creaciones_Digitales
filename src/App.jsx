@@ -1067,118 +1067,92 @@ function Footer({ navigate }) {
     ["WhatsApp", MessageCircle, "https://wa.me/34697955919"],
   ];
 
-  return (
-    <footer className="relative overflow-hidden bg-ink px-4 pb-6 pt-12 text-white sm:px-6 lg:px-8">
-      <div className="noise-overlay absolute inset-0 opacity-70" />
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-soft/70 to-transparent" />
-      <div className="absolute -right-28 top-6 h-56 w-56 rounded-full bg-electric/14 blur-3xl" />
-      <div className="absolute -bottom-36 left-8 h-56 w-56 rounded-full bg-soft/12 blur-3xl" />
+  function handleHomeLink(event, href) {
+    if (!navigate) return;
+    event.preventDefault();
+    navigate("/");
+    window.setTimeout(() => {
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    }, 80);
+  }
 
-      <div className="relative mx-auto max-w-7xl">
-        <div className="grid gap-5 rounded-3xl border border-white/10 bg-white/[0.04] p-5 glass-edge sm:p-6 lg:grid-cols-[0.95fr_1.05fr] lg:p-6">
-          <div>
-            <a href="#" className="group inline-flex items-center gap-3">
-              <span className="flex h-16 w-24 shrink-0 overflow-hidden rounded-2xl bg-[#d9d8d5] p-1.5 ring-1 ring-soft/60 transition duration-300 group-hover:-translate-y-0.5">
-                <img
-                  src={logoCreaciones}
-                  alt=""
-                  className="h-full w-full object-contain"
-                  aria-hidden="true"
-                />
+  return (
+    <footer className="bg-[#050505] px-4 pt-14 text-white sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-10 pb-16 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.9fr_1.05fr_0.8fr] lg:gap-16">
+          <div className="max-w-sm">
+            <a href="#" className="inline-flex items-center gap-3">
+              <span className="flex h-14 w-20 shrink-0 overflow-hidden rounded-2xl bg-[#d9d8d5] p-1.5 ring-1 ring-soft/50">
+                <img src={logoCreaciones} alt="" className="h-full w-full object-contain" aria-hidden="true" />
               </span>
               <span>
-                <span className="block font-display text-sm font-black uppercase tracking-[0.16em] text-white">
+                <span className="block font-display text-base font-black leading-none text-white">
                   Creaciones Digitales
                 </span>
-                <span className="mt-0.5 block text-xs font-semibold text-slate-400">
+                <span className="mt-1 block text-sm leading-none text-slate-400">
                   Desarrollo web y automatizaciones
                 </span>
               </span>
             </a>
+            <p className="mt-5 max-w-[34ch] text-base leading-8 text-slate-300">
+              Webs, apps y flujos automaticos para captar leads, ordenar procesos y responder consultas sin operar todo a mano.
+            </p>
+          </div>
 
-            <div className="mt-5 grid gap-2">
-              <a href="tel:+34697955919" className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.05] p-3 text-slate-200 transition duration-300 hover:-translate-y-0.5 hover:border-soft/50 hover:bg-soft/12 hover:text-white">
-                <span className="grid h-9 w-9 place-items-center rounded-lg bg-soft text-ink">
-                  <Phone size={17} strokeWidth={1.9} />
-                </span>
-                <span>
-                  <span className="block text-[11px] font-black uppercase tracking-[0.16em] text-slate-500">Telefono</span>
-                  <span className="text-xs font-bold">+34 697 955 919</span>
-                </span>
-              </a>
-              <a href="mailto:ubedadesarrolloweb@gmail.com" className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.05] p-3 text-slate-200 transition duration-300 hover:-translate-y-0.5 hover:border-soft/50 hover:bg-soft/12 hover:text-white">
-                <span className="grid h-9 w-9 place-items-center rounded-lg bg-soft text-ink">
-                  <Mail size={17} strokeWidth={1.9} />
-                </span>
-                <span>
-                  <span className="block text-[11px] font-black uppercase tracking-[0.16em] text-slate-500">Correo</span>
-                  <span className="text-xs font-bold">ubedadesarrolloweb@gmail.com</span>
-                </span>
-              </a>
-              <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.05] p-3 text-slate-200">
-                <span className="grid h-9 w-9 place-items-center rounded-lg bg-soft text-ink">
-                  <MessageSquareText size={17} strokeWidth={1.9} />
-                </span>
-                <span>
-                  <span className="block text-[11px] font-black uppercase tracking-[0.16em] text-slate-500">Ubicacion</span>
-                  <span className="text-xs font-bold">Barcelona · remoto para España</span>
-                </span>
-              </div>
+          <div>
+            <h2 className="text-base font-black text-white">Servicios</h2>
+            <div className="mt-4 grid gap-3">
+              {footerServices.map((serviceName) => (
+                <a
+                  key={serviceName}
+                  href="#servicios"
+                  onClick={(event) => handleHomeLink(event, "#servicios")}
+                  className="text-base text-slate-300 transition duration-300 hover:text-soft"
+                >
+                  {serviceName}
+                </a>
+              ))}
             </div>
           </div>
 
-          <div className="grid items-start gap-3 sm:grid-cols-[1fr_auto]">
-            <div className="rounded-2xl border border-white/10 bg-slate-950/35 p-4">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-soft">Servicios</p>
-              <div className="mt-4 grid gap-1.5">
-                {footerServices.map((serviceName) => (
-                  <a
-                    key={serviceName}
-                    href="#servicios"
-                    className="group flex items-center gap-2 rounded-lg border border-white/8 bg-white/[0.04] px-3 py-2 text-xs font-bold text-slate-200 transition duration-300 hover:-translate-y-0.5 hover:border-soft/50 hover:bg-soft/12 hover:text-white active:scale-[0.98]"
-                  >
-                    <Check size={14} strokeWidth={2} className="shrink-0 text-soft" />
-                    <span>{serviceName}</span>
-                  </a>
-                ))}
-              </div>
+          <div>
+            <h2 className="text-base font-black text-white">Contacto</h2>
+            <div className="mt-4 grid gap-3 text-base text-slate-300">
+              <a href="tel:+34697955919" className="transition duration-300 hover:text-soft">
+                +34 697 955 919
+              </a>
+              <a href="mailto:ubedadesarrolloweb@gmail.com" className="break-words transition duration-300 hover:text-soft">
+                ubedadesarrolloweb@gmail.com
+              </a>
+              <p>Barcelona · remoto para España</p>
             </div>
+          </div>
 
-            <div className="flex sm:justify-end">
-              <div className="w-full rounded-2xl bg-white p-3 text-ink shadow-[0_18px_55px_-35px_rgba(15,23,42,0.6)] sm:w-[190px]">
-                <p className="text-[11px] font-black uppercase tracking-[0.16em] text-electric">Redes</p>
-                <div className="mt-2.5 grid grid-cols-4 gap-1.5">
-                  {socialLinks.map(([label, Icon, href]) => (
-                    <a
-                      key={label}
-                      href={href}
-                      aria-label={label}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="grid h-8 place-items-center rounded-lg border border-slate-200 bg-canvas text-ink transition duration-300 hover:-translate-y-0.5 hover:border-electric hover:bg-electric hover:text-white active:scale-[0.98]"
-                    >
-                      <Icon size={15} strokeWidth={1.9} />
-                    </a>
-                  ))}
-                </div>
+          <div>
+            <h2 className="text-base font-black text-white">Seguinos</h2>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {socialLinks.map(([label, Icon, href]) => (
                 <a
-                  href="#contacto"
-                  className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-electric px-3 py-2 text-[11px] font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-ink active:scale-[0.98]"
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="grid h-12 w-12 place-items-center rounded-full bg-soft text-ink shadow-[0_14px_35px_-22px_rgba(255,214,75,0.9)] transition duration-300 hover:-translate-y-0.5 hover:bg-white active:scale-[0.98]"
                 >
-                  Pedir auditoria gratis
-                  <ArrowRight size={13} strokeWidth={1.9} />
+                  <Icon size={19} strokeWidth={2.1} />
                 </a>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
-        <div className="mt-5 flex flex-col gap-3 border-t border-white/10 pt-5 text-xs text-slate-400 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-3 border-t border-white/12 py-5 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
           <p className="font-semibold">© 2026 Creaciones Digitales. Todos los derechos reservados.</p>
           <div className="flex flex-wrap gap-4">
-            <a href="#servicios" className="transition hover:text-soft">Servicios</a>
-            <a href="#contacto" className="transition hover:text-soft">Contacto</a>
-            <a href="#contacto" className="transition hover:text-soft">Privacidad</a>
+            <a href="#servicios" onClick={(event) => handleHomeLink(event, "#servicios")} className="transition hover:text-soft">Servicios</a>
+            <a href="#contacto" onClick={(event) => handleHomeLink(event, "#contacto")} className="transition hover:text-soft">Contacto</a>
+            <a href="#contacto" onClick={(event) => handleHomeLink(event, "#contacto")} className="transition hover:text-soft">Privacidad</a>
           </div>
         </div>
       </div>

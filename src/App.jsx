@@ -1077,8 +1077,12 @@ function Footer({ navigate }) {
   }
 
   return (
-    <footer className="bg-[#050505] px-4 pt-14 text-white sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <footer className="relative overflow-hidden bg-ink px-4 pt-14 text-white sm:px-6 lg:px-8">
+      <div className="noise-overlay absolute inset-0 opacity-55" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-soft/70 to-transparent" />
+      <div className="absolute -right-28 top-10 h-56 w-56 rounded-full bg-electric/14 blur-3xl" />
+      <div className="absolute -bottom-32 left-8 h-56 w-56 rounded-full bg-soft/12 blur-3xl" />
+      <div className="relative mx-auto max-w-7xl">
         <div className="grid gap-10 pb-16 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.9fr_1.05fr_0.8fr] lg:gap-16">
           <div className="max-w-sm">
             <a href="#" className="inline-flex items-center gap-3">
@@ -1100,14 +1104,14 @@ function Footer({ navigate }) {
           </div>
 
           <div>
-            <h2 className="text-base font-black text-white">Servicios</h2>
+            <h2 className="text-base font-black text-soft">Servicios</h2>
             <div className="mt-4 grid gap-3">
               {footerServices.map((serviceName) => (
                 <a
                   key={serviceName}
                   href="#servicios"
                   onClick={(event) => handleHomeLink(event, "#servicios")}
-                  className="text-base text-slate-300 transition duration-300 hover:text-soft"
+                  className="text-base text-slate-300 transition duration-300 hover:text-white"
                 >
                   {serviceName}
                 </a>
@@ -1116,12 +1120,12 @@ function Footer({ navigate }) {
           </div>
 
           <div>
-            <h2 className="text-base font-black text-white">Contacto</h2>
+            <h2 className="text-base font-black text-soft">Contacto</h2>
             <div className="mt-4 grid gap-3 text-base text-slate-300">
-              <a href="tel:+34697955919" className="transition duration-300 hover:text-soft">
+              <a href="tel:+34697955919" className="transition duration-300 hover:text-white">
                 +34 697 955 919
               </a>
-              <a href="mailto:ubedadesarrolloweb@gmail.com" className="break-words transition duration-300 hover:text-soft">
+              <a href="mailto:ubedadesarrolloweb@gmail.com" className="break-words transition duration-300 hover:text-white">
                 ubedadesarrolloweb@gmail.com
               </a>
               <p>Barcelona · remoto para España</p>
@@ -1129,7 +1133,7 @@ function Footer({ navigate }) {
           </div>
 
           <div>
-            <h2 className="text-base font-black text-white">Seguinos</h2>
+            <h2 className="text-base font-black text-soft">Seguinos</h2>
             <div className="mt-4 flex flex-wrap gap-3">
               {socialLinks.map(([label, Icon, href]) => (
                 <a
@@ -1138,7 +1142,7 @@ function Footer({ navigate }) {
                   aria-label={label}
                   target="_blank"
                   rel="noreferrer"
-                  className="grid h-12 w-12 place-items-center rounded-full bg-soft text-ink shadow-[0_14px_35px_-22px_rgba(255,214,75,0.9)] transition duration-300 hover:-translate-y-0.5 hover:bg-white active:scale-[0.98]"
+                  className="grid h-12 w-12 place-items-center rounded-full bg-soft text-ink shadow-[0_14px_35px_-22px_rgba(99,102,241,0.75)] transition duration-300 hover:-translate-y-0.5 hover:bg-white active:scale-[0.98]"
                 >
                   <Icon size={19} strokeWidth={2.1} />
                 </a>

@@ -422,51 +422,8 @@ function Hero({ navigate }) {
           </div>
         </div>
 
-        <HeroConsole />
       </div>
     </section>
-  );
-}
-
-function HeroConsole() {
-  const tasks = [
-    ["Lead nuevo", "Formulario web conectado a CRM"],
-    ["WhatsApp", "Recordatorio de cita enviado"],
-    ["Agenda", "Reserva confirmada sin llamada"],
-    ["Informe", "Resumen semanal generado"],
-  ];
-
-  return (
-    <div data-reveal className="relative">
-      <div data-float className="relative rounded-[2rem] border border-white/12 bg-white/8 p-4 glass-edge">
-        <div className="rounded-[1.5rem] bg-slate-950/88 p-5">
-          <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
-            <div>
-              <p className="text-sm font-semibold text-soft">Panel operativo</p>
-              <p className="text-xs text-slate-400">Flujos activos ahora</p>
-            </div>
-            <span className="rounded-lg bg-soft px-3 py-1 text-xs font-black text-ink">LIVE</span>
-          </div>
-          <div className="space-y-3">
-            {tasks.map(([title, text], index) => (
-              <div key={title} className="flex items-center gap-4 rounded-2xl border border-white/8 bg-white/[0.04] p-4" style={{ animationDelay: `${index * 120}ms` }}>
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-electric/20 text-soft">
-                  <Check size={18} strokeWidth={2} />
-                </span>
-                <div>
-                  <p className="font-semibold text-white">{title}</p>
-                  <p className="text-sm text-slate-400">{text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div data-float className="absolute -bottom-7 -left-5 hidden w-48 rounded-2xl border border-white/10 bg-white p-4 text-ink shadow-diffusion lg:block">
-        <p className="font-display text-2xl font-black">47.2%</p>
-        <p className="text-sm text-slate-500">menos seguimiento manual</p>
-      </div>
-    </div>
   );
 }
 

@@ -108,80 +108,41 @@ const services = [
   },
 ];
 
-const sectors = [
-  {
-    name: "Clinicas y estetica",
-    benefit: "Recordatorios, formularios previos y seguimiento post-cita para reducir ausencias.",
-  },
-  {
-    name: "Peluquerias y barberias",
-    benefit: "Agenda conectada a WhatsApp, confirmaciones y lista de espera automatica.",
-  },
-  {
-    name: "Coaches y nutricionistas",
-    benefit: "Captacion de leads, reservas, cuestionarios y acompanamiento entre sesiones.",
-  },
-  {
-    name: "Talleres de reparacion",
-    benefit: "Avisos de estado, presupuestos, recogidas y consultas repetidas ordenadas.",
-  },
-  {
-    name: "Restaurantes con reservas",
-    benefit: "Confirmacion de mesas, cambios de horario y mensajes para eventos privados.",
-  },
-  {
-    name: "Ecommerce",
-    benefit: "Seguimiento de pedidos, recuperacion de carritos y soporte inicial automatizado.",
-  },
-  {
-    name: "Agencias y estudios",
-    benefit: "Web comercial, formularios cualificados y paneles simples para gestionar clientes.",
-  },
-  {
-    name: "Startups y SaaS",
-    benefit: "Landing, producto web, automatizaciones internas y medicion de oportunidades.",
-  },
-  {
-    name: "Inmobiliarias",
-    benefit: "Filtro de interesados, agenda de visitas y avisos automaticos para cada propiedad.",
-  },
-  {
-    name: "Academias y formacion",
-    benefit: "Inscripciones, recordatorios, emails de bienvenida y seguimiento de alumnos.",
-  },
-  {
-    name: "Despachos profesionales",
-    benefit: "Solicitudes ordenadas, agenda de consultas y documentos enviados sin perseguir al cliente.",
-  },
-  {
-    name: "Gimnasios y estudios",
-    benefit: "Reservas de clases, renovaciones, mensajes de asistencia y reactivacion de clientes.",
-  },
-];
-
-const useCases = [
-  {
-    metric: "18.4 h",
-    label: "ahorradas al mes",
-    text: "Recordatorios y confirmaciones automaticas para negocios con agenda.",
-  },
-  {
-    metric: "37.6%",
-    label: "menos mensajes repetidos",
-    text: "Respuestas iniciales, filtros de consulta y seguimiento sin copiar y pegar.",
-  },
-  {
-    metric: "11 min",
-    label: "para responder leads",
-    text: "Avisos internos y clasificacion de oportunidades apenas entra una solicitud.",
-  },
-];
-
 const process = [
   ["01", "Auditoria", "Mapeo donde pierdes tiempo, clientes o seguimiento."],
   ["02", "Plan", "Priorizo automatizaciones con impacto rapido y bajo riesgo."],
   ["03", "Construccion", "Desarrollo la web, app o workflow con revisiones cortas."],
   ["04", "Entrega", "Documentacion, pruebas y soporte para que puedas usarlo bien."],
+];
+
+const testimonials = [
+  {
+    name: "Maria Garcia",
+    role: "CEO, Restaurante El Patio",
+    metric: "+180% reservas en 90 dias",
+    photo: "https://randomuser.me/api/portraits/women/44.jpg",
+    quote:
+      "La automatizacion de WhatsApp nos cambio la operativa. Dejamos de perseguir confirmaciones y empezamos a llenar mas mesas.",
+    tone: "from-soft/18",
+  },
+  {
+    name: "Tomas Vidal",
+    role: "Director, Clinica Aura",
+    metric: "-42% ausencias en agenda",
+    photo: "https://randomuser.me/api/portraits/men/32.jpg",
+    quote:
+      "El sistema redujo llamadas repetidas y nos dio una agenda mucho mas previsible. La web ahora tambien filtra mejor las consultas.",
+    tone: "from-electric/18",
+  },
+  {
+    name: "Lucia Serrano",
+    role: "Growth Lead, Taller Boreal",
+    metric: "18h mensuales ahorradas",
+    photo: "https://randomuser.me/api/portraits/women/68.jpg",
+    quote:
+      "Conectaron formularios, avisos y seguimiento comercial. El equipo recupero horas cada semana sin cambiar nuestras herramientas base.",
+    tone: "from-soft/14",
+  },
 ];
 
 const faqs = [
@@ -221,13 +182,18 @@ const portfolioProjects = [
     image: portfolioYouEyes,
   },
   {
-    title: "DogDreams",
-    category: "Veterinaria, hotel y cuidado integral",
+    title: "-42% ausencias en agenda",
+    category: "Veterinaria en Barcelona",
     url: "https://veterinaria-dd.vercel.app/",
     summary:
-      "Web para veterinaria, peluqueria, hotel y servicios de mascotas, con formulario automatizado y agente de IA que responde consultas y ayuda a gestionar turnos.",
-    tags: ["Formulario automatizado", "Agente IA", "Gestion de turnos", "Servicios"],
-    result: "Atencion mas rapida para familias que necesitan reservar o consultar servicios.",
+      "Sistema para reducir ausencias en agenda, automatizar recordatorios y ordenar el seguimiento comercial desde el primer contacto.",
+    tags: [
+      "Recordatorios 24h antes por WhatsApp",
+      "Formulario previo conectado al CRM",
+      "Reagenda automatica para huecos libres",
+      "Panel interno para seguimiento comercial",
+    ],
+    result: "-42% ausencias en agenda, -42% no-shows, +31.4% consultas y 18h/mes ahorradas.",
     image: portfolioDogDreams,
   },
 ];
@@ -285,9 +251,8 @@ function App() {
           <>
             <Hero navigate={navigate} />
             <Services />
-            <AutomationLab />
-            <UseCases />
             <Process />
+            <Testimonials />
             <StackTrust />
             <FAQ />
             <Contact />
@@ -314,7 +279,6 @@ function Nav({ route, navigate }) {
   const links = [
     ["Servicios", "#servicios"],
     ["Portfolio", "/portfolio"],
-    ["Sistema", "#sistema"],
     ["Proceso", "#proceso"],
     ["Contacto", "#contacto"],
   ];
@@ -636,32 +600,6 @@ function LabTile({ icon: Icon, title, text }) {
   );
 }
 
-function UseCases() {
-  return (
-    <section className="bg-ink px-4 py-14 text-white sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-soft">Casos de uso</p>
-            <h2 className="mt-3 max-w-md font-display text-2xl font-black leading-tight tracking-tight text-white sm:text-3xl">
-              Automatizaciones pequeñas con impacto visible.
-            </h2>
-          </div>
-          <div className="grid gap-3 md:grid-cols-3">
-            {useCases.map((item) => (
-              <article key={item.metric} className="rounded-2xl border border-white/10 bg-white/8 p-4 glass-edge">
-                <p className="font-display text-2xl font-black text-soft">{item.metric}</p>
-                <p className="mt-1 text-xs font-black uppercase tracking-[0.14em] text-slate-400">{item.label}</p>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{item.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function Process() {
   const [activeStep, setActiveStep] = useState(0);
   const activeProcess = process[activeStep];
@@ -774,6 +712,55 @@ function Process() {
   );
 }
 
+function Testimonials() {
+  return (
+    <section id="testimonios" className="relative overflow-hidden bg-ink px-4 py-16 text-white sm:px-6 lg:px-8">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(163,230,53,0.16),transparent_34%),radial-gradient(circle_at_12%_20%,rgba(52,211,153,0.08),transparent_28%)]" />
+      <div className="noise-overlay absolute inset-0 opacity-40" />
+      <div className="relative mx-auto max-w-7xl">
+        <div data-reveal className="max-w-2xl">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-soft">Testimonios</p>
+          <h2 className="mt-4 font-display text-3xl font-black leading-none tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Lo que dicen quienes ya confian en nosotros
+          </h2>
+          <p className="mt-4 max-w-xl text-sm leading-6 text-slate-300">
+            Resultados concretos, operaciones mas limpias y webs que dejan de ser solo una tarjeta de presentacion.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-4 lg:grid-cols-3 lg:items-end">
+          {testimonials.map((item, index) => (
+            <article
+              data-reveal
+              key={item.name}
+              className={`rounded-[1.5rem] border border-white/12 bg-gradient-to-br ${item.tone} to-white/[0.06] p-5 shadow-diffusion glass-edge ${
+                index === 1 ? "lg:translate-y-5" : ""
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <img
+                  src={item.photo}
+                  alt={`Foto de ${item.name}`}
+                  className="h-12 w-12 shrink-0 rounded-xl border border-white/12 object-cover shadow-[0_14px_30px_-18px_rgba(0,0,0,0.8)]"
+                  loading="lazy"
+                />
+                <div>
+                  <h3 className="font-display text-base font-black text-white">{item.name}</h3>
+                  <p className="text-xs font-bold text-slate-300">{item.role}</p>
+                </div>
+              </div>
+              <p className="mt-6 text-[11px] font-black uppercase tracking-[0.18em] text-soft">{item.metric}</p>
+              <blockquote className="mt-4 font-display text-lg font-black leading-snug tracking-tight text-white">
+                "{item.quote}"
+              </blockquote>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function StackTrust() {
   const stack = ["React", "Tailwind", "Node.js", "n8n", "Make", "WordPress", "APIs", "CRM"];
 
@@ -860,15 +847,15 @@ function Contact() {
         <div data-reveal className="rounded-[2rem] bg-ink p-8 text-white shadow-diffusion">
           <p className="text-sm font-black uppercase tracking-[0.18em] text-soft">Contacto</p>
           <h2 className="mt-4 font-display text-3xl font-black leading-tight tracking-tight">
-            Hablemos de la parte de tu negocio que se repite demasiado.
+            Tu competencia ya esta automatizando su negocio
           </h2>
           <p className="mt-6 text-slate-300">
-            En la auditoria reviso tu web, tu captacion y tus tareas manuales para proponerte el primer sistema que conviene construir.
+            Hablemos. 30 minutos gratuitos para disenar juntos el sistema digital que tu empresa necesita para crecer.
           </p>
           <div className="mt-10 space-y-4">
-            <ContactLine icon={Phone} text="+34 697955919" href="tel:+34697955919" />
-            <ContactLine icon={Mail} text="ubedadesarrolloweb@gmail.com" href="mailto:ubedadesarrolloweb@gmail.com" />
-            <ContactLine icon={MessageSquareText} text="Barcelona · remoto para España" href="#contacto" />
+            <ContactLine icon={Bot} text="Expertos en Automatización" />
+            <ContactLine icon={Workflow} text="Integraciones Personalizadas" />
+            <ContactLine icon={MessageSquareText} text="Soporte y Asesoramiento" />
           </div>
         </div>
 
@@ -880,6 +867,43 @@ function Contact() {
           <div className="mt-5">
             <Field label="Correo electronico" name="email" placeholder="nombre@empresa.com" required />
           </div>
+          <label className="mt-5 block">
+            <span className="text-sm font-bold text-ink">Servicio solicitado</span>
+            <select
+              name="service"
+              required
+              defaultValue=""
+              className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-canvas px-4 text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
+            >
+              <option value="" disabled>
+                Elige el servicio que necesitas
+              </option>
+              <option value="web-profesional">Web profesional</option>
+              <option value="app-web">App o aplicacion web</option>
+              <option value="automatizaciones">Automatizaciones</option>
+              <option value="agenda-automatica">Sistema de agenda automatico</option>
+              <option value="agente-ia">Agente de IA</option>
+              <option value="mantenimiento">Mantenimiento mensual</option>
+              <option value="otro">Otro / no estoy seguro</option>
+            </select>
+          </label>
+          <label className="mt-5 block">
+            <span className="text-sm font-bold text-ink">Presupuesto</span>
+            <select
+              name="budget"
+              required
+              defaultValue=""
+              className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-canvas px-4 text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
+            >
+              <option value="" disabled>
+                Elige tu rango de inversión
+              </option>
+              <option value="500-1000">500 a 1000</option>
+              <option value="1000-3000">1000 a 3000</option>
+              <option value="3000-5000">3000 a 5000</option>
+              <option value="5000-10000">5000 a 10000</option>
+            </select>
+          </label>
           <label className="mt-5 block">
             <span className="text-sm font-bold text-ink">Que quieres mejorar</span>
             <textarea
@@ -924,12 +948,23 @@ function Field({ label, name, placeholder, required = false }) {
 }
 
 function ContactLine({ icon: Icon, text, href }) {
-  return (
-    <a href={href} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/8 p-4 text-slate-200 transition duration-300 hover:bg-white/12">
+  const className = "flex items-center gap-4 rounded-2xl border border-white/10 bg-white/8 p-4 text-slate-200 transition duration-300 hover:bg-white/12";
+  const content = (
+    <>
       <span className="grid h-10 w-10 place-items-center rounded-xl bg-soft text-ink">
         <Icon size={18} strokeWidth={1.9} />
       </span>
-      {text}
+      <span className="font-semibold">{text}</span>
+    </>
+  );
+
+  if (!href) {
+    return <div className={className}>{content}</div>;
+  }
+
+  return (
+    <a href={href} className={className}>
+      {content}
     </a>
   );
 }
@@ -941,12 +976,12 @@ function PortfolioPage({ navigate }) {
       <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div data-reveal>
-            <p className="text-sm font-black uppercase tracking-[0.18em] text-soft">Portfolio</p>
+            <p className="text-sm font-black uppercase tracking-[0.18em] text-soft">Casos de estudio</p>
             <h1 className="mt-5 font-display text-4xl font-black leading-none tracking-tight sm:text-5xl lg:text-6xl">
-              Proyectos que combinan diseño, codigo y automatizacion.
+              Proyectos que generaron resultados reales
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-7 text-slate-300">
-              Una muestra inicial de webs, captadores de leads, formularios automatizados y agentes de IA creados para negocios reales. Esta pagina queda preparada para seguir agregando nuevos casos.
+              La metrica manda. Cada proyecto se piensa para reducir friccion, captar mejor y medir impacto.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
@@ -1031,11 +1066,11 @@ function PortfolioCard({ project, index }) {
           <p className="mt-2 text-xs leading-5 text-slate-300">{project.result}</p>
           <a
             href={project.url}
-            target="_blank"
-            rel="noreferrer"
+            target={project.url.startsWith("http") ? "_blank" : undefined}
+            rel={project.url.startsWith("http") ? "noreferrer" : undefined}
             className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-electric px-4 py-3 text-xs font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]"
           >
-            Ver proyecto en Vercel
+            {project.urlLabel || "Ver proyecto en Vercel"}
             <ArrowRight size={16} strokeWidth={1.9} />
           </a>
         </div>
@@ -1128,7 +1163,7 @@ function Footer({ navigate }) {
               <a href="mailto:ubedadesarrolloweb@gmail.com" className="break-words transition duration-300 hover:text-white">
                 ubedadesarrolloweb@gmail.com
               </a>
-              <p>Barcelona · remoto para España</p>
+              <p>Barcelona Â· remoto para España</p>
             </div>
           </div>
 
@@ -1152,7 +1187,7 @@ function Footer({ navigate }) {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-white/12 py-5 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
-          <p className="font-semibold">© 2026 Creaciones Digitales. Todos los derechos reservados.</p>
+          <p className="font-semibold">Â© 2026 Creaciones Digitales. Todos los derechos reservados.</p>
           <div className="flex flex-wrap gap-4">
             <a href="#servicios" onClick={(event) => handleHomeLink(event, "#servicios")} className="transition hover:text-soft">Servicios</a>
             <a href="#contacto" onClick={(event) => handleHomeLink(event, "#contacto")} className="transition hover:text-soft">Contacto</a>

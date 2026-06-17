@@ -235,10 +235,12 @@ const portfolioProjects = [
 
 function App() {
   const rootRef = useRef(null);
-  const [route, setRoute] = useState(() => window.location.pathname);
+  const getCurrentRoute = () => (window.location.hash === "#portfolio" ? "/portfolio" : window.location.pathname);
+  const [route, setRoute] = useState(getCurrentRoute);
 
   function navigate(path) {
-    window.history.pushState({}, "", path);
+    const nextUrl = path === "/portfolio" ? "/#portfolio" : path;
+    window.history.pushState({}, "", nextUrl);
     setRoute(path);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -268,11 +270,15 @@ function App() {
 
   useEffect(() => {
     function handlePopState() {
-      setRoute(window.location.pathname);
+      setRoute(getCurrentRoute());
     }
 
     window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
+    window.addEventListener("hashchange", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("hashchange", handlePopState);
+    };
   }, []);
 
   return (
@@ -313,13 +319,13 @@ function SkipLink() {
 function Nav({ route, navigate }) {
   const links = [
     ["Servicios", "#servicios"],
-    ["Portfolio", "/portfolio"],
+    ["Portfolio", "/#portfolio"],
     ["Proceso", "#proceso"],
     ["Contacto", "#contacto"],
   ];
 
   function handleNav(event, href) {
-    if (href === "/portfolio") {
+    if (href === "/#portfolio") {
       event.preventDefault();
       navigate("/portfolio");
       return;
@@ -367,7 +373,7 @@ function Nav({ route, navigate }) {
               href={href}
               onClick={(event) => handleNav(event, href)}
               className={`rounded-lg px-4 py-2 text-sm font-semibold transition duration-300 hover:bg-soft/20 hover:text-ink active:scale-[0.98] ${
-                route === href ? "bg-soft/25 text-ink" : "text-slate-600"
+                route === href || (href === "/#portfolio" && route === "/portfolio") ? "bg-soft/25 text-ink" : "text-slate-600"
               }`}
             >
               {label}
@@ -409,7 +415,7 @@ function Hero({ navigate }) {
               <ArrowRight size={18} strokeWidth={1.9} className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a
-              href="/portfolio"
+              href="/#portfolio"
               onClick={(event) => {
                 event.preventDefault();
                 navigate("/portfolio");

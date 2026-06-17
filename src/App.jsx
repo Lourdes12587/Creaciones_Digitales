@@ -27,19 +27,20 @@ import logoCreaciones from "./assets/logo-creaciones-digitales.png";
 import logoNavbar from "./assets/logo-creaciones-navbar.png";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.png";
 import portfolioYouEyes from "./assets/portfolio-you-eyes.png";
+import portfolioDogDreams from "./assets/portfolio-dogdreams.png";
 import portfolioRestaurant from "./assets/portfolio-restaurante-ecommerce.png";
 
 const services = [
   {
     icon: Globe2,
     title: "Web profesional",
-    text: "Tu presencia online completa: diseÃ±o, contenido y optimizaciÃ³n SEO. Lista en 1â€“2 semanas.",
+    text: "Tu presencia online completa: diseÃ±o, contenido y optimizacion SEO. Lista en 1 o 2 semanas.",
     items: [
-      "DiseÃ±o personalizado sobre plantilla premium",
-      "Hasta 5 pÃ¡ginas + blog",
+      "Diseño personalizado sobre plantilla premium",
+      "Hasta 5 paginas + blog",
       "SEO on-page optimizado",
       "Formulario de contacto integrado",
-      "FormaciÃ³n bÃ¡sica incluida",
+      "Formacion basica incluida",
     ],
     visual: "https://picsum.photos/seed/wordpress-studio-dashboard/900/1100",
     alt: "Espacio de trabajo con una web profesional abierta en pantalla",
@@ -47,39 +48,39 @@ const services = [
   },
   {
     icon: CalendarCheck,
-    title: "Sistema de agenda automÃ¡tico",
-    text: "Recordatorios de cita, confirmaciones y reagendado automÃ¡tico por WhatsApp. Sin intervenciÃ³n manual.",
+    title: "Sistema de agenda automatico",
+    text: "Recordatorios de cita, confirmaciones y reagendado automatico por WhatsApp. Sin intervencion manual.",
     items: [
       "Recordatorio 24h antes por WhatsApp",
-      "ConfirmaciÃ³n instantÃ¡nea al reservar",
-      "Lista de espera automÃ¡tica",
-      "Encuesta post-cita + reseÃ±a Google",
+      "Confirmacion instantanea al reservar",
+      "Lista de espera automatica",
+      "Encuesta post-cita + reseña Google",
       "Reduce no-shows hasta un 40%",
       
     ],
     visual: "https://picsum.photos/seed/appointment-automation-calendar/900/1100",
     alt: "Agenda digital con confirmaciones de citas y mensajes automÃ¡ticos",
-    signal: "Citas confirmadas sin intervenciÃ³n manual",
+    signal: "Citas confirmadas sin intervencion manual",
   },
   {
     icon: Repeat2,
-    title: "AutomatizaciÃ³n de procesos",
-    text: "Elimino tareas repetitivas: sincronizaciÃ³n de datos, emails automÃ¡ticos, informes periÃ³dicos.",
+    title: "Automatizacion de procesos",
+    text: "Elimino tareas repetitivas: sincronizacion de datos, emails automaticos, informes periodicos.",
     items: [
       "Mapeo de procesos actuales",
       "Workflow en n8n o Make",
-      "Pruebas y documentaciÃ³n",
+      "Pruebas y documentacion",
       "Soporte 30 dÃ­as incluido",
     ],
     visual: "https://picsum.photos/seed/process-automation-nodes/900/1100",
-    alt: "Panel de automatizaciÃ³n con nodos conectados y datos sincronizados",
+    alt: "Panel de automatizacion con nodos conectados y datos sincronizados",
     signal: "Tareas repetitivas convertidas en flujos",
     badge: "Proceso",
   },
   {
     icon: Code2,
-    title: "AplicaciÃ³n web a medida",
-    text: "Paneles de gestiÃ³n, portales de clientes o herramientas internas donde WordPress no llega.",
+    title: "Aplicacion web a medida",
+    text: "Paneles de gestion, portales de clientes o herramientas internas donde WordPress no llega.",
     items: [
       "Frontend en React",
       "Backend con Node.js + Express",
@@ -87,14 +88,14 @@ const services = [
       "AutenticaciÃ³n de usuarios",
     ],
     visual: "https://picsum.photos/seed/custom-web-application-panel/900/1100",
-    alt: "AplicaciÃ³n web a medida con paneles de gestiÃ³n y mÃ©tricas",
+    alt: "Aplicacion web a medida con paneles de gestion y metricas",
     signal: "Herramientas internas para operar mejor",
     badge: "Alto ticket",
   },
   {
     icon: ShieldCheck,
     title: "Mantenimiento mensual",
-    text: "Tu web y automatizaciones siempre al dÃ­a. Actualizaciones, correcciones y mejoras.",
+    text: "Tu web y automatizaciones siempre al dia. Actualizaciones, correcciones y mejoras.",
     items: [
       "Actualizaciones WordPress",
       "Monitoreo workflows n8n",
@@ -117,30 +118,30 @@ const process = [
 
 const testimonials = [
   {
-    name: "Maria Garcia",
-    role: "CEO, Restaurante El Patio",
-    metric: "+180% reservas en 90 dias",
-    photo: "https://randomuser.me/api/portraits/women/44.jpg",
+    name: "Carlos Medina",
+    role: "Dueño, El Gordo Zappi",
+    metric: "+50% pedidos digitales",
+    photo: "https://randomuser.me/api/portraits/men/46.jpg",
     quote:
-      "La automatizacion de WhatsApp nos cambio la operativa. Dejamos de perseguir confirmaciones y empezamos a llenar mas mesas.",
+      "El catalogo digital y el pedido por WhatsApp nos ordenaron la venta. Hoy recibimos pedidos mas claros y con menos errores en horas pico.",
     tone: "from-soft/18",
   },
   {
-    name: "Tomas Vidal",
-    role: "Director, Clinica Aura",
+    name: "Laura Fernandez",
+    role: "Administracion, Veterinaria Barcelona",
     metric: "-42% ausencias en agenda",
-    photo: "https://randomuser.me/api/portraits/men/32.jpg",
+    photo: "https://randomuser.me/api/portraits/women/55.jpg",
     quote:
-      "El sistema redujo llamadas repetidas y nos dio una agenda mucho mas previsible. La web ahora tambien filtra mejor las consultas.",
+      "Los recordatorios y el formulario previo nos bajaron las ausencias. La agenda quedo mas previsible y el equipo responde menos consultas repetidas.",
     tone: "from-electric/18",
   },
   {
-    name: "Lucia Serrano",
-    role: "Growth Lead, Taller Boreal",
-    metric: "18h mensuales ahorradas",
-    photo: "https://randomuser.me/api/portraits/women/68.jpg",
+    name: "Martin Riera",
+    role: "Capitan, Charter nautico",
+    metric: "+40% consultas atendidas",
+    photo: "https://randomuser.me/api/portraits/men/64.jpg",
     quote:
-      "Conectaron formularios, avisos y seguimiento comercial. El equipo recupero horas cada semana sin cambiar nuestras herramientas base.",
+      "Cada consulta llega ordenada y con seguimiento automatico. Recuperamos interesados que antes se perdian entre mensajes y reservas pendientes.",
     tone: "from-soft/14",
   },
 ];
@@ -193,6 +194,21 @@ const portfolioProjects = [
     result:
       "Una web moderna, rapida y personalizada, construida con criterio profesional para transmitir confianza, organizar contenido y diferenciarse de soluciones genericas creadas solo con Claude code. Diseño, desarrollo, corrijo, adapto y construyo una web real lista para representar tu marca.",
     image: portfolioYouEyes,
+  },
+  {
+    title: "-42% ausencias en agenda",
+    category: "Veterinaria en Barcelona",
+    url: "https://veterinaria-dd.vercel.app/",
+    summary:
+      "Sistema para reducir ausencias en agenda, automatizar recordatorios y ordenar el seguimiento comercial desde el primer contacto.",
+    tags: [
+      "Recordatorios 24h antes por WhatsApp",
+      "Formulario previo conectado al CRM",
+      "Reagenda automatica para huecos libres",
+      "Panel interno para seguimiento comercial",
+    ],
+    result: "-42% ausencias en agenda, -42% no-shows, +31.4% consultas y 18h/mes ahorradas.",
+    image: portfolioDogDreams,
   },
   {
     title: "+50% mas pedidos digitales",
@@ -1158,7 +1174,7 @@ function Footer({ navigate }) {
               <a href="mailto:ubedadesarrolloweb@gmail.com" className="break-words transition duration-300 hover:text-white">
                 ubedadesarrolloweb@gmail.com
               </a>
-              <p>Barcelona Â· EspaÃ±a</p>
+              <p>Barcelona · España</p>
             </div>
           </div>
 

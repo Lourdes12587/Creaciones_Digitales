@@ -197,8 +197,7 @@ const portfolioProjects = [
   {
     title: "+50% mas pedidos digitales",
     category: "E-COMMERCE PARA RESTAURANTES",
-    url: "/#contacto",
-    urlLabel: "Consultar este caso",
+    url: "https://zappi-app.vercel.app/",
     summary:
       "Sistema disenado para restaurantes, hamburgueserias, pizzerias y negocios gastronomicos que buscan aumentar ventas y simplificar la gestion de pedidos.",
     tags: [

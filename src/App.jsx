@@ -34,7 +34,7 @@ const services = [
   {
     icon: Globe2,
     title: "Web profesional",
-    text: "Tu presencia online completa: diseÃ±o, contenido y optimizacion SEO. Lista en 1 o 2 semanas.",
+    text: "Tu presencia online completa: diseño, contenido y optimizacion SEO. Lista en 1 o 2 semanas.",
     items: [
       "Diseño personalizado sobre plantilla premium",
       "Hasta 5 paginas + blog",

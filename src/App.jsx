@@ -27,19 +27,19 @@ import logoCreaciones from "./assets/logo-creaciones-digitales.png";
 import logoNavbar from "./assets/logo-creaciones-navbar.png";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.png";
 import portfolioYouEyes from "./assets/portfolio-you-eyes.png";
-import portfolioDogDreams from "./assets/portfolio-dogdreams.png";
+import portfolioRestaurant from "./assets/portfolio-restaurante-ecommerce.png";
 
 const services = [
   {
     icon: Globe2,
     title: "Web profesional",
-    text: "Tu presencia online completa: diseño, contenido y optimización SEO. Lista en 1–2 semanas.",
+    text: "Tu presencia online completa: diseÃ±o, contenido y optimizaciÃ³n SEO. Lista en 1â€“2 semanas.",
     items: [
-      "Diseño personalizado sobre plantilla premium",
-      "Hasta 5 páginas + blog",
+      "DiseÃ±o personalizado sobre plantilla premium",
+      "Hasta 5 pÃ¡ginas + blog",
       "SEO on-page optimizado",
       "Formulario de contacto integrado",
-      "Formación básica incluida",
+      "FormaciÃ³n bÃ¡sica incluida",
     ],
     visual: "https://picsum.photos/seed/wordpress-studio-dashboard/900/1100",
     alt: "Espacio de trabajo con una web profesional abierta en pantalla",
@@ -47,59 +47,59 @@ const services = [
   },
   {
     icon: CalendarCheck,
-    title: "Sistema de agenda automático",
-    text: "Recordatorios de cita, confirmaciones y reagendado automático por WhatsApp. Sin intervención manual.",
+    title: "Sistema de agenda automÃ¡tico",
+    text: "Recordatorios de cita, confirmaciones y reagendado automÃ¡tico por WhatsApp. Sin intervenciÃ³n manual.",
     items: [
       "Recordatorio 24h antes por WhatsApp",
-      "Confirmación instantánea al reservar",
-      "Lista de espera automática",
-      "Encuesta post-cita + reseña Google",
+      "ConfirmaciÃ³n instantÃ¡nea al reservar",
+      "Lista de espera automÃ¡tica",
+      "Encuesta post-cita + reseÃ±a Google",
       "Reduce no-shows hasta un 40%",
       
     ],
     visual: "https://picsum.photos/seed/appointment-automation-calendar/900/1100",
-    alt: "Agenda digital con confirmaciones de citas y mensajes automáticos",
-    signal: "Citas confirmadas sin intervención manual",
+    alt: "Agenda digital con confirmaciones de citas y mensajes automÃ¡ticos",
+    signal: "Citas confirmadas sin intervenciÃ³n manual",
   },
   {
     icon: Repeat2,
-    title: "Automatización de procesos",
-    text: "Elimino tareas repetitivas: sincronización de datos, emails automáticos, informes periódicos.",
+    title: "AutomatizaciÃ³n de procesos",
+    text: "Elimino tareas repetitivas: sincronizaciÃ³n de datos, emails automÃ¡ticos, informes periÃ³dicos.",
     items: [
       "Mapeo de procesos actuales",
       "Workflow en n8n o Make",
-      "Pruebas y documentación",
-      "Soporte 30 días incluido",
+      "Pruebas y documentaciÃ³n",
+      "Soporte 30 dÃ­as incluido",
     ],
     visual: "https://picsum.photos/seed/process-automation-nodes/900/1100",
-    alt: "Panel de automatización con nodos conectados y datos sincronizados",
+    alt: "Panel de automatizaciÃ³n con nodos conectados y datos sincronizados",
     signal: "Tareas repetitivas convertidas en flujos",
     badge: "Proceso",
   },
   {
     icon: Code2,
-    title: "Aplicación web a medida",
-    text: "Paneles de gestión, portales de clientes o herramientas internas donde WordPress no llega.",
+    title: "AplicaciÃ³n web a medida",
+    text: "Paneles de gestiÃ³n, portales de clientes o herramientas internas donde WordPress no llega.",
     items: [
       "Frontend en React",
       "Backend con Node.js + Express",
       "Base de datos + API REST",
-      "Autenticación de usuarios",
+      "AutenticaciÃ³n de usuarios",
     ],
     visual: "https://picsum.photos/seed/custom-web-application-panel/900/1100",
-    alt: "Aplicación web a medida con paneles de gestión y métricas",
+    alt: "AplicaciÃ³n web a medida con paneles de gestiÃ³n y mÃ©tricas",
     signal: "Herramientas internas para operar mejor",
     badge: "Alto ticket",
   },
   {
     icon: ShieldCheck,
     title: "Mantenimiento mensual",
-    text: "Tu web y automatizaciones siempre al día. Actualizaciones, correcciones y mejoras.",
+    text: "Tu web y automatizaciones siempre al dÃ­a. Actualizaciones, correcciones y mejoras.",
     items: [
       "Actualizaciones WordPress",
       "Monitoreo workflows n8n",
       "2h de mejoras incluidas",
-      "Respuesta en 24–48h",
+      "Respuesta en 24â€“48h",
     ],
     visual: "https://picsum.photos/seed/maintenance-monitoring-workflows/900/1100",
     alt: "Panel de monitoreo de mantenimiento web y automatizaciones",
@@ -162,39 +162,56 @@ const faqs = [
 
 const portfolioProjects = [
   {
-    title: "Blue Island Boats",
-    category: "Experiencias nauticas",
+    title: "+40% mas consultas atendidas",
+    category: "CHARTER NAUTICO",
     url: "https://blue-island-boat.vercel.app/",
     summary:
-      "Landing premium para reservas privadas en Ibiza y Formentera, con formulario automatizado, captador de leads y agente de IA para responder consultas iniciales.",
-    tags: ["Formulario automatizado", "Captador de leads", "Agente IA", "Reservas"],
-    result: "Consultas ordenadas para convertir reservas sin perder oportunidades.",
+      "Sistema disenado para propietarios de barcos que buscan aumentar reservas sin perder oportunidades por falta de seguimiento.",
+    tags: [
+      "Solicitud de presupuesto conectada a WhatsApp y Gmail",
+      "Seguimiento automatico de interesados",
+      "Recuperacion automatica de reservas pendientes",
+      "Respuestas rapidas sobre disponibilidad y precios",
+      "Presentacion premium de embarcaciones y rutas",
+    ],
+    result:
+      "+40% mas consultas atendidas, +25% reservas directas y menos oportunidades perdidas gracias al seguimiento automatico de cada solicitud.",
     image: portfolioBlueIsland,
   },
   {
-    title: "You Eyes.Net",
-    category: "Diario digital",
+    title: "+100% desarrollo personalizado",
+    category: "WEB DE NOTICIAS EN REACT",
     url: "https://you-eyes-net.vercel.app/",
     summary:
-      "Web de noticias desarrollada desde cero con React, pensada para una lectura editorial clara, jerarquia de contenidos y experiencia de medio digital.",
-    tags: ["React", "Desarrollo desde cero", "Noticias", "Diseño editorial"],
-    result: "Una portada viva para publicar contenido con identidad propia.",
+      "Plataforma de noticias desarrollada 100% en React, pensada para medios, blogs, creadores de contenido o marcas que necesitan una web rapida, moderna y preparada para crecer.",
+    tags: [
+      "Desarrollo web profesional, no una plantilla generica",
+      "Diseño adaptado al estilo y objetivo del proyecto",
+      "Estructura escalable para agregar secciones, categorias y nuevas paginas",
+      "Mejor experiencia de usuario que una web hecha solo con IA sin criterio tecnico",
+    ],
+    result:
+      "Una web moderna, rapida y personalizada, construida con criterio profesional para transmitir confianza, organizar contenido y diferenciarse de soluciones genericas creadas solo con Claude code. Diseño, desarrollo, corrijo, adapto y construyo una web real lista para representar tu marca.",
     image: portfolioYouEyes,
   },
   {
-    title: "-42% ausencias en agenda",
-    category: "Veterinaria en Barcelona",
-    url: "https://veterinaria-dd.vercel.app/",
+    title: "+50% mas pedidos digitales",
+    category: "E-COMMERCE PARA RESTAURANTES",
+    url: "/#contacto",
+    urlLabel: "Consultar este caso",
     summary:
-      "Sistema para reducir ausencias en agenda, automatizar recordatorios y ordenar el seguimiento comercial desde el primer contacto.",
+      "Sistema disenado para restaurantes, hamburgueserias, pizzerias y negocios gastronomicos que buscan aumentar ventas y simplificar la gestion de pedidos.",
     tags: [
-      "Recordatorios 24h antes por WhatsApp",
-      "Formulario previo conectado al CRM",
-      "Reagenda automatica para huecos libres",
-      "Panel interno para seguimiento comercial",
+      "Catalogo digital optimizado para moviles",
+      "Carrito de compra y proceso de pedido intuitivo",
+      "Pedidos conectados a WhatsApp y correo electronico",
+      "Gestion organizada de productos y categorias",
+      "Experiencia de compra rapida para aumentar conversiones",
+      "Diseno personalizado adaptado a la identidad del negocio",
     ],
-    result: "-42% ausencias en agenda, -42% no-shows, +31.4% consultas y 18h/mes ahorradas.",
-    image: portfolioDogDreams,
+    result:
+      "+50% mas pedidos digitales, menos errores en la toma de pedidos y una experiencia de compra mas rapida que ayuda a aumentar las ventas del restaurante.",
+    image: portfolioRestaurant,
   },
 ];
 
@@ -451,7 +468,7 @@ function ServiceVisual({ service, index }) {
             {service.title}
           </h3>
           <div className="mt-4 grid grid-cols-3 gap-2">
-            {["Diseño", "Flujo", "Soporte"].map((item) => (
+            {["DiseÃ±o", "Flujo", "Soporte"].map((item) => (
               <span key={item} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-center text-[11px] font-bold text-slate-200 glass-edge">
                 {item}
               </span>
@@ -778,7 +795,7 @@ function StackTrust() {
       <div className="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-5 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
         <TrustCard icon={ShieldCheck} title="Entrega documentada" text="Cada flujo se entrega con instrucciones claras y soporte para que no dependa de memoria." />
         <TrustCard icon={Layers3} title="Escalable por etapas" text="Primero el cuello de botella mas caro. Luego se agregan piezas sin rehacer todo." />
-        <TrustCard icon={Sparkles} title="Diseño premium" text="No se trata solo de automatizar: la experiencia visual tambien debe inspirar confianza." />
+        <TrustCard icon={Sparkles} title="DiseÃ±o premium" text="No se trata solo de automatizar: la experiencia visual tambien debe inspirar confianza." />
       </div>
     </section>
   );
@@ -850,10 +867,10 @@ function Contact() {
             Tu competencia ya esta automatizando su negocio
           </h2>
           <p className="mt-6 text-slate-300">
-            Hablemos. 30 minutos gratuitos para disenar juntos el sistema digital que tu empresa necesita para crecer.
+            Hablemos. 30 minutos gratuitos para diseñar juntos el sistema digital que tu empresa necesita para crecer.
           </p>
           <div className="mt-10 space-y-4">
-            <ContactLine icon={Bot} text="Expertos en Automatización" />
+            <ContactLine icon={Bot} text="Expertos en Automatizacion" />
             <ContactLine icon={Workflow} text="Integraciones Personalizadas" />
             <ContactLine icon={MessageSquareText} text="Soporte y Asesoramiento" />
           </div>
@@ -896,7 +913,7 @@ function Contact() {
               className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-canvas px-4 text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
             >
               <option value="" disabled>
-                Elige tu rango de inversión
+                Elige tu rango de inversion
               </option>
               <option value="500-1000">500 a 1000</option>
               <option value="1000-3000">1000 a 3000</option>
@@ -1001,18 +1018,6 @@ function PortfolioPage({ navigate }) {
             </div>
           </div>
 
-          <div data-reveal className="grid grid-cols-3 gap-3 rounded-[2rem] border border-white/10 bg-white/[0.05] p-4 glass-edge">
-            {[
-              ["3", "proyectos publicados"],
-              ["2", "agentes IA integrados"],
-              ["React", "codigo a medida"],
-            ].map(([metric, label]) => (
-              <div key={label} className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
-                <p className="font-display text-2xl font-black text-soft">{metric}</p>
-                <p className="mt-2 text-xs font-bold text-slate-400">{label}</p>
-              </div>
-            ))}
-          </div>
         </div>
 
         <div id="proyectos" className="mt-14 grid gap-6">
@@ -1021,12 +1026,6 @@ function PortfolioPage({ navigate }) {
           ))}
         </div>
 
-        <div data-reveal className="mt-10 rounded-[2rem] border border-white/10 bg-white/[0.05] p-6 text-center glass-edge">
-          <p className="font-display text-2xl font-black text-white">Mas proyectos en camino.</p>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-            Esta pagina ya tiene la estructura lista para sumar nuevas webs, automatizaciones, agentes y casos de negocio cuando quieras ampliar el portfolio.
-          </p>
-        </div>
       </div>
     </section>
   );
@@ -1133,9 +1132,6 @@ function Footer({ navigate }) {
                 </span>
               </span>
             </a>
-            <p className="mt-5 max-w-[34ch] text-base leading-8 text-slate-300">
-              Webs, apps y flujos automaticos para captar leads, ordenar procesos y responder consultas sin operar todo a mano.
-            </p>
           </div>
 
           <div>
@@ -1163,7 +1159,7 @@ function Footer({ navigate }) {
               <a href="mailto:ubedadesarrolloweb@gmail.com" className="break-words transition duration-300 hover:text-white">
                 ubedadesarrolloweb@gmail.com
               </a>
-              <p>Barcelona Â· remoto para España</p>
+              <p>Barcelona Â· EspaÃ±a</p>
             </div>
           </div>
 
@@ -1187,7 +1183,7 @@ function Footer({ navigate }) {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-white/12 py-5 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
-          <p className="font-semibold">Â© 2026 Creaciones Digitales. Todos los derechos reservados.</p>
+          <p className="font-semibold">© 2026 Creaciones Digitales. Todos los derechos reservados.</p>
           <div className="flex flex-wrap gap-4">
             <a href="#servicios" onClick={(event) => handleHomeLink(event, "#servicios")} className="transition hover:text-soft">Servicios</a>
             <a href="#contacto" onClick={(event) => handleHomeLink(event, "#contacto")} className="transition hover:text-soft">Contacto</a>

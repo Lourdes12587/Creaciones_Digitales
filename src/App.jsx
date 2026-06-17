@@ -121,7 +121,8 @@ const testimonials = [
     name: "Carlos Medina",
     role: "Dueño, El Gordo Zappi",
     metric: "+50% pedidos digitales",
-    photo: "https://randomuser.me/api/portraits/men/46.jpg",
+    brand: "El Gordo Zappi",
+    photo: "https://randomuser.me/api/portraits/men/75.jpg",
     quote:
       "El catalogo digital y el pedido por WhatsApp nos ordenaron la venta. Hoy recibimos pedidos mas claros y con menos errores en horas pico.",
     tone: "from-soft/18",
@@ -130,7 +131,8 @@ const testimonials = [
     name: "Laura Fernandez",
     role: "Administracion, Veterinaria Barcelona",
     metric: "-42% ausencias en agenda",
-    photo: "https://randomuser.me/api/portraits/women/55.jpg",
+    brand: "Veterinaria Barcelona",
+    photo: "https://randomuser.me/api/portraits/women/65.jpg",
     quote:
       "Los recordatorios y el formulario previo nos bajaron las ausencias. La agenda quedo mas previsible y el equipo responde menos consultas repetidas.",
     tone: "from-electric/18",
@@ -139,7 +141,8 @@ const testimonials = [
     name: "Martin Riera",
     role: "Capitan, Charter nautico",
     metric: "+40% consultas atendidas",
-    photo: "https://randomuser.me/api/portraits/men/64.jpg",
+    brand: "Blue Island Boats",
+    photo: "https://randomuser.me/api/portraits/men/62.jpg",
     quote:
       "Cada consulta llega ordenada y con seguimiento automatico. Recuperamos interesados que antes se perdian entre mensajes y reservas pendientes.",
     tone: "from-soft/14",
@@ -746,43 +749,41 @@ function Process() {
 
 function Testimonials() {
   return (
-    <section id="testimonios" className="relative overflow-hidden bg-ink px-4 py-16 text-white sm:px-6 lg:px-8">
+    <section id="testimonios" className="relative overflow-hidden bg-ink px-4 py-10 text-white sm:px-6 lg:px-8">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(163,230,53,0.16),transparent_34%),radial-gradient(circle_at_12%_20%,rgba(52,211,153,0.08),transparent_28%)]" />
       <div className="noise-overlay absolute inset-0 opacity-40" />
       <div className="relative mx-auto max-w-7xl">
-        <div data-reveal className="max-w-2xl">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-soft">Testimonios</p>
-          <h2 className="mt-4 font-display text-3xl font-black leading-none tracking-tight text-white sm:text-4xl lg:text-5xl">
+        <div data-reveal className="max-w-xl">
+          <p className="text-[11px] font-black uppercase tracking-[0.22em] text-soft">Testimonios</p>
+          <h2 className="mt-3 font-display text-2xl font-black leading-none tracking-tight text-white sm:text-3xl lg:text-4xl">
             Lo que dicen quienes ya confian en nosotros
           </h2>
-          <p className="mt-4 max-w-xl text-sm leading-6 text-slate-300">
+          <p className="mt-3 max-w-lg text-xs leading-5 text-slate-300">
             Resultados concretos, operaciones mas limpias y webs que dejan de ser solo una tarjeta de presentacion.
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4 lg:grid-cols-3 lg:items-end">
+        <div className="mt-7 grid gap-3 lg:grid-cols-3 lg:items-start">
           {testimonials.map((item, index) => (
             <article
               data-reveal
               key={item.name}
-              className={`rounded-[1.5rem] border border-white/12 bg-gradient-to-br ${item.tone} to-white/[0.06] p-5 shadow-diffusion glass-edge ${
-                index === 1 ? "lg:translate-y-5" : ""
-              }`}
+              className={`rounded-2xl border border-white/12 bg-gradient-to-br ${item.tone} to-white/[0.06] p-4 shadow-diffusion glass-edge`}
             >
               <div className="flex items-center gap-3">
                 <img
                   src={item.photo}
                   alt={`Foto de ${item.name}`}
-                  className="h-12 w-12 shrink-0 rounded-xl border border-white/12 object-cover shadow-[0_14px_30px_-18px_rgba(0,0,0,0.8)]"
+                  className="h-12 w-12 shrink-0 rounded-xl border border-white/15 object-cover shadow-[0_14px_30px_-18px_rgba(0,0,0,0.8)]"
                   loading="lazy"
                 />
                 <div>
-                  <h3 className="font-display text-base font-black text-white">{item.name}</h3>
-                  <p className="text-xs font-bold text-slate-300">{item.role}</p>
+                  <h3 className="font-display text-sm font-black text-white">{item.name}</h3>
+                  <p className="text-[11px] font-bold text-slate-300">{item.role}</p>
                 </div>
               </div>
-              <p className="mt-6 text-[11px] font-black uppercase tracking-[0.18em] text-soft">{item.metric}</p>
-              <blockquote className="mt-4 font-display text-lg font-black leading-snug tracking-tight text-white">
+              <p className="mt-4 text-[10px] font-black uppercase tracking-[0.16em] text-soft">{item.metric}</p>
+              <blockquote className="mt-3 font-display text-base font-black leading-snug tracking-tight text-white">
                 "{item.quote}"
               </blockquote>
             </article>

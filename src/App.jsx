@@ -30,6 +30,8 @@ import portfolioYouEyes from "./assets/portfolio-you-eyes.png";
 import portfolioDogDreams from "./assets/portfolio-dogdreams.png";
 import portfolioRestaurant from "./assets/portfolio-restaurante-ecommerce.png";
 
+const N8N_WEBHOOK_URL = "https://n8n.creaciones-digitales.com/webhook/formularion8n";
+
 const services = [
   {
     icon: Globe2,
@@ -866,53 +868,97 @@ function FAQ() {
 function Contact() {
   const [status, setStatus] = useState("idle");
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const email = String(form.get("email") || "");
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
+    const email = String(form.get("email") || "").trim();
 
     if (!email.includes("@")) {
       setStatus("error");
       return;
     }
 
+    if (window.location.protocol === "https:" && N8N_WEBHOOK_URL.startsWith("http://")) {
+      setStatus("webhook-http-error");
+      return;
+    }
+
     setStatus("loading");
-    window.setTimeout(() => setStatus("success"), 850);
+
+    const payload = {
+      nombre: String(form.get("nombre") || "").trim(),
+      empresa: String(form.get("empresa") || "").trim(),
+      email,
+      telefono: String(form.get("telefono") || "").trim(),
+      servicio: String(form.get("servicio") || "").trim(),
+      presupuesto: String(form.get("presupuesto") || "").trim(),
+      mensaje: String(form.get("mensaje") || "").trim(),
+      origen: "creaciones-digitales-web",
+      fecha: new Date().toISOString(),
+    };
+
+    try {
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("No se pudo enviar el formulario");
+      }
+
+      formElement.reset();
+      setStatus("success");
+      window.alert("su mensaje ha sido enviado");
+    } catch (error) {
+      setStatus("submit-error");
+    }
   }
 
   return (
-    <section id="contacto" className="px-4 py-24 sm:px-6 lg:px-8">
+    <section id="contacto" className="px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-        <div data-reveal className="rounded-[2rem] bg-ink p-8 text-white shadow-diffusion">
+        <div data-reveal className="rounded-[1.5rem] bg-ink p-6 text-white shadow-diffusion">
           <p className="text-sm font-black uppercase tracking-[0.18em] text-soft">Contacto</p>
-          <h2 className="mt-4 font-display text-3xl font-black leading-tight tracking-tight">
+          <h2 className="mt-4 font-display text-2xl font-black leading-tight tracking-tight">
             Tu competencia ya esta automatizando su negocio
           </h2>
-          <p className="mt-6 text-slate-300">
+          <p className="mt-4 text-sm leading-6 text-slate-300">
             Hablemos. 30 minutos gratuitos para diseñar juntos el sistema digital que tu empresa necesita para crecer.
           </p>
-          <div className="mt-10 space-y-4">
+          <div className="mt-7 space-y-3">
             <ContactLine icon={Bot} text="Expertos en Automatizacion" />
             <ContactLine icon={Workflow} text="Integraciones Personalizadas" />
             <ContactLine icon={MessageSquareText} text="Soporte y Asesoramiento" />
           </div>
         </div>
 
-        <form data-reveal onSubmit={handleSubmit} className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-diffusion sm:p-8">
-          <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Nombre" name="name" placeholder="Tu nombre" required />
-            <Field label="Empresa" name="company" placeholder="Negocio o proyecto" />
+        <form 
+        action="https://n8n.creaciones-digitales.com/webhook/formularion8n" 
+        method="POST"
+        className="w-full rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-diffusion sm:p-6">
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Nombre" name="nombre" placeholder="Tu nombre" required />
+            <Field label="Empresa" name="empresa" placeholder="Negocio o proyecto" />
           </div>
-          <div className="mt-5">
+
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <Field label="Correo electronico" name="email" placeholder="nombre@empresa.com" required />
+            <Field label="Telefono" name="telefono" placeholder="+54 9 261 000 0000" />
           </div>
-          <label className="mt-5 block">
-            <span className="text-sm font-bold text-ink">Servicio solicitado</span>
+
+          <label className="mt-4 block">
+            <span className="text-xs font-bold uppercase tracking-[0.08em] text-ink">Servicio solicitado</span>
             <select
-              name="service"
+              name="servicio"
               required
               defaultValue=""
-              className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-canvas px-4 text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
+              className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-canvas px-3 text-sm text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
             >
               <option value="" disabled>
                 Elige el servicio que necesitas
@@ -926,13 +972,14 @@ function Contact() {
               <option value="otro">Otro / no estoy seguro</option>
             </select>
           </label>
-          <label className="mt-5 block">
-            <span className="text-sm font-bold text-ink">Presupuesto</span>
+
+          <label className="mt-4 block">
+            <span className="text-xs font-bold uppercase tracking-[0.08em] text-ink">Presupuesto</span>
             <select
-              name="budget"
+              name="presupuesto"
               required
               defaultValue=""
-              className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-canvas px-4 text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
+              className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-canvas px-3 text-sm text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
             >
               <option value="" disabled>
                 Elige tu rango de inversion
@@ -943,18 +990,21 @@ function Contact() {
               <option value="5000-10000">5000 a 10000</option>
             </select>
           </label>
-          <label className="mt-5 block">
-            <span className="text-sm font-bold text-ink">Que quieres mejorar</span>
+
+          <label className="mt-4 block">
+            <span className="text-xs font-bold uppercase tracking-[0.08em] text-ink">Que quieres mejorar</span>
             <textarea
-              name="message"
-              className="mt-2 min-h-36 w-full rounded-xl border border-slate-200 bg-canvas px-4 py-3 text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
+              name="mensaje"
+              className="mt-2 min-h-28 w-full rounded-xl border border-slate-200 bg-canvas px-3 py-3 text-sm text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
               placeholder="Cuentame que proceso repites, que herramientas usas y que resultado buscas."
               required
             />
           </label>
 
           {status === "error" && <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">Revisa el correo antes de enviar.</p>}
-          {status === "success" && <p className="mt-4 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">Mensaje listo. Puedes conectarlo a tu proveedor de formularios cuando publiques la web.</p>}
+          {status === "success" && <p className="mt-4 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">Gracias por contactarnos. Hemos recibido tu mensaje correctamente.</p>}
+          {status === "submit-error" && <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">No se pudo enviar. Revisa que el webhook de n8n este activo y acepte POST.</p>}
+          {status === "webhook-http-error" && <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700">Para usarlo en Vercel, el webhook de n8n debe ser HTTPS.</p>}
           {status === "loading" && (
             <div className="mt-4 grid gap-2">
               <div className="h-3 w-full animate-pulse rounded bg-slate-200" />
@@ -962,7 +1012,7 @@ function Contact() {
             </div>
           )}
 
-          <button type="submit" className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-xl bg-electric px-6 py-4 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-ink active:scale-[0.98]">
+          <button type="submit" className="mt-5 inline-flex w-full items-center justify-center gap-3 rounded-xl bg-electric px-5 py-3 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-ink active:scale-[0.98]">
             Enviar solicitud
             <ArrowRight size={18} strokeWidth={1.9} />
           </button>
@@ -975,11 +1025,11 @@ function Contact() {
 function Field({ label, name, placeholder, required = false }) {
   return (
     <label className="block">
-      <span className="text-sm font-bold text-ink">{label}</span>
+      <span className="text-xs font-bold uppercase tracking-[0.08em] text-ink">{label}</span>
       <input
         name={name}
         required={required}
-        className="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-canvas px-4 text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
+        className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-canvas px-3 text-sm text-ink outline-none transition focus:border-electric focus:ring-4 focus:ring-electric/15"
         placeholder={placeholder}
       />
     </label>
@@ -987,11 +1037,11 @@ function Field({ label, name, placeholder, required = false }) {
 }
 
 function ContactLine({ icon: Icon, text, href }) {
-  const className = "flex items-center gap-4 rounded-2xl border border-white/10 bg-white/8 p-4 text-slate-200 transition duration-300 hover:bg-white/12";
+  const className = "flex items-center gap-3 rounded-2xl border border-white/10 bg-white/8 p-3 text-sm text-slate-200 transition duration-300 hover:bg-white/12";
   const content = (
     <>
-      <span className="grid h-10 w-10 place-items-center rounded-xl bg-soft text-ink">
-        <Icon size={18} strokeWidth={1.9} />
+      <span className="grid h-9 w-9 place-items-center rounded-xl bg-soft text-ink">
+        <Icon size={17} strokeWidth={1.9} />
       </span>
       <span className="font-semibold">{text}</span>
     </>

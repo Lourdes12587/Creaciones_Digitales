@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://creaciones-digitales.com/sitemap.xml

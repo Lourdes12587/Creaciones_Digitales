@@ -13,6 +13,13 @@ export default {
         sans: ["Raleway", "Satoshi", "Geist", "ui-sans-serif", "system-ui"],
         display: ["Orbitron", "Satoshi", "Geist", "ui-sans-serif"],
       },
+      opacity: {
+        8: "0.08",
+        12: "0.12",
+        14: "0.14",
+        78: "0.78",
+        86: "0.86",
+      },
       boxShadow: {
         diffusion: "0 28px 80px -30px rgba(15, 23, 42, 0.35)",
         panel: "0 20px 45px -25px rgba(15, 23, 42, 0.28)",

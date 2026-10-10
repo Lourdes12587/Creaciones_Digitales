@@ -10,8 +10,8 @@ import {
   Globe2,
   Instagram,
   Menu,
-  Linkedin,
   Mail,
+  MapPin,
   MessageSquareText,
   MonitorCog,
   Phone,
@@ -26,6 +26,7 @@ import portfolioBlueIsland from "./assets/portfolio-blue-island.png";
 import portfolioYouEyes from "./assets/portfolio-you-eyes.png";
 import portfolioDogDreams from "./assets/portfolio-dogdreams.png";
 import portfolioRestaurant from "./assets/portfolio-restaurante-ecommerce.png";
+import portfolioDelux from "./assets/portfolio-delux.png";
 
 const N8N_WEBHOOK_URL = "https://n8n.creaciones-digitales.com/webhook/formularion8n";
 const WHATSAPP_URL = "https://wa.me/34697955919?text=" + encodeURIComponent("Hola, vengo de la web y quiero información.");
@@ -34,7 +35,7 @@ const services = [
   {
     id: "web-profesional",
     icon: Globe2,
-    title: "Web que capta consultas",
+    title: "Desarrollo web y e-commerce",
     audience: "Negocios que hoy dependen de Instagram o del boca a boca",
     promise: "Una web clara y rápida, pensada para que te escriban",
     items: [
@@ -177,20 +178,40 @@ const portfolioProjects = [
     image: portfolioDogDreams,
   },
   {
-    title: "Pedidos por WhatsApp sin errores de comanda",
+    title: "Tienda online completa, del catálogo al panel de pedidos",
+    category: "Tienda online (e-commerce)",
+    // Pending: public store URL, admin demo URL and the gateway test card.
+    url: "",
+    urlLabel: "Ver la tienda",
+    adminUrl: "",
+    adminLabel: "Entrar al panel de prueba",
+    testCard: "",
+    summary:
+      "E-commerce de moda con todo el recorrido de compra y un panel de administración para gestionar la tienda sin depender de nadie.",
+    tags: [
+      "Catálogo por categorías",
+      "Buscador de productos",
+      "Lista de deseos",
+      "Cuenta de cliente",
+      "Carrito y pago en modo de prueba",
+    ],
+    result: "Haz una compra de principio a fin. El pago está en modo de prueba: no se cobra nada.",
+    image: portfolioDelux,
+  },
+  {
+    title: "Carta digital con pedido online para restaurantes",
     category: "Restaurante",
     url: "https://zappi-app.vercel.app/",
     summary:
-      "Carta para móvil con carrito; cada pedido llega ordenado al local.",
+      "Tienda pensada para móvil: el cliente elige por categorías, añade al carrito y completa su pedido en pocos pasos.",
     tags: [
-      "Catálogo digital optimizado para móviles",
-      "Carrito de compra y proceso de pedido intuitivo",
-      "Pedidos conectados a WhatsApp y correo electrónico",
-      "Gestión organizada de productos y categorías",
-      "Experiencia de compra rápida para aumentar conversiones",
-      "Diseño personalizado adaptado a la identidad del negocio",
+      "Catálogo por categorías",
+      "Carrito de compra",
+      "Proceso de pedido",
+      "Gestión de productos",
+      "Diseño adaptado a la marca",
     ],
-    result: "Añade productos al carrito y envía un pedido de prueba.",
+    result: "Recorre la carta, añade productos al carrito y llega hasta el final del pedido.",
     image: portfolioRestaurant,
   },
 ];
@@ -812,7 +833,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
                 className={`${fieldClassName} cursor-pointer`}
               >
                 <option value="">Elige un servicio</option>
-                <option value="web-profesional">Web que capta consultas</option>
+                <option value="web-profesional">Desarrollo web y e-commerce</option>
                 <option value="agenda-automatica">Agenda automática</option>
                 <option value="automatizaciones">Automatización a medida</option>
                 <option value="app-web">Aplicación a medida</option>
@@ -942,9 +963,6 @@ function PortfolioPage({ navigate }) {
           <h1 className="mt-5 font-display text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-[3.4rem]">
             Sistemas que puedes probar antes de contratar
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            Son proyectos de demostración, no encargos de clientes. Ábrelos, haz una reserva o un pedido de prueba y mira qué pasa después.
-          </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a
               href="#proyectos"
@@ -970,7 +988,7 @@ function PortfolioPage({ navigate }) {
           </div>
         </div>
 
-        <div id="proyectos" className="mt-12 grid scroll-mt-24 gap-6">
+        <div id="proyectos" className="mx-auto mt-12 grid max-w-6xl scroll-mt-24 gap-5">
           {portfolioProjects.map((project) => (
             <PortfolioCard key={project.title} project={project} />
           ))}
@@ -985,40 +1003,57 @@ function PortfolioCard({ project }) {
   return (
     <article
       data-reveal
-      className="grid gap-0 overflow-hidden rounded-[2rem] border border-white/10 bg-white text-ink shadow-diffusion lg:grid-cols-[0.68fr_1.32fr]"
+      className="grid gap-0 overflow-hidden rounded-[1.5rem] border border-white/10 bg-white text-ink shadow-diffusion lg:grid-cols-[0.9fr_1.1fr]"
     >
-      <div className="flex flex-col justify-between p-5 sm:p-6 lg:p-7">
+      <div className="flex flex-col justify-between p-5 sm:p-6">
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-lg bg-electric/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-electric">
               {project.category}
             </span>
           </div>
-          <h2 className="mt-4 font-display text-2xl font-black leading-tight tracking-tight text-ink sm:text-3xl">
+          <h2 className="mt-3 font-display text-xl font-black leading-tight tracking-tight text-ink sm:text-2xl">
             {project.title}
           </h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600">{project.summary}</p>
-          <div className="mt-5 grid gap-2">
+          <p className="mt-2 text-sm leading-6 text-slate-600">{project.summary}</p>
+          <div className="mt-4 flex flex-wrap gap-1.5">
             {project.tags.map((tag) => (
-              <span key={tag} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-canvas px-3 py-2 text-xs font-bold text-slate-700">
-                <Check size={14} strokeWidth={2} className="shrink-0 text-electric" />
+              <span key={tag} className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-canvas px-2.5 py-1 text-[11px] font-bold text-slate-700">
+                <Check size={12} strokeWidth={2.2} className="shrink-0 text-electric" />
                 {tag}
               </span>
             ))}
           </div>
         </div>
-        <div className="mt-6 rounded-2xl bg-ink p-4 text-white">
+        <div className="mt-5 rounded-2xl bg-ink p-4 text-white">
           <p className="text-[10px] font-black uppercase tracking-[0.16em] text-soft">Qué puedes probar</p>
           <p className="mt-2 text-xs leading-5 text-slate-300">{project.result}</p>
-          <a
-            href={project.url}
-            target={project.url.startsWith("http") ? "_blank" : undefined}
-            rel={project.url.startsWith("http") ? "noreferrer" : undefined}
-            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-electric px-4 py-3 text-xs font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]"
-          >
-            {project.urlLabel || "Ver proyecto"}
-            <ArrowRight size={16} strokeWidth={1.9} />
-          </a>
+          {project.testCard && (
+            <p className="mt-3 rounded-lg border border-white/10 bg-white/8 px-3 py-2 text-xs leading-5 text-slate-200">
+              <span className="font-bold text-soft">Tarjeta de prueba:</span> {project.testCard}
+            </p>
+          )}
+          {project.url && (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-electric px-4 py-3 text-xs font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]"
+            >
+              {project.urlLabel || "Ver proyecto"}
+              <ArrowRight size={16} strokeWidth={1.9} />
+            </a>
+          )}
+          {project.adminUrl && (
+            <a
+              href={project.adminUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 px-4 py-3 text-xs font-bold text-white transition duration-300 hover:bg-white/10"
+            >
+              {project.adminLabel}
+            </a>
+          )}
         </div>
       </div>
       <PortfolioPreview image={project.image} title={project.title} />
@@ -1028,11 +1063,11 @@ function PortfolioCard({ project }) {
 
 function PortfolioPreview({ image, title }) {
   return (
-    <div className="relative aspect-[16/10] overflow-hidden bg-slate-950 lg:aspect-auto lg:min-h-[420px]">
+    <div className="flex items-center justify-center bg-slate-950 p-5 sm:p-8">
       <img
         src={image}
         alt={`Captura del proyecto: ${title}`}
-        className="absolute inset-0 h-full w-full object-cover object-left-top"
+        className="max-h-[300px] w-auto max-w-full rounded-xl object-contain shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)] ring-1 ring-white/10"
         loading="lazy"
       />
     </div>
@@ -1101,20 +1136,28 @@ function PrivacyPage({ navigate }) {
 }
 
 function Footer({ navigate }) {
-  const footerServices = ["Web profesional", "Agenda automática", "Automatización a medida", "Aplicación web a medida", "Mantenimiento mensual"];
-  const socialLinks = [
-    ["Instagram", Instagram, "https://www.instagram.com/creacionesdigitales_lu/"],
-    ["LinkedIn", Linkedin, "https://www.linkedin.com/"],
+  const footerServices = ["Desarrollo de páginas web", "Tiendas online", "Agenda automática", "Automatización a medida", "Mantenimiento mensual"];
+  const navLinks = [
+    ["Servicios", "#servicios"],
+    ["Portfolio", "/portfolio"],
+    ["Proceso", "#proceso"],
+    ["Contacto", "#contacto"],
   ];
 
   function handleHomeLink(event, href) {
-    if (!navigate) return;
     event.preventDefault();
+    if (href === "/portfolio") {
+      navigate("/portfolio");
+      return;
+    }
     navigate("/");
     window.setTimeout(() => {
       document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
     }, 80);
   }
+
+  const columnTitle = "text-xs font-black uppercase tracking-[0.18em] text-soft";
+  const linkClass = "text-sm text-slate-300 transition duration-300 hover:text-white";
 
   return (
     <footer className="relative overflow-hidden bg-ink px-4 pt-14 text-white sm:px-6 lg:px-8">
@@ -1123,9 +1166,9 @@ function Footer({ navigate }) {
       <div className="absolute -right-28 top-10 h-56 w-56 rounded-full bg-electric/14 blur-3xl" />
       <div className="absolute -bottom-32 left-8 h-56 w-56 rounded-full bg-soft/12 blur-3xl" />
       <div className="relative mx-auto max-w-7xl">
-        <div className="grid gap-10 pb-16 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.9fr_1.05fr_0.8fr] lg:gap-16">
+        <div className="grid gap-10 pb-14 pt-2 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:gap-x-20">
           <div className="max-w-sm">
-            <a href="#" className="inline-flex items-center gap-3">
+            <a href="/" onClick={(event) => handleHomeLink(event, "#contenido")} className="inline-flex items-center gap-3">
               <span className="flex h-14 w-20 shrink-0 overflow-hidden rounded-2xl bg-[#d9d8d5] p-1.5 ring-1 ring-soft/50">
                 <img src={logoCreaciones} alt="" className="h-full w-full object-contain" aria-hidden="true" />
               </span>
@@ -1138,72 +1181,88 @@ function Footer({ navigate }) {
                 </span>
               </span>
             </a>
+            <p className="mt-5 text-sm leading-6 text-slate-400">
+              Webs que captan clientes, agendas que se confirman solas y procesos que dejan de hacerse a mano.
+            </p>
+            <a
+              href="https://www.instagram.com/creacionesdigitales_lu/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram de Creaciones Digitales"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/8 px-3.5 py-2 text-sm font-semibold text-slate-200 transition duration-300 hover:border-soft/60 hover:text-white"
+            >
+              <Instagram size={17} strokeWidth={2} aria-hidden="true" />
+              @creacionesdigitales_lu
+            </a>
           </div>
 
           <div>
-            <p className="text-base font-black text-soft">Servicios</p>
-            <div className="mt-4 grid gap-3">
+            <p className={columnTitle}>Servicios</p>
+            <ul className="mt-4 grid gap-3">
               {footerServices.map((serviceName) => (
-                <a
-                  key={serviceName}
-                  href="#servicios"
-                  onClick={(event) => handleHomeLink(event, "#servicios")}
-                  className="text-base text-slate-300 transition duration-300 hover:text-white"
-                >
-                  {serviceName}
-                </a>
+                <li key={serviceName}>
+                  <a href="/#servicios" onClick={(event) => handleHomeLink(event, "#servicios")} className={linkClass}>
+                    {serviceName}
+                  </a>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           <div>
-            <p className="text-base font-black text-soft">Contacto</p>
-            <div className="mt-4 grid gap-3 text-base text-slate-300">
-              <a href="tel:+34697955919" className="transition duration-300 hover:text-white">
-                +34 697 955 919
-              </a>
-              <a href="mailto:ubedadesarrolloweb@gmail.com" className="break-words transition duration-300 hover:text-white">
-                ubedadesarrolloweb@gmail.com
-              </a>
-              <p>Barcelona · España</p>
-            </div>
+            <p className={columnTitle}>Navegación</p>
+            <ul className="mt-4 grid gap-3">
+              {navLinks.map(([label, href]) => (
+                <li key={label}>
+                  <a href={href === "/portfolio" ? "/#portfolio" : `/${href}`} onClick={(event) => handleHomeLink(event, href)} className={linkClass}>
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div>
-            <p className="text-base font-black text-soft">Seguinos</p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {socialLinks.map(([label, Icon, href]) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="grid h-12 w-12 place-items-center rounded-full bg-soft text-ink shadow-[0_14px_35px_-22px_rgba(99,102,241,0.75)] transition duration-300 hover:-translate-y-0.5 hover:bg-white active:scale-[0.98]"
-                >
-                  <Icon size={19} strokeWidth={2.1} />
+            <p className={columnTitle}>Contacto</p>
+            <ul className="mt-4 grid gap-3 text-sm text-slate-300">
+              <li>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={`${linkClass} inline-flex items-center gap-2.5`}>
+                  <WhatsAppIcon size={16} className="shrink-0 text-soft" />
+                  WhatsApp
                 </a>
-              ))}
-            </div>
+              </li>
+              <li>
+                <a href="tel:+34697955919" className={`${linkClass} inline-flex items-center gap-2.5`}>
+                  <Phone size={16} strokeWidth={1.9} className="shrink-0 text-soft" aria-hidden="true" />
+                  +34 697 955 919
+                </a>
+              </li>
+              <li>
+                <a href="mailto:ubedadesarrolloweb@gmail.com" className={`${linkClass} inline-flex items-center gap-2.5 break-all`}>
+                  <Mail size={16} strokeWidth={1.9} className="shrink-0 text-soft" aria-hidden="true" />
+                  ubedadesarrolloweb@gmail.com
+                </a>
+              </li>
+              <li className="inline-flex items-center gap-2.5">
+                <MapPin size={16} strokeWidth={1.9} className="shrink-0 text-soft" aria-hidden="true" />
+                Barcelona · España
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-white/12 py-5 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
-          <p className="font-semibold">© 2026 Creaciones Digitales. Todos los derechos reservados.</p>
-          <div className="flex flex-wrap gap-4">
-            <a href="#servicios" onClick={(event) => handleHomeLink(event, "#servicios")} className="transition hover:text-soft">Servicios</a>
-            <a href="#contacto" onClick={(event) => handleHomeLink(event, "#contacto")} className="transition hover:text-soft">Contacto</a>
-            <a
-              href="/#privacidad"
-              onClick={(event) => {
-                event.preventDefault();
-                navigate("/privacidad");
-              }}
-              className="transition hover:text-soft"
-            >
-              Privacidad
-            </a>
-          </div>
+        <div className="flex flex-col gap-3 border-t border-white/12 py-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
+          <p className="font-semibold">© {new Date().getFullYear()} Creaciones Digitales. Todos los derechos reservados.</p>
+          <a
+            href="/#privacidad"
+            onClick={(event) => {
+              event.preventDefault();
+              navigate("/privacidad");
+            }}
+            className="transition hover:text-soft"
+          >
+            Política de privacidad
+          </a>
         </div>
       </div>
     </footer>

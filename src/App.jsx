@@ -750,6 +750,14 @@ function Contact({ selectedService, onServiceChange, navigate }) {
     const form = new FormData(formElement);
     const email = String(form.get("email") || "").trim();
 
+    // Honeypot: people never see this field, form-filling bots do. Pretend success and drop it.
+    if (String(form.get("website") || "").trim()) {
+      formElement.reset();
+      onServiceChange("");
+      setStatus("success");
+      return;
+    }
+
     if (!email.includes("@")) {
       setStatus("error");
       return;
@@ -770,6 +778,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
       servicio: String(form.get("servicio") || "").trim(),
       presupuesto: String(form.get("presupuesto") || "").trim(),
       mensaje: String(form.get("mensaje") || "").trim(),
+      website: "",
       origen: "creaciones-digitales-web",
       fecha: new Date().toISOString(),
     };
@@ -813,10 +822,17 @@ function Contact({ selectedService, onServiceChange, navigate }) {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="w-full rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-diffusion sm:p-6">
+        <form onSubmit={handleSubmit} className="relative w-full rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-diffusion sm:p-6">
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Nombre" name="nombre" placeholder="Tu nombre" autoComplete="name" required />
             <Field label="Correo electrónico" name="email" type="email" placeholder="nombre@empresa.com" autoComplete="email" required />
+          </div>
+
+          <div className="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+            <label>
+              No rellenes este campo
+              <input name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </label>
           </div>
 
           <div className="mt-4">

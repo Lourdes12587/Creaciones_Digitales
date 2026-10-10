@@ -132,6 +132,27 @@ const process = [
 
 const portfolioProjects = [
   {
+    title: "Tienda online con carrito, pasarela de pago y envíos",
+    category: "Tienda online (e-commerce)",
+    // Pending: public store URL, admin demo URL and the gateway test card.
+    url: "",
+    urlLabel: "Ver la tienda",
+    adminUrl: "",
+    adminLabel: "Entrar al panel de prueba",
+    testCard: "",
+    summary:
+      "E-commerce de moda con todo el recorrido de compra y un panel de administración para gestionar la tienda sin depender de nadie.",
+    tags: [
+      "Catálogo por categorías",
+      "Buscador de productos",
+      "Lista de deseos",
+      "Cuenta de cliente",
+      "Carrito y pago en modo de prueba",
+    ],
+    result: "Haz una compra de principio a fin. El pago está en modo de prueba: no se cobra nada.",
+    image: portfolioDelux,
+  },
+  {
     title: "Reservas de barco que no se pierden entre mensajes",
     category: "Chárter náutico",
     url: "https://blue-island-boat.vercel.app/",
@@ -176,27 +197,6 @@ const portfolioProjects = [
     ],
     result: "Reserva una visita de prueba.",
     image: portfolioDogDreams,
-  },
-  {
-    title: "Tienda online completa, del catálogo al panel de pedidos",
-    category: "Tienda online (e-commerce)",
-    // Pending: public store URL, admin demo URL and the gateway test card.
-    url: "",
-    urlLabel: "Ver la tienda",
-    adminUrl: "",
-    adminLabel: "Entrar al panel de prueba",
-    testCard: "",
-    summary:
-      "E-commerce de moda con todo el recorrido de compra y un panel de administración para gestionar la tienda sin depender de nadie.",
-    tags: [
-      "Catálogo por categorías",
-      "Buscador de productos",
-      "Lista de deseos",
-      "Cuenta de cliente",
-      "Carrito y pago en modo de prueba",
-    ],
-    result: "Haz una compra de principio a fin. El pago está en modo de prueba: no se cobra nada.",
-    image: portfolioDelux,
   },
   {
     title: "Carta digital con pedido online para restaurantes",
@@ -274,7 +274,7 @@ function App() {
       <Nav route={route} navigate={navigate} />
       <main id="contenido">
         {route === "/portfolio" ? (
-          <PortfolioPage navigate={navigate} />
+          <PortfolioPage />
         ) : route === "/privacidad" ? (
           <PrivacyPage navigate={navigate} />
         ) : (
@@ -962,49 +962,16 @@ function ContactLine({ icon: Icon, text, href }) {
   );
 }
 
-function PortfolioPage({ navigate }) {
-  function goToContact() {
-    navigate("/");
-    window.setTimeout(() => {
-      document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" });
-    }, 80);
-  }
-
+function PortfolioPage() {
   return (
     <section className="relative min-h-[100dvh] bg-ink pt-24 text-white">
       <div className="noise-overlay absolute inset-x-0 top-0 h-[520px] opacity-80" />
       <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
-        <div data-reveal className="max-w-5xl">
-          <p className="text-sm font-black uppercase tracking-[0.18em] text-soft">Portfolio</p>
-          <h1 className="mt-5 font-display text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-[3.4rem]">
-            Sistemas que puedes probar antes de contratar
-          </h1>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a
-              href="#proyectos"
-              onClick={(event) => {
-                event.preventDefault();
-                document.querySelector("#proyectos")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="inline-flex items-center justify-center gap-3 rounded-xl bg-electric px-6 py-4 font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]"
-            >
-              Ver proyectos
-              <ArrowRight size={18} strokeWidth={1.9} />
-            </a>
-            <a
-              href="/#contacto"
-              onClick={(event) => {
-                event.preventDefault();
-                goToContact();
-              }}
-              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/8 px-6 py-4 font-bold text-white glass-edge transition duration-300 hover:-translate-y-0.5 hover:bg-white/15 active:scale-[0.98]"
-            >
-              Pedir auditoría gratis
-            </a>
-          </div>
+        <div data-reveal className="mx-auto max-w-6xl">
+          <h1 className="text-sm font-black uppercase tracking-[0.18em] text-soft">Portfolio</h1>
         </div>
 
-        <div id="proyectos" className="mx-auto mt-12 grid max-w-6xl scroll-mt-24 gap-5">
+        <div id="proyectos" className="mx-auto mt-8 grid max-w-6xl scroll-mt-24 gap-5">
           {portfolioProjects.map((project) => (
             <PortfolioCard key={project.title} project={project} />
           ))}

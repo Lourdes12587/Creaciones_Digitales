@@ -227,7 +227,6 @@ const portfolioProjects = [
       "Cuenta de cliente",
       "Carrito y pago en modo de prueba",
     ],
-    result: "Haz una compra de principio a fin. El pago está en modo de prueba: no se cobra nada.",
     image: portfolioDelux,
     name: "DE LUX",
     webType: "Tienda online",
@@ -634,7 +633,7 @@ function ServiceAreas({ navigate }) {
     {
       icon: Workflow,
       title: "Automatizaciones",
-      text: "Flujos con n8n que conectan tu web, correo, hojas de cálculo, CRM y WhatsApp para que las tareas repetitivas se hagan solas.",
+      text: "Flujos que conectan tu web, correo, hojas de cálculo, CRM y WhatsApp para que las tareas repetitivas se hagan solas.",
       tags: ["Formularios conectados", "Agenda automática", "Recordatorios por WhatsApp", "Procesos a medida"],
       href: "/servicios/automatizacion-a-medida",
     },
@@ -1425,9 +1424,14 @@ function PortfolioPage() {
                 ))}
               </div>
             </div>
+            {(project.result || project.url) && (
             <div className="h-fit rounded-2xl bg-ink p-6 text-white">
-              <p className="text-[11px] font-black uppercase tracking-[0.16em] text-soft">Qué puedes probar</p>
-              <p className="mt-2 leading-7 text-slate-200">{project.result}</p>
+              {project.result && (
+                <>
+                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-soft">Qué puedes probar</p>
+                  <p className="mt-2 leading-7 text-slate-200">{project.result}</p>
+                </>
+              )}
               {project.testCard && (
                 <p className="mt-3 rounded-lg border border-white/10 bg-white/8 px-3 py-2 text-sm leading-6 text-slate-200">
                   <span className="font-bold text-soft">Tarjeta de prueba:</span> {project.testCard}
@@ -1455,6 +1459,7 @@ function PortfolioPage() {
                 </a>
               )}
             </div>
+            )}
           </article>
         ))}
       </div>

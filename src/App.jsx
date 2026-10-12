@@ -13,15 +13,14 @@ import {
   Mail,
   MapPin,
   MessageSquareText,
-  MonitorCog,
   Phone,
   Repeat2,
   ShieldCheck,
   Sparkles,
   X,
 } from "lucide-react";
-import logoCreaciones from "./assets/logo-creaciones-digitales.png";
-import logoNavbar from "./assets/logo-creaciones-navbar.png";
+import logoCreaciones from "./assets/logo-creaciones-digitales.webp";
+import logoNavbar from "./assets/logo-creaciones-navbar.webp";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.png";
 import portfolioYouEyes from "./assets/portfolio-you-eyes.png";
 import portfolioDogDreams from "./assets/portfolio-dogdreams.png";
@@ -216,39 +215,49 @@ const portfolioProjects = [
   },
 ];
 
-function App() {
+export const PAGE_TITLES = {
+  "/": "Webs y automatizaciones en Barcelona | Creaciones Digitales",
+  "/portfolio": "Portfolio de webs y tiendas online | Creaciones Digitales",
+  "/privacidad": "Política de privacidad | Creaciones Digitales",
+  404: "Página no encontrada | Creaciones Digitales",
+};
+
+export function normalizePath(pathname) {
+  return pathname.replace(/\/+$/, "") || "/";
+}
+
+function getCurrentRoute() {
+  return normalizePath(window.location.pathname);
+}
+
+function App({ initialRoute }) {
   const rootRef = useRef(null);
-  const hashRoutes = { "#portfolio": "/portfolio", "#privacidad": "/privacidad" };
-  const getCurrentRoute = () => hashRoutes[window.location.hash] || window.location.pathname;
-  const [route, setRoute] = useState(getCurrentRoute);
+  const [route, setRoute] = useState(() => initialRoute ?? getCurrentRoute());
   const [selectedService, setSelectedService] = useState("");
 
   function navigate(path) {
-    const nextUrl = path === "/" ? "/" : `/#${path.slice(1)}`;
-    window.history.pushState({}, "", nextUrl);
+    window.history.pushState({}, "", path);
     setRoute(path);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   useEffect(() => {
+    document.title = PAGE_TITLES[route] || PAGE_TITLES[404];
+  }, [route]);
+
+  useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
 
     const ctx = gsap.context(() => {
-      gsap.from("[data-reveal]", {
+      const revealTargets = gsap.utils.toArray("[data-reveal]");
+      if (!revealTargets.length) return;
+
+      gsap.from(revealTargets, {
         y: 28,
         opacity: 0,
         duration: 0.9,
         ease: "power3.out",
         stagger: 0.08,
-      });
-
-      gsap.to("[data-float]", {
-        y: -14,
-        duration: 2.8,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.18,
       });
     }, rootRef);
 
@@ -261,11 +270,7 @@ function App() {
     }
 
     window.addEventListener("popstate", handlePopState);
-    window.addEventListener("hashchange", handlePopState);
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-      window.removeEventListener("hashchange", handlePopState);
-    };
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
   return (
@@ -277,6 +282,8 @@ function App() {
           <PortfolioPage />
         ) : route === "/privacidad" ? (
           <PrivacyPage navigate={navigate} />
+        ) : route !== "/" ? (
+          <NotFoundPage navigate={navigate} />
         ) : (
           <>
             <Hero navigate={navigate} />
@@ -329,7 +336,7 @@ function Nav({ route, navigate }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const links = [
     ["Servicios", "#servicios"],
-    ["Portfolio", "/#portfolio"],
+    ["Portfolio", "/portfolio"],
     ["Proceso", "#proceso"],
     ["Contacto", "#contacto"],
   ];
@@ -337,7 +344,7 @@ function Nav({ route, navigate }) {
   function handleNav(event, href) {
     setMenuOpen(false);
 
-    if (href === "/#portfolio") {
+    if (href === "/portfolio") {
       event.preventDefault();
       navigate("/portfolio");
       return;
@@ -353,7 +360,7 @@ function Nav({ route, navigate }) {
   }
 
   function isActive(href) {
-    return href === "/#portfolio" && route === "/portfolio";
+    return href === "/portfolio" && route === "/portfolio";
   }
 
   return (
@@ -370,7 +377,7 @@ function Nav({ route, navigate }) {
           className="flex items-center gap-3 rounded-xl transition duration-300 hover:opacity-90"
         >
           <span className="flex h-11 w-16 shrink-0 overflow-hidden rounded-xl bg-[#d9d8d5] p-1 ring-1 ring-white/15">
-            <img src={logoNavbar} alt="" width="56" height="36" className="h-full w-full object-contain" aria-hidden="true" />
+            <img src={logoNavbar} alt="Creaciones Digitales" width="56" height="45" className="h-full w-full object-contain" />
           </span>
           <span className="leading-none">
             <span className="block font-display text-[0.8rem] font-black uppercase tracking-[0.16em] text-white">Creaciones</span>
@@ -468,7 +475,7 @@ function Hero({ navigate }) {
               <ArrowRight size={18} strokeWidth={1.9} className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </a>
             <a
-              href="/#portfolio"
+              href="/portfolio"
               onClick={(event) => {
                 event.preventDefault();
                 navigate("/portfolio");
@@ -893,7 +900,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
           <p className="mt-3 text-center text-xs leading-5 text-slate-500">
             Te respondo en menos de 24 horas laborables. Al enviar aceptas la{" "}
             <a
-              href="/#privacidad"
+              href="/privacidad"
               onClick={(event) => {
                 event.preventDefault();
                 navigate("/privacidad");
@@ -1057,6 +1064,31 @@ function PortfolioPreview({ image, title }) {
   );
 }
 
+function NotFoundPage({ navigate }) {
+  return (
+    <section className="bg-canvas px-4 pb-24 pt-40 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-2xl text-center">
+        <p className="text-sm font-black uppercase tracking-[0.18em] text-electric">Error 404</p>
+        <h1 className="mt-4 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
+          Esta página no existe
+        </h1>
+        <p className="mt-4 text-base leading-7 text-slate-600">Puede que el enlace esté mal escrito o que la página se haya movido.</p>
+        <a
+          href="/"
+          onClick={(event) => {
+            event.preventDefault();
+            navigate("/");
+          }}
+          className="mt-8 inline-flex items-center justify-center gap-3 rounded-xl bg-electric px-6 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-ink"
+        >
+          Volver al inicio
+          <ArrowRight size={18} strokeWidth={1.9} aria-hidden="true" />
+        </a>
+      </div>
+    </section>
+  );
+}
+
 function PrivacyPage({ navigate }) {
   const sections = [
     [
@@ -1153,7 +1185,7 @@ function Footer({ navigate }) {
           <div className="max-w-sm">
             <a href="/" onClick={(event) => handleHomeLink(event, "#contenido")} className="inline-flex items-center gap-3">
               <span className="flex h-14 w-20 shrink-0 overflow-hidden rounded-2xl bg-[#d9d8d5] p-1.5 ring-1 ring-soft/50">
-                <img src={logoCreaciones} alt="" className="h-full w-full object-contain" aria-hidden="true" />
+                <img src={logoCreaciones} alt="Creaciones Digitales" width="68" height="44" className="h-full w-full object-contain" />
               </span>
               <span>
                 <span className="block font-display text-base font-black leading-none text-white">
@@ -1197,7 +1229,7 @@ function Footer({ navigate }) {
             <ul className="mt-4 grid gap-3">
               {navLinks.map(([label, href]) => (
                 <li key={label}>
-                  <a href={href === "/portfolio" ? "/#portfolio" : `/${href}`} onClick={(event) => handleHomeLink(event, href)} className={linkClass}>
+                  <a href={href === "/portfolio" ? "/portfolio" : `/${href}`} onClick={(event) => handleHomeLink(event, href)} className={linkClass}>
                     {label}
                   </a>
                 </li>
@@ -1237,7 +1269,7 @@ function Footer({ navigate }) {
         <div className="flex flex-col gap-3 border-t border-white/12 py-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
           <p className="font-semibold">© {new Date().getFullYear()} Creaciones Digitales. Todos los derechos reservados.</p>
           <a
-            href="/#privacidad"
+            href="/privacidad"
             onClick={(event) => {
               event.preventDefault();
               navigate("/privacidad");

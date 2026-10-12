@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://creaciones-digitales.com/sitemap.xml
+Sitemap: https://www.creaciones-digitales.com/sitemap.xml

@@ -5,9 +5,11 @@ export default {
     extend: {
       colors: {
         ink: "#0F172A",
-        electric: "#6366F1",
-        soft: "#A5B4FC",
-        canvas: "#F8FAFC",
+        electric: "#8B6CFF",
+        soft: "#C4B5FD",
+        canvas: "#111A2E",
+        surface: "#18233D",
+        accent: "#FF2E7E",
       },
       fontFamily: {
         sans: ["Raleway", "Satoshi", "Geist", "ui-sans-serif", "system-ui"],
@@ -21,8 +23,8 @@ export default {
         86: "0.86",
       },
       boxShadow: {
-        diffusion: "0 28px 80px -30px rgba(15, 23, 42, 0.35)",
-        panel: "0 20px 45px -25px rgba(15, 23, 42, 0.28)",
+        diffusion: "0 28px 80px -30px rgba(0, 0, 0, 0.75)",
+        panel: "0 20px 45px -25px rgba(0, 0, 0, 0.6)",
       },
     },
   },

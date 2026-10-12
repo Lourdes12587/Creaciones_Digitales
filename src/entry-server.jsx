@@ -1,8 +1,8 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
-import App, { PAGE_TITLES } from "./App.jsx";
+import App, { PAGE_TITLES, SITE_PAGES } from "./App.jsx";
 
-export { PAGE_TITLES };
+export { PAGE_TITLES, SITE_PAGES };
 
 export function render(route) {
   return renderToString(

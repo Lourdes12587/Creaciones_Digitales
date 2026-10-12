@@ -5,6 +5,7 @@ import {
   Bot,
   CalendarCheck,
   Check,
+  ChevronDown,
   Code2,
   DatabaseZap,
   Globe2,
@@ -16,16 +17,24 @@ import {
   Phone,
   Repeat2,
   ShieldCheck,
-  Sparkles,
+  Workflow,
   X,
 } from "lucide-react";
 import logoCreaciones from "./assets/logo-creaciones-digitales.webp";
 import logoNavbar from "./assets/logo-creaciones-navbar.webp";
-import portfolioBlueIsland from "./assets/portfolio-blue-island.png";
-import portfolioYouEyes from "./assets/portfolio-you-eyes.png";
-import portfolioDogDreams from "./assets/portfolio-dogdreams.png";
-import portfolioRestaurant from "./assets/portfolio-restaurante-ecommerce.png";
-import portfolioDelux from "./assets/portfolio-delux.png";
+import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
+import portfolioBlueIslandTablet from "./assets/portfolio-blue-island-tablet.webp";
+import portfolioBlueIslandMobile from "./assets/portfolio-blue-island-mobile.webp";
+import portfolioYouEyes from "./assets/portfolio-you-eyes.webp";
+import portfolioYouEyesTablet from "./assets/portfolio-you-eyes-tablet.webp";
+import portfolioYouEyesMobile from "./assets/portfolio-you-eyes-mobile.webp";
+import portfolioDogDreams from "./assets/portfolio-dogdreams.webp";
+import portfolioDogDreamsTablet from "./assets/portfolio-dogdreams-tablet.webp";
+import portfolioDogDreamsMobile from "./assets/portfolio-dogdreams-mobile.webp";
+import portfolioRestaurant from "./assets/portfolio-restaurante-ecommerce.webp";
+import portfolioRestaurantTablet from "./assets/portfolio-restaurante-tablet.webp";
+import portfolioRestaurantMobile from "./assets/portfolio-restaurante-mobile.webp";
+import portfolioDelux from "./assets/portfolio-delux.webp";
 
 const N8N_WEBHOOK_URL = "https://n8n.creaciones-digitales.com/webhook/formularion8n";
 const WHATSAPP_URL = "https://wa.me/34697955919?text=" + encodeURIComponent("Hola, vengo de la web y quiero información.");
@@ -34,7 +43,7 @@ const services = [
   {
     id: "web-profesional",
     icon: Globe2,
-    title: "Desarrollo web y e-commerce",
+    title: "Desarrollo web",
     audience: "Negocios que hoy dependen de Instagram o del boca a boca",
     promise: "Una web clara y rápida, pensada para que te escriban",
     items: [
@@ -47,6 +56,43 @@ const services = [
     price: "Desde 550 €",
     offer: "Oferta de lanzamiento",
     cta: "Quiero mi web",
+    slug: "desarrollo-web-ecommerce",
+    webTypes: [
+      {
+        group: "Para presentarte",
+        items: [
+          ["Landing pages", "Páginas de destino con un diseño enfocado en la conversión: su meta es que el usuario haga una acción concreta, como rellenar un formulario o comprar una oferta."],
+          ["Micrositios", "Sitios web pequeños y específicos para promocionar un producto, un evento o una campaña en particular."],
+          ["Páginas corporativas e institucionales", "La tarjeta de presentación digital de empresas, marcas u organizaciones: sus servicios, misión, valores y datos de contacto."],
+          ["Portafolios online", "Para creativos, artistas y profesionales independientes que quieren mostrar ejemplos visuales de su trabajo."],
+        ],
+      },
+      {
+        group: "Para publicar y vender",
+        items: [
+          ["Blogs y revistas digitales", "Contenido editorial, artículos o noticias publicados de forma periódica para atraer tráfico e interactuar con una comunidad."],
+          ["Tiendas online (e-commerce)", "Para vender productos físicos o digitales por internet, con carrito de compra y pasarela de pago."],
+        ],
+      },
+      {
+        group: "Plataformas a medida",
+        items: [
+          ["Aplicaciones web y plataformas SaaS", "Software o servicios en línea a los que los usuarios acceden mediante registro o suscripción."],
+        ],
+      },
+    ],
+    pageTitle: "Desarrollo web",
+    metaTitle: "Desarrollo web y tiendas online | Creaciones Digitales",
+    metaDescription:
+      "Webs rápidas y tiendas online pensadas para que te escriban y te compren, con formulario y WhatsApp conectados y listas para Google. Webs desde 550 €, en 3 días.",
+    problem:
+      "Si tu negocio vive solo en Instagram o en el boca a boca, cada persona que te busca en Google acaba en la web de otro. Una página clara, rápida y conectada a tu WhatsApp convierte esas búsquedas en consultas.",
+    faqs: [
+      ["¿Qué necesito tener preparado?", "Tu logo, una idea de lo que quieres contar y fotos si las tienes. El diseño y los textos están incluidos: los adaptamos juntos."],
+      ["¿Podré actualizarla yo?", "Sí. Te enseño a cambiar textos, fotos y precios para que no dependas de nadie en el día a día."],
+      ["¿También haces tiendas online?", "Sí: catálogo, carrito, pasarela de pago y envíos. El precio depende del número de productos y de la pasarela, así que te envío un presupuesto cerrado en 48 horas."],
+      ["¿Qué pasa después de la entrega?", "Tienes 30 días de soporte incluidos. Después puedes contratar el mantenimiento mensual desde 49 € al mes."],
+    ],
   },
   {
     id: "agenda-automatica",
@@ -64,6 +110,19 @@ const services = [
     price: "Desde 390 €",
     offer: "Oferta de lanzamiento",
     cta: "Quiero la agenda",
+    slug: "agenda-automatica",
+    pageTitle: "Agenda automática con recordatorios por WhatsApp",
+    metaTitle: "Agenda automática con WhatsApp | Creaciones Digitales",
+    metaDescription:
+      "Tus clientes reservan online, reciben la confirmación al instante y un recordatorio por WhatsApp 24 horas antes. Para clínicas, centros de estética y veterinarias. Desde 390 €.",
+    problem:
+      "Cada cita que se olvida es un hueco que no se cobra, y cada llamada para confirmar es tiempo que no dedicas a tus clientes. La agenda automática confirma, recuerda y ayuda a cubrir cancelaciones sin que nadie tenga que coger el teléfono.",
+    faqs: [
+      ["¿Funciona con la agenda que ya uso?", "Depende de la herramienta. En la auditoría gratuita reviso cómo gestionas hoy las citas y te digo si conviene conectarla con lo que ya usas o montarla desde cero."],
+      ["¿Cómo llegan los recordatorios?", "Por WhatsApp, 24 horas antes de cada cita."],
+      ["¿Qué pasa si un cliente cancela?", "La lista de espera sirve para ofrecer ese hueco a otra persona y que no se quede vacío."],
+      ["¿Cuánto tarda en estar lista?", "Unos 5 días desde que cerramos la propuesta, con 30 días de soporte incluidos."],
+    ],
     featured: "Recomendado para empezar",
   },
   {
@@ -82,6 +141,18 @@ const services = [
     price: "Desde 390 €",
     offer: "Oferta de lanzamiento",
     cta: "Quiero automatizar",
+    slug: "automatizacion-a-medida",
+    pageTitle: "Automatizaciones",
+    metaTitle: "Automatización de procesos con n8n | Creaciones Digitales",
+    metaDescription:
+      "Convierto tareas repetitivas en flujos automáticos que conectan correo, hojas de cálculo, CRM y WhatsApp. Con pruebas, documentación y 30 días de soporte. Desde 390 €.",
+    problem:
+      "Copiar datos de un sitio a otro, mandar los mismos correos o pasar pedidos a una hoja de cálculo se come horas cada semana. Una automatización hace ese trabajo sola, sin errores y a cualquier hora.",
+    faqs: [
+      ["¿Con qué herramientas trabajas?", "Con n8n, conectando lo que ya usáis: correo, hojas de cálculo, CRM y WhatsApp. No hace falta que cambiéis vuestras herramientas."],
+      ["¿Por dónde empezamos?", "Por la tarea que más horas os quita. En la auditoría gratuita de 30 minutos detectamos las tres que más compensa automatizar."],
+      ["¿Qué pasa si algo deja de funcionar?", "Entrego cada flujo probado y documentado, con 30 días de soporte. Después puedes contratar el mantenimiento mensual desde 49 € al mes."],
+    ],
   },
 ];
 
@@ -100,6 +171,14 @@ const extraServices = [
     text: "Actualizaciones, vigilancia de tus automatizaciones, 2 horas de mejoras y respuesta en 24–48 horas. Desde 49 € al mes.",
     cta: "Me interesa",
   },
+];
+
+const homeFaqs = [
+  ["¿Cuánto cuesta?", "La agenda automática y la automatización a medida empiezan en 390 €, y la web en 550 €, con precios de lanzamiento. Tras la auditoría gratuita te envío un presupuesto cerrado en 48 horas."],
+  ["¿Cuánto tarda?", "Una web, unos 3 días; la agenda automática, 5 días; una automatización a medida, 1 o 2 semanas."],
+  ["¿Qué pasa después de la entrega?", "Tienes 30 días de soporte incluidos. Después puedes seguir con el mantenimiento mensual desde 49 € al mes o continuar por tu cuenta con la documentación."],
+  ["¿Tengo que cambiar mis herramientas?", "No necesariamente. Primero reviso lo que ya usas y conecto el sistema con WhatsApp, correo, formularios, hojas de cálculo o CRM cuando sea posible."],
+  ["¿Puedo empezar con algo pequeño?", "Sí. La mejor entrada suele ser una agenda, un formulario conectado o un seguimiento automático que resuelva una tarea muy concreta."],
 ];
 
 const process = [
@@ -150,6 +229,8 @@ const portfolioProjects = [
     ],
     result: "Haz una compra de principio a fin. El pago está en modo de prueba: no se cobra nada.",
     image: portfolioDelux,
+    name: "DE LUX",
+    webType: "Tienda online",
   },
   {
     title: "Reservas de barco que no se pierden entre mensajes",
@@ -166,6 +247,10 @@ const portfolioProjects = [
     ],
     result: "Configura una salida y pide presupuesto.",
     image: portfolioBlueIsland,
+    tablet: portfolioBlueIslandTablet,
+    mobile: portfolioBlueIslandMobile,
+    name: "Blue Island Boats",
+    webType: "Web de reservas",
   },
   {
     title: "Web de noticias a medida, rápida y fácil de ampliar",
@@ -181,6 +266,10 @@ const portfolioProjects = [
     ],
     result: "Navega por secciones y abre una noticia.",
     image: portfolioYouEyes,
+    tablet: portfolioYouEyesTablet,
+    mobile: portfolioYouEyesMobile,
+    name: "You Eyes",
+    webType: "Medio digital",
   },
   {
     title: "Citas confirmadas sin llamar a nadie",
@@ -196,6 +285,10 @@ const portfolioProjects = [
     ],
     result: "Reserva una visita de prueba.",
     image: portfolioDogDreams,
+    tablet: portfolioDogDreamsTablet,
+    mobile: portfolioDogDreamsMobile,
+    name: "DogDreams",
+    webType: "Web para negocio con cita previa",
   },
   {
     title: "Carta digital con pedido online para restaurantes",
@@ -212,13 +305,40 @@ const portfolioProjects = [
     ],
     result: "Recorre la carta, añade productos al carrito y llega hasta el final del pedido.",
     image: portfolioRestaurant,
+    tablet: portfolioRestaurantTablet,
+    mobile: portfolioRestaurantMobile,
+    name: "Carta de restaurante",
+    webType: "Carta digital con pedidos",
+  },
+];
+
+export function servicePath(service) {
+  return `/servicios/${service.slug}`;
+}
+
+export const SITE_PAGES = [
+  {
+    route: "/",
+    title: "Webs y automatizaciones en Barcelona | Creaciones Digitales",
+    description:
+      "Webs que captan clientes, agendas automáticas con recordatorios por WhatsApp y automatización de procesos para negocios. Auditoría gratuita de 30 minutos. Desde 390 €.",
+  },
+  ...services.map((service) => ({ route: servicePath(service), title: service.metaTitle, description: service.metaDescription })),
+  {
+    route: "/portfolio",
+    title: "Portfolio de webs y tiendas online | Creaciones Digitales",
+    description:
+      "Proyectos de Creaciones Digitales: tiendas online, webs de reservas, agendas automáticas y webs a medida en React que puedes abrir y probar.",
+  },
+  {
+    route: "/privacidad",
+    title: "Política de privacidad | Creaciones Digitales",
+    description: "Cómo trata Creaciones Digitales los datos que envías a través del formulario de contacto, WhatsApp o correo.",
   },
 ];
 
 export const PAGE_TITLES = {
-  "/": "Webs y automatizaciones en Barcelona | Creaciones Digitales",
-  "/portfolio": "Portfolio de webs y tiendas online | Creaciones Digitales",
-  "/privacidad": "Política de privacidad | Creaciones Digitales",
+  ...Object.fromEntries(SITE_PAGES.map((page) => [page.route, page.title])),
   404: "Página no encontrada | Creaciones Digitales",
 };
 
@@ -235,10 +355,20 @@ function App({ initialRoute }) {
   const [route, setRoute] = useState(() => initialRoute ?? getCurrentRoute());
   const [selectedService, setSelectedService] = useState("");
 
+  const currentService = services.find((service) => servicePath(service) === route);
+
   function navigate(path) {
     window.history.pushState({}, "", path);
     setRoute(path);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function chooseService(id) {
+    setSelectedService(id);
+    if (route !== "/") navigate("/");
+    window.setTimeout(() => {
+      document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" });
+    }, 80);
   }
 
   useEffect(() => {
@@ -274,7 +404,7 @@ function App({ initialRoute }) {
   }, []);
 
   return (
-    <div ref={rootRef} className="min-h-[100dvh] overflow-hidden bg-canvas text-ink">
+    <div ref={rootRef} className="min-h-[100dvh] overflow-hidden text-white">
       <SkipLink />
       <Nav route={route} navigate={navigate} />
       <main id="contenido">
@@ -282,13 +412,17 @@ function App({ initialRoute }) {
           <PortfolioPage />
         ) : route === "/privacidad" ? (
           <PrivacyPage navigate={navigate} />
+        ) : currentService ? (
+          <ServicePage service={currentService} navigate={navigate} onChooseService={chooseService} />
         ) : route !== "/" ? (
           <NotFoundPage navigate={navigate} />
         ) : (
           <>
-            <Hero navigate={navigate} />
-            <Services onChooseService={setSelectedService} />
+            <Hero />
+            <ServiceAreas navigate={navigate} />
+            <Services onChooseService={setSelectedService} navigate={navigate} />
             <Process />
+            <FaqSection items={homeFaqs} />
             <Contact selectedService={selectedService} onServiceChange={setSelectedService} navigate={navigate} />
           </>
         )}
@@ -364,7 +498,7 @@ function Nav({ route, navigate }) {
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-30 border-b border-white/10 bg-ink/86 text-white backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-30 border-b border-white/15 bg-ink/70 text-white backdrop-blur-xl">
       <nav aria-label="Principal" className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <a
           href="/"
@@ -392,8 +526,8 @@ function Nav({ route, navigate }) {
               href={href}
               onClick={(event) => handleNav(event, href)}
               aria-current={isActive(href) ? "page" : undefined}
-              className={`rounded-lg px-4 py-2 text-sm font-semibold transition duration-300 hover:bg-white/10 hover:text-white ${
-                isActive(href) ? "bg-white/10 text-white" : "text-slate-300"
+              className={`rounded-full px-4 py-2 text-sm font-medium transition duration-300 hover:bg-white/10 hover:text-white ${
+                isActive(href) ? "bg-white/10 text-white ring-1 ring-white/25" : "text-white/75"
               }`}
             >
               {label}
@@ -405,7 +539,7 @@ function Nav({ route, navigate }) {
           <a
             href="#contacto"
             onClick={(event) => handleNav(event, "#contacto")}
-            className="hidden rounded-xl bg-electric px-5 py-2.5 text-sm font-bold text-white shadow-[0_12px_30px_-12px_rgba(99,102,241,0.9)] transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98] sm:inline-flex"
+            className="hidden rounded-full bg-soft px-5 py-2.5 text-sm font-bold text-ink shadow-[0_12px_30px_-12px_rgba(165,180,252,0.8)] transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98] sm:inline-flex"
           >
             Presupuesto
           </a>
@@ -438,7 +572,7 @@ function Nav({ route, navigate }) {
             <a
               href="#contacto"
               onClick={(event) => handleNav(event, "#contacto")}
-              className="mt-2 inline-flex justify-center rounded-xl bg-electric px-5 py-3 text-sm font-bold text-white sm:hidden"
+              className="mt-2 inline-flex justify-center rounded-full bg-soft px-5 py-3 text-sm font-bold text-ink sm:hidden"
             >
               Presupuesto
             </a>
@@ -449,40 +583,29 @@ function Nav({ route, navigate }) {
   );
 }
 
-function Hero({ navigate }) {
+function Hero() {
   const promises = ["Auditoría de 30 minutos gratis", "Presupuesto cerrado en 48 horas", "30 días de soporte incluidos"];
 
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden bg-ink pt-24 text-white">
       <div className="noise-overlay absolute inset-0 opacity-95" />
-      <div className="absolute -right-40 top-24 h-[28rem] w-[28rem] rounded-full bg-electric/20 blur-3xl" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-canvas to-transparent" />
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-4 pb-28 pt-12 sm:px-6 lg:min-h-[calc(92dvh-6rem)] lg:px-8 lg:pb-32">
         <div className="max-w-3xl">
-          <p data-reveal className="mb-7 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/8 px-4 py-2 text-sm font-semibold text-soft glass-edge">
-            <Sparkles size={16} strokeWidth={1.8} aria-hidden="true" />
+          <p data-reveal className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
             Desarrollo web y automatizaciones
           </p>
-          <h1 id="hero-title" data-reveal className="font-display text-4xl font-black leading-[1.02] tracking-tight text-white sm:text-5xl lg:text-[3.6rem]">
-            Sistemas digitales para negocios que ya no quieren operar <span className="text-soft">a mano.</span>
+          <h1 id="hero-title" data-reveal className="font-display text-4xl font-black leading-[1.04] tracking-tight text-white sm:text-5xl lg:text-[3.3rem]">
+            Sistemas digitales para negocios que ya no quieren operar <span className="text-gradient">a mano.</span>
           </h1>
-          <p data-reveal className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+          <p data-reveal className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
             Construyo webs, apps y flujos automáticos que capturan clientes, confirman citas, responden consultas y ordenan procesos repetitivos sin inflar tu equipo.
           </p>
           <div data-reveal className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href="#contacto" className="group inline-flex items-center justify-center gap-3 rounded-xl bg-electric px-6 py-4 font-bold text-white shadow-[0_18px_40px_-14px_rgba(99,102,241,0.9)] transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]">
+            <a href="#contacto" className="group inline-flex items-center justify-center gap-3 rounded-full bg-accent px-6 py-4 font-bold text-white shadow-[0_18px_45px_-12px_rgba(255,46,126,0.65)] transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]">
               Pedir auditoría gratis
               <ArrowRight size={18} strokeWidth={1.9} className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
-            </a>
-            <a
-              href="/portfolio"
-              onClick={(event) => {
-                event.preventDefault();
-                navigate("/portfolio");
-              }}
-              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/8 px-6 py-4 font-bold text-white glass-edge transition duration-300 hover:-translate-y-0.5 hover:bg-white/15 active:scale-[0.98]"
-            >
-              Ver portfolio
             </a>
           </div>
           <ul data-reveal className="mt-9 flex flex-col gap-x-6 gap-y-2 text-sm text-slate-300 sm:flex-row sm:flex-wrap">
@@ -494,24 +617,86 @@ function Hero({ navigate }) {
             ))}
           </ul>
         </div>
-
       </div>
     </section>
   );
 }
 
-function Services({ onChooseService }) {
+function ServiceAreas({ navigate }) {
+  const areas = [
+    {
+      icon: Globe2,
+      title: "Desarrollo web",
+      text: "Todo tipo de webs: desde una página para tu negocio hasta una tienda online o una aplicación a medida.",
+      tags: ["Webs corporativas", "Landing pages", "Tiendas online", "Aplicaciones web"],
+      href: "/servicios/desarrollo-web-ecommerce",
+    },
+    {
+      icon: Workflow,
+      title: "Automatizaciones",
+      text: "Flujos con n8n que conectan tu web, correo, hojas de cálculo, CRM y WhatsApp para que las tareas repetitivas se hagan solas.",
+      tags: ["Formularios conectados", "Agenda automática", "Recordatorios por WhatsApp", "Procesos a medida"],
+      href: "/servicios/automatizacion-a-medida",
+    },
+  ];
+
   return (
-    <section id="servicios" className="px-4 py-20 sm:px-6 lg:px-8">
+    <section id="servicios" className="px-4 pb-4 pt-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
           eyebrow="Servicios"
+          title="Desarrollo web y automatizaciones"
+          text="Dos áreas que funcionan juntas: la web atrae a tus clientes y las automatizaciones se ocupan de lo que viene después."
+        />
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
+          {areas.map(({ icon: Icon, title, text, tags, href }) => (
+            <a
+              key={title}
+              href={href}
+              onClick={(event) => {
+                event.preventDefault();
+                navigate(href);
+              }}
+              className="group flex flex-col rounded-2xl border border-white/10 bg-surface p-6 shadow-panel transition duration-300 hover:-translate-y-1 hover:border-electric/40"
+            >
+              <div className="flex items-center gap-4">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-electric/15 text-electric">
+                  <Icon size={22} strokeWidth={1.8} aria-hidden="true" />
+                </span>
+                <h3 className="font-display text-xl font-black tracking-tight text-white">{title}</h3>
+              </div>
+              <p className="mt-4 text-sm leading-6 text-slate-300">{text}</p>
+              <div className="mb-5 mt-4 flex flex-wrap gap-1.5">
+                {tags.map((tag) => (
+                  <span key={tag} className="rounded-full bg-white/[0.04] px-2.5 py-1 text-xs font-semibold text-slate-200 ring-1 ring-white/10">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <span className="mt-auto inline-flex items-center gap-2 text-sm font-bold text-electric">
+                Ver el servicio
+                <ArrowRight size={16} strokeWidth={1.9} className="transition group-hover:translate-x-1" aria-hidden="true" />
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Services({ onChooseService, navigate }) {
+  return (
+    <section id="paquetes" className="px-4 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <SectionHeader
+          eyebrow="Paquetes"
           title="Tres formas de dejar de hacerlo a mano"
           text="Empieza por lo que más tiempo te quita. Todo se conecta después: la web alimenta la agenda y la agenda envía tus avisos."
         />
         <div className="mt-10 grid gap-4 lg:grid-cols-3">
           {services.map((service) => (
-            <ServiceCard key={service.id} service={service} onChoose={() => onChooseService(service.id)} />
+            <ServiceCard key={service.id} service={service} onChoose={() => onChooseService(service.id)} onOpen={() => navigate(servicePath(service))} />
           ))}
         </div>
         <div className="mt-4 grid gap-3">
@@ -524,18 +709,18 @@ function Services({ onChooseService }) {
   );
 }
 
-function ServiceCard({ service, onChoose }) {
+function ServiceCard({ service, onChoose, onOpen }) {
   const Icon = service.icon;
   const featured = Boolean(service.featured);
 
   return (
     <article
       className={`flex flex-col rounded-2xl border p-5 shadow-panel ${
-        featured ? "border-soft bg-ink text-white" : "border-slate-200 bg-white text-ink"
+        featured ? "border-electric/60 bg-gradient-to-b from-electric/25 via-surface to-surface text-white shadow-[0_0_60px_-20px_rgba(139,108,255,0.7)]" : "border-white/10 bg-surface text-white"
       }`}
     >
       <div className="mb-4 flex items-start justify-between gap-4">
-        <span className={`grid h-10 w-10 place-items-center rounded-xl ${featured ? "bg-soft text-ink" : "bg-electric/10 text-electric"}`}>
+        <span className={`grid h-10 w-10 place-items-center rounded-xl ${featured ? "bg-soft text-ink" : "bg-electric/15 text-electric"}`}>
           <Icon size={21} strokeWidth={1.8} />
         </span>
         {featured && (
@@ -544,20 +729,20 @@ function ServiceCard({ service, onChoose }) {
           </span>
         )}
       </div>
-      <h3 className={`font-display text-xl font-black leading-tight tracking-tight ${featured ? "text-white" : "text-ink"}`}>{service.title}</h3>
+      <h3 className={`font-display text-xl font-black leading-tight tracking-tight ${featured ? "text-white" : "text-white"}`}>{service.title}</h3>
       <p className={`mt-3 text-[11px] font-black uppercase tracking-[0.14em] ${featured ? "text-soft" : "text-electric"}`}>Para quién</p>
-      <p className={`mt-1 text-sm leading-6 ${featured ? "text-slate-300" : "text-slate-600"}`}>{service.audience}</p>
-      <p className={`mt-4 text-base font-bold leading-6 ${featured ? "text-white" : "text-ink"}`}>{service.promise}</p>
+      <p className={`mt-1 text-sm leading-6 ${featured ? "text-slate-300" : "text-slate-300"}`}>{service.audience}</p>
+      <p className={`mt-4 text-base font-bold leading-6 ${featured ? "text-white" : "text-white"}`}>{service.promise}</p>
       <p className={`mt-5 text-[11px] font-black uppercase tracking-[0.14em] ${featured ? "text-soft" : "text-electric"}`}>Incluye</p>
       <ul className="mb-6 mt-2 grid gap-2">
         {service.items.map((item) => (
-          <li key={item} className={`flex items-start gap-2 text-sm leading-5 ${featured ? "text-slate-200" : "text-slate-600"}`}>
+          <li key={item} className={`flex items-start gap-2 text-sm leading-5 ${featured ? "text-slate-200" : "text-slate-300"}`}>
             <Check size={15} strokeWidth={2} className={`mt-0.5 shrink-0 ${featured ? "text-soft" : "text-electric"}`} />
             {item}
           </li>
         ))}
       </ul>
-      <dl className={`mt-auto grid grid-cols-2 gap-3 border-t pt-4 ${featured ? "border-white/10" : "border-slate-200"}`}>
+      <dl className={`mt-auto grid grid-cols-2 gap-3 border-t pt-4 ${featured ? "border-white/10" : "border-white/10"}`}>
         <div>
           <dt className="text-[11px] font-black uppercase tracking-[0.14em] text-slate-400">Plazo</dt>
           <dd className="mt-1 text-sm font-bold">{service.timeline}</dd>
@@ -573,12 +758,22 @@ function ServiceCard({ service, onChoose }) {
       <a
         href="#contacto"
         onClick={onChoose}
-        className={`mt-5 inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition duration-300 hover:-translate-y-0.5 active:scale-[0.98] ${
-          featured ? "bg-soft text-ink hover:bg-white" : "bg-electric text-white hover:bg-ink"
+        className={`mt-5 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition duration-300 hover:-translate-y-0.5 active:scale-[0.98] ${
+          featured ? "bg-accent text-white hover:bg-white hover:text-ink" : "bg-accent text-white hover:bg-ink"
         }`}
       >
         {service.cta}
         <ArrowRight size={18} strokeWidth={1.9} />
+      </a>
+      <a
+        href={servicePath(service)}
+        onClick={(event) => {
+          event.preventDefault();
+          onOpen();
+        }}
+        className={`mt-3 text-center text-sm font-semibold underline underline-offset-4 transition ${featured ? "text-slate-300 hover:text-white" : "text-slate-400 hover:text-ink"}`}
+      >
+        Ver detalles del servicio
       </a>
     </article>
   );
@@ -588,17 +783,17 @@ function ServiceStrip({ service, onChoose }) {
   const Icon = service.icon;
 
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-panel sm:flex-row sm:items-center">
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-electric/10 text-electric">
+    <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-surface px-5 py-4 shadow-panel sm:flex-row sm:items-center">
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-electric/15 text-electric">
         <Icon size={21} strokeWidth={1.8} />
       </span>
-      <p className="flex-1 text-sm leading-6 text-slate-600">
-        <span className="font-bold text-ink">{service.title}</span> {service.text}
+      <p className="flex-1 text-sm leading-6 text-slate-300">
+        <span className="font-bold text-white">{service.title}</span> {service.text}
       </p>
       <a
         href="#contacto"
         onClick={onChoose}
-        className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-bold text-ink transition duration-300 hover:border-electric hover:text-electric"
+        className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm font-bold text-white transition duration-300 hover:border-electric hover:text-electric"
       >
         {service.cta}
         <ArrowRight size={16} strokeWidth={1.9} />
@@ -689,10 +884,10 @@ function AutomationLab() {
 
 function LabTile({ icon: Icon, title, text }) {
   return (
-    <article className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-panel">
+    <article className="rounded-[1.5rem] border border-white/10 bg-surface p-6 shadow-panel">
       <Icon className="text-electric" size={26} strokeWidth={1.8} />
       <h3 className="mt-5 font-display text-xl font-black">{title}</h3>
-      <p className="mt-3 text-slate-600">{text}</p>
+      <p className="mt-3 text-slate-300">{text}</p>
     </article>
   );
 }
@@ -733,18 +928,201 @@ function Process() {
             </li>
           ))}
         </ol>
+      </div>
+    </section>
+  );
+}
 
-        <div className="mt-8 flex justify-center">
-          <a
-            href="#contacto"
-            className="inline-flex items-center justify-center gap-3 rounded-xl bg-electric px-6 py-3 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]"
-          >
-            Empezar por la auditoría gratis
-            <ArrowRight size={18} strokeWidth={1.9} />
-          </a>
+function FaqSection({ items, eyebrow = "Preguntas frecuentes", title = "Lo que suelen preguntarme", id = "preguntas", dark = false, width = "max-w-7xl" }) {
+  return (
+    <section id={id} className={`px-4 py-20 sm:px-6 lg:px-8 ${dark ? "bg-ink text-white" : ""}`}>
+      <div className={`mx-auto grid ${width} grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr]`}>
+        <div data-reveal>
+          <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
+        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+        {eyebrow}
+      </p>
+          <h2 className={`mt-4 font-display text-3xl font-black leading-tight tracking-tight ${dark ? "text-white" : "text-white"}`}>{title}</h2>
+        </div>
+        <div className="space-y-3">
+          {items.map(([question, answer], index) => (
+            <details
+              key={question}
+              open={index === 0}
+              className={`group rounded-2xl border ${dark ? "border-white/10 bg-white/[0.05]" : "border-white/10 bg-white/[0.04]"}`}
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-5 px-6 py-5 font-display font-black [&::-webkit-details-marker]:hidden">
+                <h3 className={`text-base ${dark ? "text-white" : "text-white"}`}>{question}</h3>
+                <ChevronDown className="shrink-0 text-electric transition-transform duration-300 group-open:rotate-180" size={20} strokeWidth={1.8} aria-hidden="true" />
+              </summary>
+              <p className={`px-6 pb-6 leading-7 ${dark ? "text-slate-300" : "text-slate-300"}`}>{answer}</p>
+            </details>
+          ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function WebTypesSection({ groups }) {
+  let counter = 0;
+
+  return (
+    <section id="tipos-de-web" className="px-4 pb-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl">
+        <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
+        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+          Qué tipo de web necesitas
+        </p>
+        <h2 className="mt-4 font-display text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">Tipos de web que desarrollo</h2>
+        <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">
+          De una página sencilla a una plataforma completa. Si no sabes cuál encaja con tu negocio, lo vemos en la auditoría gratuita.
+        </p>
+
+        <div className="mt-10 grid gap-10">
+          {groups.map(({ group, items }) => (
+            <div key={group}>
+              <h3 className="border-b border-ink/15 pb-3 font-display text-lg font-black tracking-tight text-white">{group}</h3>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {items.map(([title, text]) => {
+                  counter += 1;
+                  return (
+                    <article key={title} className="rounded-2xl border border-white/10 bg-surface p-5 shadow-panel">
+                      <p className="font-display text-sm font-black text-electric">{String(counter).padStart(2, "0")}</p>
+                      <h4 className="mt-2 text-lg font-bold leading-snug text-white">{title}</h4>
+                      <p className="mt-2 text-sm leading-6 text-slate-300">{text}</p>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ServicePage({ service, navigate, onChooseService }) {
+  const Icon = service.icon;
+  const otherServices = services.filter((other) => other.id !== service.id);
+
+  return (
+    <>
+      <section className="relative overflow-hidden bg-ink px-4 pb-20 pt-32 text-white sm:px-6 lg:px-8">
+        <div className="noise-overlay absolute inset-0 opacity-90" />
+        <div className="relative mx-auto max-w-6xl">
+          <nav aria-label="Ruta" className="text-sm text-slate-400">
+            <a
+              href="/"
+              onClick={(event) => {
+                event.preventDefault();
+                navigate("/");
+              }}
+              className="transition hover:text-white"
+            >
+              Inicio
+            </a>
+            <span className="mx-2" aria-hidden="true">/</span>
+            <span className="text-slate-300">{service.title}</span>
+          </nav>
+          <div className="mt-8 grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            <div>
+              <span className="grid h-12 w-12 place-items-center rounded-xl bg-soft text-ink">
+                <Icon size={24} strokeWidth={1.8} aria-hidden="true" />
+              </span>
+              <h1 className="mt-6 font-display text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl">{service.pageTitle}</h1>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">{service.problem}</p>
+              <p className="mt-6 max-w-2xl text-xl font-bold leading-8 text-white">{service.promise}.</p>
+            </div>
+            <aside className="rounded-[1.5rem] border border-white/10 bg-white/[0.06] p-6 glass-edge">
+              <dl className="grid grid-cols-2 gap-4">
+                <div>
+                  <dt className="text-[11px] font-black uppercase tracking-[0.14em] text-slate-400">Plazo</dt>
+                  <dd className="mt-1 text-lg font-bold">{service.timeline}</dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] font-black uppercase tracking-[0.14em] text-slate-400">Precio</dt>
+                  <dd className="mt-1 text-lg font-bold">{service.price}</dd>
+                  {service.offer && <dd className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-soft">{service.offer}</dd>}
+                </div>
+              </dl>
+              <a
+                href="/#contacto"
+                onClick={(event) => {
+                  event.preventDefault();
+                  onChooseService(service.id);
+                }}
+                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink"
+              >
+                {service.cta}
+                <ArrowRight size={18} strokeWidth={1.9} aria-hidden="true" />
+              </a>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+              >
+                <WhatsAppIcon size={18} className="text-[#25D366]" />
+                Preguntar por WhatsApp
+              </a>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2">
+          <div className="rounded-[1.5rem] border border-white/10 bg-surface p-6 shadow-panel">
+            <h2 className="font-display text-xl font-black text-white">Para quién es</h2>
+            <p className="mt-3 leading-7 text-slate-300">{service.audience}.</p>
+          </div>
+          <div className="rounded-[1.5rem] border border-white/10 bg-surface p-6 shadow-panel">
+            <h2 className="font-display text-xl font-black text-white">Qué incluye</h2>
+            <ul className="mt-4 grid gap-3">
+              {service.items.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 leading-6 text-slate-200">
+                  <Check size={17} strokeWidth={2.2} className="mt-1 shrink-0 text-electric" aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {service.webTypes && <WebTypesSection groups={service.webTypes} />}
+
+      <FaqSection items={service.faqs} title={`Preguntas sobre ${service.title.toLowerCase()}`} id="preguntas-servicio" width="max-w-6xl" />
+
+      <section className="px-4 pb-24 pt-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="font-display text-xl font-black text-white">Otros servicios</h2>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {otherServices.map((other) => (
+              <a
+                key={other.id}
+                href={servicePath(other)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  navigate(servicePath(other));
+                }}
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-surface p-5 shadow-panel transition hover:border-soft"
+              >
+                <span>
+                  <span className="block font-display text-lg font-black text-white">{other.title}</span>
+                  <span className="mt-1 block text-sm text-slate-300">
+                    {other.price} · {other.timeline}
+                  </span>
+                </span>
+                <ArrowRight size={20} strokeWidth={1.9} className="shrink-0 text-electric transition group-hover:translate-x-1" aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -813,23 +1191,15 @@ function Contact({ selectedService, onServiceChange, navigate }) {
 
   return (
     <section id="contacto" className="px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-        <div data-reveal className="h-fit rounded-[1.5rem] bg-ink p-6 text-white shadow-diffusion sm:p-8">
-          <p className="text-sm font-black uppercase tracking-[0.18em] text-soft">Contacto</p>
-          <h2 className="mt-4 font-display text-2xl font-black leading-tight tracking-tight sm:text-3xl">
-            Cuéntame qué quieres dejar de hacer a mano
-          </h2>
-          <p className="mt-4 text-base leading-7 text-slate-300">
-            30 minutos gratis. Sales con las tres tareas que más compensa automatizar y una estimación de coste.
-          </p>
-          <div className="mt-7 space-y-3">
-            <ContactLine icon={WhatsAppIcon} text="Escríbeme por WhatsApp" href={WHATSAPP_URL} />
-            <ContactLine icon={Phone} text="+34 697 955 919" href="tel:+34697955919" />
-            <ContactLine icon={Mail} text="ubedadesarrolloweb@gmail.com" href="mailto:ubedadesarrolloweb@gmail.com" />
-          </div>
-        </div>
+      <div className="mx-auto max-w-7xl">
+        <h2 className="mb-6">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+            Contacto
+          </span>
+        </h2>
 
-        <form onSubmit={handleSubmit} className="relative w-full rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-diffusion sm:p-6">
+        <form onSubmit={handleSubmit} className="relative mx-auto w-full max-w-3xl rounded-[1.5rem] border border-white/10 bg-surface p-5 shadow-diffusion sm:p-6">
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Nombre" name="nombre" placeholder="Tu nombre" autoComplete="name" required />
             <Field label="Correo electrónico" name="email" type="email" placeholder="nombre@empresa.com" autoComplete="email" required />
@@ -856,7 +1226,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
                 className={`${fieldClassName} cursor-pointer`}
               >
                 <option value="">Elige un servicio</option>
-                <option value="web-profesional">Desarrollo web y e-commerce</option>
+                <option value="web-profesional">Desarrollo web</option>
                 <option value="agenda-automatica">Agenda automática</option>
                 <option value="automatizaciones">Automatización a medida</option>
                 <option value="app-web">Aplicación a medida</option>
@@ -888,16 +1258,16 @@ function Contact({ selectedService, onServiceChange, navigate }) {
             />
           </label>
 
-          {status === "error" && <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">Revisa el correo antes de enviar.</p>}
-          {status === "success" && <p className="mt-4 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">Gracias. He recibido tu mensaje y te respondo en menos de 24 horas laborables.</p>}
-          {status === "submit-error" && <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">No se pudo enviar tu mensaje. Inténtalo de nuevo o escríbeme por WhatsApp.</p>}
-          {status === "webhook-http-error" && <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700">Para usarlo en Vercel, el webhook de n8n debe ser HTTPS.</p>}
+          {status === "error" && <p className="mt-4 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-200">Revisa el correo antes de enviar.</p>}
+          {status === "success" && <p className="mt-4 rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-200">Gracias. He recibido tu mensaje y te respondo en menos de 24 horas laborables.</p>}
+          {status === "submit-error" && <p className="mt-4 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-200">No se pudo enviar tu mensaje. Inténtalo de nuevo o escríbeme por WhatsApp.</p>}
+          {status === "webhook-http-error" && <p className="mt-4 rounded-xl border border-violet-400/30 bg-violet-500/10 px-4 py-3 text-sm font-semibold text-violet-200">Para usarlo en Vercel, el webhook de n8n debe ser HTTPS.</p>}
 
-          <button type="submit" disabled={status === "loading"} className="mt-5 inline-flex w-full items-center justify-center gap-3 rounded-xl bg-electric px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-ink active:scale-[0.98] disabled:cursor-wait disabled:opacity-60 disabled:hover:translate-y-0">
+          <button type="submit" disabled={status === "loading"} className="mt-5 inline-flex w-full items-center justify-center gap-3 rounded-full bg-accent px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-ink active:scale-[0.98] disabled:cursor-wait disabled:opacity-60 disabled:hover:translate-y-0">
             {status === "loading" ? "Enviando..." : "Pedir mi auditoría gratis"}
             <ArrowRight size={18} strokeWidth={1.9} />
           </button>
-          <p className="mt-3 text-center text-xs leading-5 text-slate-500">
+          <p className="mt-3 text-center text-xs leading-5 text-slate-400">
             Te respondo en menos de 24 horas laborables. Al enviar aceptas la{" "}
             <a
               href="/privacidad"
@@ -918,11 +1288,11 @@ function Contact({ selectedService, onServiceChange, navigate }) {
 }
 
 const fieldClassName =
-  "mt-2 h-11 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm text-ink shadow-[inset_0_1px_2px_rgba(15,23,42,0.04)] outline-none transition placeholder:text-slate-400 hover:border-slate-400 focus:border-electric focus:ring-4 focus:ring-electric/15";
+  "mt-2 h-11 w-full rounded-xl border border-white/15 bg-surface px-3 text-sm text-white shadow-[inset_0_1px_2px_rgba(15,23,42,0.04)] outline-none transition placeholder:text-slate-400 hover:border-white/30 focus:border-electric focus:ring-4 focus:ring-electric/15";
 
 function FieldLabel({ children, optional = false }) {
   return (
-    <span className="text-xs font-bold uppercase tracking-[0.08em] text-ink">
+    <span className="text-xs font-bold uppercase tracking-[0.08em] text-white">
       {children}
       {optional && <span className="ml-1.5 font-semibold normal-case tracking-normal text-slate-400">(opcional)</span>}
     </span>
@@ -945,141 +1315,169 @@ function Field({ label, name, placeholder, type = "text", autoComplete, required
   );
 }
 
-function ContactLine({ icon: Icon, text, href }) {
-  const className = "flex items-center gap-3 rounded-2xl border border-white/10 bg-white/8 p-3 text-sm text-slate-200 transition duration-300 hover:bg-white/12";
-  const content = (
-    <>
-      <span className="grid h-9 w-9 place-items-center rounded-xl bg-soft text-ink">
-        <Icon size={17} strokeWidth={1.9} />
-      </span>
-      <span className="font-semibold">{text}</span>
-    </>
-  );
-
-  if (!href) {
-    return <div className={className}>{content}</div>;
-  }
-
-  const external = href.startsWith("http");
+function DeviceShowcase({ project, eager = false }) {
+  const loading = eager ? "eager" : "lazy";
+  const hasDevices = Boolean(project.tablet && project.mobile);
+  const alt = `Captura de ${project.name}`;
 
   return (
-    <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} className={className}>
-      {content}
-    </a>
+    <div className="relative mx-auto aspect-[16/9] w-full max-w-5xl">
+      <div className={`absolute top-[6%] ${hasDevices ? "right-[3%] w-[64%]" : "left-1/2 w-[78%] -translate-x-1/2"}`}>
+        <div className="rounded-t-[1.1rem] border border-white/10 bg-surface p-[1.4%] shadow-[0_30px_60px_-25px_rgba(14,26,90,0.45)]">
+          <div className="aspect-[16/9] overflow-hidden rounded-md bg-slate-900">
+            <img src={project.image} alt={`${alt} en ordenador`} loading={loading} className="h-full w-full object-cover object-top" />
+          </div>
+        </div>
+        <div className="mx-[-5%] h-[5%] min-h-2 rounded-b-2xl bg-gradient-to-b from-slate-200 to-slate-300 shadow-[0_18px_30px_-18px_rgba(14,26,90,0.5)]" />
+      </div>
+
+      {hasDevices && (
+        <>
+          <div className="absolute left-[2%] top-[20%] w-[27%] rounded-[1.3rem] border border-white/10 bg-surface p-[1.6%] shadow-[0_30px_60px_-25px_rgba(14,26,90,0.5)]">
+            <div className="aspect-[41/59] overflow-hidden rounded-[0.8rem] bg-slate-900">
+              <img src={project.tablet} alt={`${alt} en tablet`} loading={loading} className="h-full w-full object-cover object-top" />
+            </div>
+          </div>
+          <div className="absolute left-[22%] top-[32%] w-[12.5%] rounded-[1.4rem] border border-white/10 bg-surface p-[1%] shadow-[0_30px_60px_-20px_rgba(14,26,90,0.6)]">
+            <div className="aspect-[39/84] overflow-hidden rounded-[1.1rem] bg-slate-900">
+              <img src={project.mobile} alt={`${alt} en móvil`} loading={loading} className="h-full w-full object-cover object-top" />
+            </div>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
 function PortfolioPage() {
+  const [active, setActive] = useState(0);
+  const total = portfolioProjects.length;
+  const go = (step) => setActive((current) => (current + step + total) % total);
+
   return (
-    <section className="relative min-h-[100dvh] bg-ink pt-24 text-white">
-      <div className="noise-overlay absolute inset-x-0 top-0 h-[520px] opacity-80" />
-      <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
-        <div data-reveal className="mx-auto max-w-6xl">
-          <h1 className="text-sm font-black uppercase tracking-[0.18em] text-soft">Portfolio</h1>
-        </div>
+    <section className="pb-24">
+      <div className="relative">
+        <div className="noise-overlay absolute inset-x-0 top-0 h-[78%]" />
+        <div className="relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:px-8">
+          <h1 className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
+        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+            Portfolio
+          </h1>
 
-        <div id="proyectos" className="mx-auto mt-8 grid max-w-6xl scroll-mt-24 gap-5">
-          {portfolioProjects.map((project) => (
-            <PortfolioCard key={project.title} project={project} />
-          ))}
-        </div>
+          <div
+            className="relative mt-8 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] px-10 py-8 sm:px-16 sm:py-10"
+            aria-roledescription="carrusel"
+            aria-label="Proyectos"
+          >
+            {portfolioProjects.map((project, index) => (
+              <div key={project.title} hidden={index !== active} aria-roledescription="diapositiva" aria-label={`${index + 1} de ${total}: ${project.name}`}>
+                <DeviceShowcase project={project} eager={index === 0} />
+              </div>
+            ))}
 
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Proyecto anterior"
+              className="absolute left-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-ink/70 bg-white/70 text-white transition hover:bg-white sm:left-5"
+            >
+              <ArrowRight size={18} strokeWidth={1.9} className="rotate-180" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Proyecto siguiente"
+              className="absolute right-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-ink/70 bg-white/70 text-white transition hover:bg-white sm:right-5"
+            >
+              <ArrowRight size={18} strokeWidth={1.9} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-6 flex max-w-7xl justify-center gap-2 px-4" role="tablist" aria-label="Elegir proyecto">
+        {portfolioProjects.map((project, index) => (
+          <button
+            key={project.title}
+            type="button"
+            role="tab"
+            aria-selected={index === active}
+            aria-label={project.name}
+            onClick={() => setActive(index)}
+            className={`h-2.5 rounded-full transition-all ${index === active ? "w-8 bg-electric" : "w-2.5 bg-white/25 hover:bg-white/40"}`}
+          />
+        ))}
+      </div>
+
+      <div className="mx-auto mt-10 max-w-7xl px-4 sm:px-6 lg:px-8">
+        {portfolioProjects.map((project, index) => (
+          <article key={project.title} hidden={index !== active} className={`${index === active ? "grid" : "hidden"} gap-8 lg:grid-cols-[1.1fr_0.9fr]`}>
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-electric">{project.category}</p>
+              <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">{project.title}</h2>
+              <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">{project.summary}</p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span key={tag} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-bold text-slate-200">
+                    <Check size={13} strokeWidth={2.2} className="shrink-0 text-electric" aria-hidden="true" />
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="h-fit rounded-2xl bg-ink p-6 text-white">
+              <p className="text-[11px] font-black uppercase tracking-[0.16em] text-soft">Qué puedes probar</p>
+              <p className="mt-2 leading-7 text-slate-200">{project.result}</p>
+              {project.testCard && (
+                <p className="mt-3 rounded-lg border border-white/10 bg-white/8 px-3 py-2 text-sm leading-6 text-slate-200">
+                  <span className="font-bold text-soft">Tarjeta de prueba:</span> {project.testCard}
+                </p>
+              )}
+              {project.url && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink"
+                >
+                  {project.urlLabel || "Ver proyecto"}
+                  <ArrowRight size={16} strokeWidth={1.9} aria-hidden="true" />
+                </a>
+              )}
+              {project.adminUrl && (
+                <a
+                  href={project.adminUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+                >
+                  {project.adminLabel}
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );
 }
 
-function PortfolioCard({ project }) {
-  return (
-    <article
-      data-reveal
-      className="grid gap-0 overflow-hidden rounded-[1.5rem] border border-white/10 bg-white text-ink shadow-diffusion lg:grid-cols-[0.9fr_1.1fr]"
-    >
-      <div className="flex flex-col justify-between p-5 sm:p-6">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-lg bg-electric/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-electric">
-              {project.category}
-            </span>
-          </div>
-          <h2 className="mt-3 font-display text-xl font-black leading-tight tracking-tight text-ink sm:text-2xl">
-            {project.title}
-          </h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600">{project.summary}</p>
-          <div className="mt-4 flex flex-wrap gap-1.5">
-            {project.tags.map((tag) => (
-              <span key={tag} className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-canvas px-2.5 py-1 text-[11px] font-bold text-slate-700">
-                <Check size={12} strokeWidth={2.2} className="shrink-0 text-electric" />
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="mt-5 rounded-2xl bg-ink p-4 text-white">
-          <p className="text-[10px] font-black uppercase tracking-[0.16em] text-soft">Qué puedes probar</p>
-          <p className="mt-2 text-xs leading-5 text-slate-300">{project.result}</p>
-          {project.testCard && (
-            <p className="mt-3 rounded-lg border border-white/10 bg-white/8 px-3 py-2 text-xs leading-5 text-slate-200">
-              <span className="font-bold text-soft">Tarjeta de prueba:</span> {project.testCard}
-            </p>
-          )}
-          {project.url && (
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-electric px-4 py-3 text-xs font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]"
-            >
-              {project.urlLabel || "Ver proyecto"}
-              <ArrowRight size={16} strokeWidth={1.9} />
-            </a>
-          )}
-          {project.adminUrl && (
-            <a
-              href={project.adminUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 px-4 py-3 text-xs font-bold text-white transition duration-300 hover:bg-white/10"
-            >
-              {project.adminLabel}
-            </a>
-          )}
-        </div>
-      </div>
-      <PortfolioPreview image={project.image} title={project.title} />
-    </article>
-  );
-}
-
-function PortfolioPreview({ image, title }) {
-  return (
-    <div className="flex items-center justify-center bg-slate-950 p-5 sm:p-8">
-      <img
-        src={image}
-        alt={`Captura del proyecto: ${title}`}
-        className="max-h-[300px] w-auto max-w-full rounded-xl object-contain shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)] ring-1 ring-white/10"
-        loading="lazy"
-      />
-    </div>
-  );
-}
-
 function NotFoundPage({ navigate }) {
   return (
-    <section className="bg-canvas px-4 pb-24 pt-40 sm:px-6 lg:px-8">
+    <section className="bg-white/[0.04] px-4 pb-24 pt-40 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl text-center">
         <p className="text-sm font-black uppercase tracking-[0.18em] text-electric">Error 404</p>
-        <h1 className="mt-4 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">
+        <h1 className="mt-4 font-display text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">
           Esta página no existe
         </h1>
-        <p className="mt-4 text-base leading-7 text-slate-600">Puede que el enlace esté mal escrito o que la página se haya movido.</p>
+        <p className="mt-4 text-base leading-7 text-slate-300">Puede que el enlace esté mal escrito o que la página se haya movido.</p>
         <a
           href="/"
           onClick={(event) => {
             event.preventDefault();
             navigate("/");
           }}
-          className="mt-8 inline-flex items-center justify-center gap-3 rounded-xl bg-electric px-6 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-ink"
+          className="mt-8 inline-flex items-center justify-center gap-3 rounded-full bg-accent px-6 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-ink"
         >
           Volver al inicio
           <ArrowRight size={18} strokeWidth={1.9} aria-hidden="true" />
@@ -1116,13 +1514,17 @@ function PrivacyPage({ navigate }) {
       "Proveedores que necesito para gestionar las consultas, como Google (correo y hojas de cálculo) y el servidor donde se procesan los formularios. Solo acceden a los datos para prestar ese servicio.",
     ],
     [
+      "Analítica",
+      "Para saber cuántas personas visitan la web uso Vercel Web Analytics, que cuenta visitas de forma agregada y sin cookies. No identifica a nadie ni guarda datos personales.",
+    ],
+    [
       "Tus derechos",
       "Puedes pedir acceso, rectificación, supresión, oposición, limitación o portabilidad de tus datos escribiendo a ubedadesarrolloweb@gmail.com. Si crees que no se han respetado, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).",
     ],
   ];
 
   return (
-    <section className="bg-canvas px-4 pb-24 pt-32 sm:px-6 lg:px-8">
+    <section className="bg-white/[0.04] px-4 pb-24 pt-32 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl">
         <button
           type="button"
@@ -1132,28 +1534,35 @@ function PrivacyPage({ navigate }) {
           <ArrowRight size={16} strokeWidth={1.9} className="rotate-180" aria-hidden="true" />
           Volver al inicio
         </button>
-        <h1 className="mt-6 font-display text-3xl font-black leading-tight tracking-tight text-ink sm:text-4xl">Política de privacidad</h1>
-        <p className="mt-4 text-base leading-7 text-slate-600">
+        <h1 className="mt-6 font-display text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">Política de privacidad</h1>
+        <p className="mt-4 text-base leading-7 text-slate-300">
           Cómo trato los datos que me envías a través de esta web, de forma clara y en pocas líneas.
         </p>
         <div className="mt-10 space-y-8">
           {sections.map(([title, text]) => (
             <div key={title}>
-              <h2 className="font-display text-lg font-black text-ink">{title}</h2>
-              <p className="mt-2 text-base leading-7 text-slate-600">{text}</p>
+              <h2 className="font-display text-lg font-black text-white">{title}</h2>
+              <p className="mt-2 text-base leading-7 text-slate-300">{text}</p>
             </div>
           ))}
         </div>
-        <p className="mt-12 text-sm text-slate-500">Última actualización: octubre de 2026.</p>
+        <p className="mt-12 text-sm text-slate-400">Última actualización: octubre de 2026.</p>
       </div>
     </section>
   );
 }
 
 function Footer({ navigate }) {
-  const footerServices = ["Desarrollo de páginas web", "Tiendas online", "Agenda automática", "Automatización a medida", "Mantenimiento mensual"];
+  const footerServices = [
+    ["Desarrollo de páginas web", "/servicios/desarrollo-web-ecommerce"],
+    ["Tiendas online", "/servicios/desarrollo-web-ecommerce"],
+    ["Agenda automática", "/servicios/agenda-automatica"],
+    ["Automatización a medida", "/servicios/automatizacion-a-medida"],
+    ["Mantenimiento mensual", "#paquetes"],
+  ];
   const navLinks = [
     ["Servicios", "#servicios"],
+    ["Paquetes", "#paquetes"],
     ["Portfolio", "/portfolio"],
     ["Proceso", "#proceso"],
     ["Contacto", "#contacto"],
@@ -1161,8 +1570,8 @@ function Footer({ navigate }) {
 
   function handleHomeLink(event, href) {
     event.preventDefault();
-    if (href === "/portfolio") {
-      navigate("/portfolio");
+    if (href.startsWith("/")) {
+      navigate(href);
       return;
     }
     navigate("/");
@@ -1214,9 +1623,9 @@ function Footer({ navigate }) {
           <div>
             <p className={columnTitle}>Servicios</p>
             <ul className="mt-4 grid gap-3">
-              {footerServices.map((serviceName) => (
+              {footerServices.map(([serviceName, href]) => (
                 <li key={serviceName}>
-                  <a href="/#servicios" onClick={(event) => handleHomeLink(event, "#servicios")} className={linkClass}>
+                  <a href={href.startsWith("/") ? href : `/${href}`} onClick={(event) => handleHomeLink(event, href)} className={linkClass}>
                     {serviceName}
                   </a>
                 </li>
@@ -1266,7 +1675,7 @@ function Footer({ navigate }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-white/12 py-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-3 border-t border-white/12 py-6 text-xs text-slate-400 md:flex-row md:items-center md:justify-between">
           <p className="font-semibold">© {new Date().getFullYear()} Creaciones Digitales. Todos los derechos reservados.</p>
           <a
             href="/privacidad"
@@ -1287,9 +1696,12 @@ function Footer({ navigate }) {
 function SectionHeader({ eyebrow, title, text, dark = false }) {
   return (
     <div data-reveal className="max-w-3xl">
-      <p className={`text-sm font-black uppercase tracking-[0.18em] ${dark ? "text-soft" : "text-electric"}`}>{eyebrow}</p>
-      <h2 className={`mt-4 font-display text-3xl font-black leading-tight tracking-tight sm:text-4xl ${dark ? "text-white" : "text-ink"}`}>{title}</h2>
-      <p className={`mt-4 max-w-[65ch] text-base leading-7 ${dark ? "text-slate-300" : "text-slate-600"}`}>{text}</p>
+      <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
+        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+        {eyebrow}
+      </p>
+      <h2 className={`mt-4 font-display text-3xl font-black leading-tight tracking-tight sm:text-4xl ${dark ? "text-white" : "text-white"}`}>{title}</h2>
+      <p className={`mt-4 max-w-[65ch] text-base leading-7 ${dark ? "text-slate-300" : "text-slate-300"}`}>{text}</p>
     </div>
   );
 }

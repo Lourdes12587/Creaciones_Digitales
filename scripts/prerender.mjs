@@ -1,6 +1,6 @@
 // Prerenders every page to static HTML after `vite build`, so search engines
 // get the full content without running JavaScript. Also writes the sitemap.
-import { readFileSync, writeFileSync, rmSync } from "node:fs";
+import { readFileSync, writeFileSync, rmSync, mkdirSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -9,31 +9,19 @@ const dist = join(root, "dist");
 const ssrDir = join(root, "dist-ssr");
 const SITE = "https://www.creaciones-digitales.com";
 
-const { render, PAGE_TITLES } = await import(pathToFileURL(join(ssrDir, "entry-server.js")).href);
+const { render, PAGE_TITLES, SITE_PAGES } = await import(pathToFileURL(join(ssrDir, "entry-server.js")).href);
 const template = readFileSync(join(dist, "index.html"), "utf8");
 
 const pages = [
-  {
-    route: "/",
-    file: "index.html",
-    description:
-      "Webs que captan clientes, agendas automáticas con recordatorios por WhatsApp y automatización de procesos para negocios. Auditoría gratuita de 30 minutos. Desde 390 €.",
-  },
-  {
-    route: "/portfolio",
-    file: "portfolio.html",
-    description:
-      "Proyectos de Creaciones Digitales: tiendas online, webs de reservas, agendas automáticas y webs a medida en React que puedes abrir y probar.",
-  },
-  {
-    route: "/privacidad",
-    file: "privacidad.html",
-    description: "Cómo trata Creaciones Digitales los datos que envías a través del formulario de contacto, WhatsApp o correo.",
-  },
+  ...SITE_PAGES.map((page) => ({
+    ...page,
+    file: page.route === "/" ? "index.html" : `${page.route.slice(1)}.html`,
+  })),
   {
     route: "/404",
     file: "404.html",
     notFound: true,
+    title: PAGE_TITLES[404],
     description: "La página que buscas no existe en creaciones-digitales.com.",
   },
 ];
@@ -46,7 +34,7 @@ function setMeta(html, pattern, value) {
 }
 
 for (const page of pages) {
-  const title = page.notFound ? PAGE_TITLES[404] : PAGE_TITLES[page.route];
+  const title = page.title;
   const url = page.route === "/" ? `${SITE}/` : `${SITE}${page.route}`;
   let html = template;
 
@@ -70,6 +58,7 @@ for (const page of pages) {
   if (!html.includes('<div id="root"></div>')) throw new Error("Root element not found in template");
   html = html.replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
 
+  mkdirSync(dirname(join(dist, page.file)), { recursive: true });
   writeFileSync(join(dist, page.file), html);
   console.log(`prerendered ${page.route} -> dist/${page.file}`);
 }

@@ -5,11 +5,11 @@ export default {
     extend: {
       colors: {
         ink: "#0F172A",
-        electric: "#8B6CFF",
-        soft: "#C4B5FD",
+        electric: "#FF4D6D",
+        soft: "#FFB3C1",
         canvas: "#111A2E",
         surface: "#18233D",
-        accent: "#FF2E7E",
+        accent: "#FF4D6D",
       },
       fontFamily: {
         sans: ["Raleway", "Satoshi", "Geist", "ui-sans-serif", "system-ui"],

@@ -107,14 +107,14 @@ const services = [
       "Encuesta tras la cita y petición de reseña en Google",
     ],
     timeline: "5 días",
-    price: "Desde 390 €",
+    price: "Desde 500 €",
     offer: "Oferta de lanzamiento",
     cta: "Quiero la agenda",
     slug: "agenda-automatica",
     pageTitle: "Agenda automática con recordatorios por WhatsApp",
     metaTitle: "Agenda automática con WhatsApp | Creaciones Digitales",
     metaDescription:
-      "Tus clientes reservan online, reciben la confirmación al instante y un recordatorio por WhatsApp 24 horas antes. Para clínicas, centros de estética y veterinarias. Desde 390 €.",
+      "Tus clientes reservan online, reciben la confirmación al instante y un recordatorio por WhatsApp 24 horas antes. Para clínicas, centros de estética y veterinarias. Desde 500 €.",
     problem:
       "Cada cita que se olvida es un hueco que no se cobra, y cada llamada para confirmar es tiempo que no dedicas a tus clientes. La agenda automática confirma, recuerda y ayuda a cubrir cancelaciones sin que nadie tenga que coger el teléfono.",
     faqs: [
@@ -174,7 +174,7 @@ const extraServices = [
 ];
 
 const homeFaqs = [
-  ["¿Cuánto cuesta?", "La agenda automática y la automatización a medida empiezan en 390 €, y la web en 550 €, con precios de lanzamiento. Tras la auditoría gratuita te envío un presupuesto cerrado en 48 horas."],
+  ["¿Cuánto cuesta?", "La automatización a medida empieza en 390 €, la agenda automática en 500 € y la web en 550 €, con precios de lanzamiento. Tras la auditoría gratuita te envío un presupuesto cerrado en 48 horas."],
   ["¿Cuánto tarda?", "Una web, unos 3 días; la agenda automática, 5 días; una automatización a medida, 1 o 2 semanas."],
   ["¿Qué pasa después de la entrega?", "Tienes 30 días de soporte incluidos. Después puedes seguir con el mantenimiento mensual desde 49 € al mes o continuar por tu cuenta con la documentación."],
   ["¿Tengo que cambiar mis herramientas?", "No necesariamente. Primero reviso lo que ya usas y conecto el sistema con WhatsApp, correo, formularios, hojas de cálculo o CRM cuando sea posible."],
@@ -334,6 +334,11 @@ export const SITE_PAGES = [
     title: "Política de privacidad | Creaciones Digitales",
     description: "Cómo trata Creaciones Digitales los datos que envías a través del formulario de contacto, WhatsApp o correo.",
   },
+  {
+    route: "/cookies",
+    title: "Política de cookies | Creaciones Digitales",
+    description: "Qué cookies usa creaciones-digitales.com: ninguna. Las visitas se miden sin cookies y sin identificar a nadie.",
+  },
 ];
 
 export const PAGE_TITLES = {
@@ -411,6 +416,8 @@ function App({ initialRoute }) {
           <PortfolioPage />
         ) : route === "/privacidad" ? (
           <PrivacyPage navigate={navigate} />
+        ) : route === "/cookies" ? (
+          <CookiesPage navigate={navigate} />
         ) : currentService ? (
           <ServicePage service={currentService} navigate={navigate} onChooseService={chooseService} />
         ) : route !== "/" ? (
@@ -418,7 +425,7 @@ function App({ initialRoute }) {
         ) : (
           <>
             <Hero />
-            <ServiceAreas navigate={navigate} />
+            <ServiceAreas />
             <Services onChooseService={setSelectedService} navigate={navigate} />
             <Process />
             <FaqSection items={homeFaqs} />
@@ -538,7 +545,7 @@ function Nav({ route, navigate }) {
           <a
             href="#contacto"
             onClick={(event) => handleNav(event, "#contacto")}
-            className="hidden rounded-full bg-soft px-5 py-2.5 text-sm font-bold text-ink shadow-[0_12px_30px_-12px_rgba(165,180,252,0.8)] transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98] sm:inline-flex"
+            className="hidden rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-white shadow-[0_12px_30px_-12px_rgba(255,77,109,0.7)] transition duration-300 hover:-translate-y-0.5 hover:brightness-110 active:scale-[0.98] sm:inline-flex"
           >
             Presupuesto
           </a>
@@ -571,7 +578,7 @@ function Nav({ route, navigate }) {
             <a
               href="#contacto"
               onClick={(event) => handleNav(event, "#contacto")}
-              className="mt-2 inline-flex justify-center rounded-full bg-soft px-5 py-3 text-sm font-bold text-ink sm:hidden"
+              className="mt-2 inline-flex justify-center rounded-full bg-accent px-5 py-3 text-sm font-bold text-white sm:hidden"
             >
               Presupuesto
             </a>
@@ -592,17 +599,17 @@ function Hero() {
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-4 pb-28 pt-12 sm:px-6 lg:min-h-[calc(92dvh-6rem)] lg:px-8 lg:pb-32">
         <div className="max-w-3xl">
           <p data-reveal className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,77,109,0.9)]" aria-hidden="true" />
             Desarrollo web y automatizaciones
           </p>
           <h1 id="hero-title" data-reveal className="font-display text-4xl font-black leading-[1.04] tracking-tight text-white sm:text-5xl lg:text-[3.3rem]">
-            Sistemas digitales para negocios que ya no quieren operar <span className="text-gradient">a mano.</span>
+            Sistemas digitales para negocios que ya no quieren operar <span className="text-highlight">a mano.</span>
           </h1>
           <p data-reveal className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
             Construyo webs, apps y flujos automáticos que capturan clientes, confirman citas, responden consultas y ordenan procesos repetitivos sin inflar tu equipo.
           </p>
           <div data-reveal className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href="#contacto" className="group inline-flex items-center justify-center gap-3 rounded-full bg-accent px-6 py-4 font-bold text-white shadow-[0_18px_45px_-12px_rgba(255,46,126,0.65)] transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]">
+            <a href="#contacto" className="group inline-flex items-center justify-center gap-3 rounded-full bg-accent px-6 py-4 font-bold text-white shadow-[0_18px_45px_-12px_rgba(255,77,109,0.65)] transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:scale-[0.98]">
               Pedir auditoría gratis
               <ArrowRight size={18} strokeWidth={1.9} className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </a>
@@ -621,21 +628,52 @@ function Hero() {
   );
 }
 
-function ServiceAreas({ navigate }) {
+function ServiceAreas() {
   const areas = [
     {
       icon: Globe2,
       title: "Desarrollo web",
-      text: "Todo tipo de webs: desde una página para tu negocio hasta una tienda online o una aplicación a medida.",
-      tags: ["Webs corporativas", "Landing pages", "Tiendas online", "Aplicaciones web"],
-      href: "/servicios/desarrollo-web-ecommerce",
+      text: "Todo tipo de webs, desde una página para presentar tu negocio hasta una tienda online o una aplicación a medida. Rápidas, adaptadas al móvil y preparadas para Google.",
+      typesTitle: "Qué tipo de web hago",
+      types: [
+        ["Landing pages", "Una página enfocada en que el visitante haga una acción: escribirte, reservar o comprar."],
+        ["Webs corporativas", "La presentación de tu empresa: servicios, quién eres y cómo contactarte."],
+        ["Micrositios", "Webs pequeñas para un producto, un evento o una campaña."],
+        ["Portafolios online", "Para mostrar tu trabajo si eres creativo o profesional independiente."],
+        ["Blogs y revistas digitales", "Artículos o noticias para atraer visitas y crear comunidad."],
+        ["Tiendas online", "Catálogo, carrito, pasarela de pago y envíos."],
+        ["Aplicaciones web", "Paneles, portales de clientes y herramientas a medida."],
+      ],
+      includesTitle: "Todas incluyen",
+      includes: [
+        "Diseño y textos adaptados a tu negocio",
+        "Formulario y WhatsApp conectados",
+        "Optimización para Google y para móvil",
+        "Formación para actualizarla tú",
+        "30 días de soporte",
+      ],
     },
     {
       icon: Workflow,
       title: "Automatizaciones",
-      text: "Flujos que conectan tu web, correo, hojas de cálculo, CRM y WhatsApp para que las tareas repetitivas se hagan solas.",
-      tags: ["Formularios conectados", "Agenda automática", "Recordatorios por WhatsApp", "Procesos a medida"],
-      href: "/servicios/automatizacion-a-medida",
+      text: "Flujos que conectan tu web, correo, hojas de cálculo, CRM y WhatsApp para que las tareas repetitivas se hagan solas, sin cambiar las herramientas que ya usas.",
+      typesTitle: "Qué puedo automatizar",
+      types: [
+        ["Formularios conectados", "Cada consulta se guarda sola y te llega al correo o al WhatsApp."],
+        ["Agenda automática", "Reservas online con confirmación al instante."],
+        ["Recordatorios por WhatsApp", "Aviso 24 horas antes de cada cita para reducir ausencias."],
+        ["Seguimiento de clientes", "Mensajes automáticos a quien no ha respondido."],
+        ["Respuestas automáticas", "Primera respuesta a las consultas frecuentes, a cualquier hora."],
+        ["Procesos a medida", "Pasar datos entre herramientas, informes y correos repetitivos."],
+      ],
+      includesTitle: "Cómo trabajo",
+      includes: [
+        "Análisis de cómo trabajas hoy",
+        "Conexión con lo que ya usas",
+        "Pruebas antes de la entrega",
+        "Documentación clara",
+        "30 días de soporte",
+      ],
     },
   ];
 
@@ -647,36 +685,38 @@ function ServiceAreas({ navigate }) {
           title="Desarrollo web y automatizaciones"
           text="Dos áreas que funcionan juntas: la web atrae a tus clientes y las automatizaciones se ocupan de lo que viene después."
         />
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
-          {areas.map(({ icon: Icon, title, text, tags, href }) => (
-            <a
-              key={title}
-              href={href}
-              onClick={(event) => {
-                event.preventDefault();
-                navigate(href);
-              }}
-              className="group flex flex-col rounded-2xl border border-white/10 bg-surface p-6 shadow-panel transition duration-300 hover:-translate-y-1 hover:border-electric/40"
-            >
+        <div className="mt-10 grid gap-5 lg:grid-cols-2">
+          {areas.map(({ icon: Icon, title, text, typesTitle, types, includesTitle, includes }) => (
+            <article key={title} className="flex flex-col rounded-2xl border border-white/10 bg-surface p-6 shadow-panel sm:p-7">
               <div className="flex items-center gap-4">
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-electric/15 text-electric">
                   <Icon size={22} strokeWidth={1.8} aria-hidden="true" />
                 </span>
-                <h3 className="font-display text-xl font-black tracking-tight text-white">{title}</h3>
+                <h3 className="font-display text-2xl font-black tracking-tight text-white">{title}</h3>
               </div>
-              <p className="mt-4 text-sm leading-6 text-slate-300">{text}</p>
-              <div className="mb-5 mt-4 flex flex-wrap gap-1.5">
-                {tags.map((tag) => (
-                  <span key={tag} className="rounded-full bg-white/[0.04] px-2.5 py-1 text-xs font-semibold text-slate-200 ring-1 ring-white/10">
-                    {tag}
-                  </span>
+              <p className="mt-4 leading-7 text-slate-300">{text}</p>
+
+              <h4 className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">{typesTitle}</h4>
+              <ul className="mt-3 grid gap-3">
+                {types.map(([name, description]) => (
+                  <li key={name} className="flex items-start gap-3">
+                    <Check size={16} strokeWidth={2.2} className="mt-1 shrink-0 text-accent" aria-hidden="true" />
+                    <p className="text-sm leading-6 text-slate-300">
+                      <span className="font-semibold text-white">{name}.</span> {description}
+                    </p>
+                  </li>
                 ))}
-              </div>
-              <span className="mt-auto inline-flex items-center gap-2 text-sm font-bold text-electric">
-                Ver el servicio
-                <ArrowRight size={16} strokeWidth={1.9} className="transition group-hover:translate-x-1" aria-hidden="true" />
-              </span>
-            </a>
+              </ul>
+
+              <h4 className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">{includesTitle}</h4>
+              <ul className="mt-3 flex flex-wrap gap-1.5">
+                {includes.map((item) => (
+                  <li key={item} className="rounded-full bg-white/[0.06] px-3 py-1 text-xs font-medium text-slate-200 ring-1 ring-white/10">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </article>
           ))}
         </div>
       </div>
@@ -715,7 +755,7 @@ function ServiceCard({ service, onChoose, onOpen }) {
   return (
     <article
       className={`flex flex-col rounded-2xl border p-5 shadow-panel ${
-        featured ? "border-electric/60 bg-gradient-to-b from-electric/25 via-surface to-surface text-white shadow-[0_0_60px_-20px_rgba(139,108,255,0.7)]" : "border-white/10 bg-surface text-white"
+        featured ? "border-electric/60 bg-gradient-to-b from-electric/25 via-surface to-surface text-white shadow-[0_0_60px_-20px_rgba(255,77,109,0.7)]" : "border-white/10 bg-surface text-white"
       }`}
     >
       <div className="mb-4 flex items-start justify-between gap-4">
@@ -938,7 +978,7 @@ function FaqSection({ items, eyebrow = "Preguntas frecuentes", title = "Lo que s
       <div className={`mx-auto grid ${width} grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr]`}>
         <div data-reveal>
           <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,77,109,0.9)]" aria-hidden="true" />
         {eyebrow}
       </p>
           <h2 className={`mt-4 font-display text-3xl font-black leading-tight tracking-tight ${dark ? "text-white" : "text-white"}`}>{title}</h2>
@@ -970,7 +1010,7 @@ function WebTypesSection({ groups }) {
     <section id="tipos-de-web" className="px-4 pb-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
         <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,77,109,0.9)]" aria-hidden="true" />
           Qué tipo de web necesitas
         </p>
         <h2 className="mt-4 font-display text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">Tipos de web que desarrollo</h2>
@@ -1193,7 +1233,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
       <div className="mx-auto max-w-7xl">
         <h2 className="mb-6">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,77,109,0.9)]" aria-hidden="true" />
             Contacto
           </span>
         </h2>
@@ -1263,7 +1303,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
           {status === "webhook-http-error" && <p className="mt-4 rounded-xl border border-violet-400/30 bg-violet-500/10 px-4 py-3 text-sm font-semibold text-violet-200">Para usarlo en Vercel, el webhook de n8n debe ser HTTPS.</p>}
 
           <button type="submit" disabled={status === "loading"} className="mt-5 inline-flex w-full items-center justify-center gap-3 rounded-full bg-accent px-5 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-ink active:scale-[0.98] disabled:cursor-wait disabled:opacity-60 disabled:hover:translate-y-0">
-            {status === "loading" ? "Enviando..." : "Pedir mi auditoría gratis"}
+            {status === "loading" ? "Enviando..." : "Pedir auditoría gratis"}
             <ArrowRight size={18} strokeWidth={1.9} />
           </button>
           <p className="mt-3 text-center text-xs leading-5 text-slate-400">
@@ -1359,7 +1399,7 @@ function PortfolioPage() {
         <div className="noise-overlay absolute inset-x-0 top-0 h-[78%]" />
         <div className="relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:px-8">
           <h1 className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,77,109,0.9)]" aria-hidden="true" />
             Portfolio
           </h1>
 
@@ -1487,6 +1527,79 @@ function NotFoundPage({ navigate }) {
           Volver al inicio
           <ArrowRight size={18} strokeWidth={1.9} aria-hidden="true" />
         </a>
+      </div>
+    </section>
+  );
+}
+
+function CookiesPage({ navigate }) {
+  const sections = [
+    [
+      "Qué son las cookies",
+      "Son pequeños archivos que algunas webs guardan en tu navegador para recordar datos de tu visita, como tus preferencias o tu sesión, o para medir cómo se usa la web.",
+    ],
+    [
+      "Esta web no usa cookies",
+      "creaciones-digitales.com no instala cookies propias ni de terceros, ni de análisis ni de publicidad. Por eso no te mostramos un aviso para aceptarlas.",
+    ],
+    [
+      "Medición de visitas sin cookies",
+      "Para saber cuántas personas visitan la web uso Vercel Web Analytics, que cuenta las visitas de forma agregada sin instalar cookies ni identificar a nadie.",
+    ],
+    [
+      "Fuentes y recursos",
+      "Las tipografías y las imágenes se sirven desde esta misma web. No cargamos recursos de Google Fonts ni de otros servicios externos que puedan instalar cookies.",
+    ],
+    [
+      "Enlaces a otras webs",
+      "Si pulsas el botón de WhatsApp o el enlace a Instagram, saldrás de esta web. Esos servicios tienen sus propias políticas de cookies, que puedes consultar en sus páginas.",
+    ],
+    [
+      "Cómo gestionar las cookies en tu navegador",
+      "Puedes ver y borrar las cookies, o bloquearlas, desde la configuración de tu navegador: Chrome, Firefox, Safari y Edge lo permiten en su apartado de privacidad.",
+    ],
+    [
+      "Cambios en esta política",
+      "Si en el futuro la web empieza a usar cookies, actualizaré esta página y, cuando la ley lo exija, te pediré tu consentimiento antes de instalarlas.",
+    ],
+  ];
+
+  return (
+    <section className="px-4 pb-24 pt-32 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-3xl">
+        <button
+          type="button"
+          onClick={() => navigate("/")}
+          className="inline-flex items-center gap-2 text-sm font-bold text-electric transition hover:text-white"
+        >
+          <ArrowRight size={16} strokeWidth={1.9} className="rotate-180" aria-hidden="true" />
+          Volver al inicio
+        </button>
+        <h1 className="mt-6 font-display text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">Política de cookies</h1>
+        <p className="mt-4 text-base leading-7 text-slate-300">Qué cookies usa esta web y cómo puedes gestionarlas.</p>
+        <div className="mt-10 space-y-8">
+          {sections.map(([title, text]) => (
+            <div key={title}>
+              <h2 className="font-display text-lg font-black text-white">{title}</h2>
+              <p className="mt-2 text-base leading-7 text-slate-300">{text}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-10 text-sm leading-6 text-slate-400">
+          Para saber cómo trato los datos que me envías, consulta la{" "}
+          <a
+            href="/privacidad"
+            onClick={(event) => {
+              event.preventDefault();
+              navigate("/privacidad");
+            }}
+            className="font-semibold text-electric underline underline-offset-2 hover:text-white"
+          >
+            política de privacidad
+          </a>
+          .
+        </p>
+        <p className="mt-6 text-sm text-slate-400">Última actualización: octubre de 2026.</p>
       </div>
     </section>
   );
@@ -1682,16 +1795,28 @@ function Footer({ navigate }) {
 
         <div className="flex flex-col gap-3 border-t border-white/12 py-6 text-xs text-slate-400 md:flex-row md:items-center md:justify-between">
           <p className="font-semibold">© {new Date().getFullYear()} Creaciones Digitales. Todos los derechos reservados.</p>
-          <a
-            href="/privacidad"
-            onClick={(event) => {
-              event.preventDefault();
-              navigate("/privacidad");
-            }}
-            className="transition hover:text-soft"
-          >
-            Política de privacidad
-          </a>
+          <nav aria-label="Textos legales" className="flex flex-wrap gap-x-5 gap-y-2">
+            <a
+              href="/privacidad"
+              onClick={(event) => {
+                event.preventDefault();
+                navigate("/privacidad");
+              }}
+              className="transition hover:text-soft"
+            >
+              Política de privacidad
+            </a>
+            <a
+              href="/cookies"
+              onClick={(event) => {
+                event.preventDefault();
+                navigate("/cookies");
+              }}
+              className="transition hover:text-soft"
+            >
+              Política de cookies
+            </a>
+          </nav>
         </div>
       </div>
     </footer>
@@ -1702,7 +1827,7 @@ function SectionHeader({ eyebrow, title, text, dark = false }) {
   return (
     <div data-reveal className="max-w-3xl">
       <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-sm font-medium text-soft">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,46,126,0.9)]" aria-hidden="true" />
+        <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,77,109,0.9)]" aria-hidden="true" />
         {eyebrow}
       </p>
       <h2 className={`mt-4 font-display text-3xl font-black leading-tight tracking-tight sm:text-4xl ${dark ? "text-white" : "text-white"}`}>{title}</h2>

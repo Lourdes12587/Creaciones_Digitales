@@ -115,8 +115,8 @@ const services = [
     ],
     timeline: "5 días",
     buildDays: [5, 5],
-    amount: 500,
-    price: "Desde 500 €",
+    amount: 390,
+    price: "Desde 390 €",
     offer: "Oferta de lanzamiento",
     cta: "Quiero la agenda",
     slug: "agenda-automatica",
@@ -126,7 +126,7 @@ const services = [
     pageLead: "Con recordatorios por WhatsApp 24 horas antes de cada cita.",
     metaTitle: "Agenda automática con WhatsApp | Creaciones Digitales",
     metaDescription:
-      "Tus clientes reservan online, reciben la confirmación al instante y un recordatorio por WhatsApp 24 horas antes. Para clínicas, centros de estética y veterinarias. Desde 500 €.",
+      "Tus clientes reservan online, reciben la confirmación al instante y un recordatorio por WhatsApp 24 horas antes. Para clínicas, centros de estética y veterinarias. Desde 390 €.",
     problem:
       "Cada cita que se olvida es un hueco que no se cobra, y cada llamada para confirmar es tiempo que no dedicas a tus clientes. La agenda automática confirma, recuerda y ayuda a cubrir cancelaciones sin que nadie tenga que coger el teléfono.",
     faqs: [
@@ -165,7 +165,6 @@ const services = [
     problem:
       "Copiar datos de un sitio a otro, mandar los mismos correos o pasar pedidos a una hoja de cálculo se come horas cada semana. Una automatización hace ese trabajo sola, sin errores y a cualquier hora.",
     faqs: [
-      ["¿Con qué herramientas trabajas?", "Con n8n, conectando lo que ya usáis: correo, hojas de cálculo, CRM y WhatsApp. No hace falta que cambiéis vuestras herramientas."],
       ["¿Por dónde empezamos?", "Por la tarea que más horas os quita. En la auditoría gratuita de 30 minutos detectamos las tres que más compensa automatizar."],
       ["¿Qué pasa si algo deja de funcionar?", "Entrego cada flujo probado y documentado, con 30 días de soporte. Después puedes contratar el mantenimiento mensual desde 49 € al mes."],
     ],
@@ -186,27 +185,6 @@ const maintenance = {
 
 const packages = [...services, maintenance];
 
-const relatedWork = {
-  "web-profesional": [
-    [portfolioBlueIsland, "Blue Island Boats, web de reservas"],
-    [portfolioYouEyes, "You Eyes, medio digital"],
-    [portfolioRestaurantMobile, "Zappi, carta con pedidos, en el móvil"],
-    [portfolioDelux, "DE LUX, tienda online"],
-  ],
-  "agenda-automatica": [
-    [portfolioDogDreams, "DogDreams, reserva de citas"],
-    [portfolioDogDreamsMobile, "DogDreams en el móvil"],
-    [portfolioDogDreamsTablet, "DogDreams en tablet"],
-    [portfolioBlueIsland, "Blue Island Boats, reservas con seguimiento"],
-  ],
-  automatizaciones: [
-    [FLOW_IMAGE, "El flujo de n8n que responde el chat de esta web"],
-    [portfolioBlueIsland, "Blue Island Boats: seguimiento automático de interesados"],
-    [portfolioDogDreams, "DogDreams: recordatorios 24 horas antes por WhatsApp"],
-    [portfolioDogDreamsMobile, "DogDreams: reagenda de huecos libres"],
-  ],
-};
-
 // The line-up: every web and every automation, with its time and price.
 const lineup = [
   {
@@ -224,7 +202,7 @@ const lineup = [
   {
     group: "Lo que automatizo",
     rows: [
-      ["Agenda automática", "Reservas con confirmación al instante", "5 días", "desde 500 €"],
+      ["Agenda automática", "Reservas con confirmación al instante", "5 días", "desde 390 €"],
       ["Recordatorios por WhatsApp", "Un aviso 24 horas antes de cada cita", "5 días", "en la agenda"],
       ["Formularios conectados", "Cada consulta, a tu correo o WhatsApp", "1–2 semanas", "desde 390 €"],
       ["Seguimiento de clientes", "Mensajes a quien no ha respondido", "1–2 semanas", "desde 390 €"],
@@ -235,8 +213,205 @@ const lineup = [
   },
 ];
 
+const SITE_URL = "https://www.creaciones-digitales.com";
+
+// The home services section: two tabs of cards, no prices, every card with its delivery time.
+const serviceCatalog = [
+  {
+    id: "web",
+    tab: "Desarrollo web",
+    intro: "Webs rápidas, claras y pensadas para una sola cosa: que te escriban, reserven o compren.",
+    page: "/servicios/desarrollo-web-ecommerce",
+    pageLabel: "Todo sobre desarrollo web",
+    items: [
+      {
+        name: "Web que capta clientes",
+        featured: true,
+        hook: "Tu negocio, listo para recibir clientes",
+        text: "Una web corporativa con tus servicios, quién eres y una forma clara de contactarte. Cada consulta te llega al momento por correo o WhatsApp.",
+        includes: ["Hasta 5 páginas con diseño y textos adaptados a tu negocio", "Formulario y WhatsApp conectados", "Preparada para Google desde el primer día", "Formación para actualizarla tú"],
+        time: "3 días",
+      },
+      {
+        name: "Landing page",
+        hook: "Una página, una acción: escribirte",
+        text: "Para una campaña, un servicio o un anuncio. Todo el contenido empuja hacia un solo objetivo, sin distracciones.",
+        includes: ["Estructura pensada para convertir", "Llamada a la acción visible en cada pantalla", "Conexión con formulario, WhatsApp o agenda", "Lista para campañas de Google y redes sociales"],
+        time: "3 días",
+      },
+      {
+        name: "Web con reservas",
+        hook: "Que reserven sin llamarte",
+        text: "Para clínicas, centros de estética, restaurantes, alojamientos o actividades. Tus clientes eligen día y hora, y la reserva queda confirmada al instante.",
+        includes: ["Calendario de reservas integrado en tu web", "Confirmación automática por WhatsApp o correo", "Recordatorio antes de cada cita", "Gestión de cancelaciones y huecos libres"],
+        time: "5 días",
+        page: "/servicios/agenda-automatica",
+      },
+      {
+        name: "Tienda online",
+        hook: "Vende mientras atiendes tu negocio",
+        text: "Catálogo, carrito, pago y envíos en una tienda fácil de gestionar. Cada pedido te llega avisado y el cliente recibe la confirmación al momento.",
+        includes: ["Catálogo con fichas de producto claras", "Pasarela de pago segura", "Gestión de envíos y avisos al cliente", "Formación para subir productos tú"],
+        time: "a medida, presupuesto en 48 h",
+      },
+      {
+        name: "Portafolio y micrositio",
+        hook: "Tu trabajo, presentado como merece",
+        text: "Para creativos, profesionales, eventos o lanzamientos de producto. Una web que muestra lo que haces y convierte visitas en contactos.",
+        includes: ["Galería o presentación visual del trabajo", "Formulario de contacto o solicitud de presupuesto", "Diseño adaptado a móvil", "Optimizada para cargar rápido"],
+        time: "3 días",
+      },
+      {
+        name: "Rediseño de web",
+        hook: "Tu web actual, pero que funcione",
+        text: "Si tu web ya existe pero no genera consultas, la reviso, la ordeno y la convierto en una herramienta de captación.",
+        includes: ["Análisis de lo que hoy frena las consultas", "Nuevo diseño y textos más claros", "Conexión con WhatsApp, formularios y agenda", "Mejoras de velocidad y posicionamiento"],
+        time: "3–7 días",
+      },
+      {
+        name: "Blog y posicionamiento en Google",
+        hook: "Que te encuentren cuando te buscan",
+        text: "Contenido y estructura para aparecer en Google y en los buscadores con IA, como ChatGPT, en búsquedas de tu zona y de tu servicio.",
+        includes: ["Blog fácil de mantener", "SEO local: Google Business Profile y páginas por zona", "Optimización para buscadores con IA", "Medición de visitas y consultas"],
+        time: "a medida, presupuesto en 48 h",
+      },
+      {
+        name: "Aplicación web",
+        hook: "Tu proceso, en una herramienta propia",
+        text: "Paneles internos, portales de clientes o herramientas a medida cuando las plantillas no alcanzan.",
+        includes: ["Acceso con usuario para clientes o equipo", "Paneles con la información que necesitas", "Conexión con tus herramientas actuales", "Documentación y soporte"],
+        time: "a medida, presupuesto en 48 h",
+      },
+    ],
+  },
+  {
+    id: "automatizaciones",
+    tab: "Automatizaciones",
+    intro: "Cuéntame qué repites cada semana y te digo cómo quitártelo de encima. Conecto lo que ya usas (WhatsApp, correo, hojas de cálculo, agenda, CRM) para que trabaje solo.",
+    page: "/servicios/automatizacion-a-medida",
+    pageLabel: "Todo sobre automatizaciones",
+    items: [
+      {
+        name: "Agente de IA en WhatsApp",
+        featured: true,
+        hook: "Respuestas al instante, también a las 23 h",
+        text: "Un asistente con inteligencia artificial que responde en WhatsApp e Instagram como lo harías tú: informa servicios, horarios y disponibilidad, agenda y te pasa solo las conversaciones importantes.",
+        includes: ["Entrenado con la información de tu negocio", "Conectado a tu agenda, catálogo o stock", "Derivación a una persona cuando hace falta", "Resumen de conversaciones y contactos nuevos"],
+        time: "1–2 semanas",
+      },
+      {
+        name: "Agenda automática con recordatorios",
+        hook: "Menos olvidos, más citas cumplidas",
+        text: "Reservas con confirmación al instante y un aviso por WhatsApp 24 horas antes. Si alguien cancela, el hueco se ofrece a la lista de espera.",
+        includes: ["Reserva online 24/7", "Recordatorio con opción de confirmar o cambiar", "Lista de espera automática", "Avisos a ti y a tu equipo"],
+        time: "5 días",
+        page: "/servicios/agenda-automatica",
+      },
+      {
+        name: "Captación y seguimiento de clientes",
+        hook: "Ningún contacto se queda sin respuesta",
+        text: "Cada consulta de tu web, redes o anuncios entra a un solo lugar y recibe respuesta inmediata. A quien no contesta le llega un seguimiento automático en el momento justo.",
+        includes: ["Formularios y redes conectados a correo, WhatsApp o CRM", "Primera respuesta automática a cualquier hora", "Mensajes de seguimiento a quien no ha respondido", "Aviso cuando un cliente está listo para cerrar"],
+        time: "1–2 semanas",
+      },
+      {
+        name: "Recepcionista telefónica con IA",
+        hook: "Ninguna llamada perdida",
+        text: "Un asistente de voz atiende el teléfono cuando tú no puedes: responde dudas frecuentes, toma reservas y te deja el resumen de cada llamada.",
+        includes: ["Atención 24/7 en español y otros idiomas", "Reservas conectadas a tu agenda", "Resumen de cada llamada por WhatsApp o correo", "Derivación a una persona en casos importantes"],
+        time: "1–2 semanas",
+      },
+      {
+        name: "Presupuestos automáticos",
+        hook: "Tu presupuesto, enviado el mismo día",
+        text: "El cliente rellena un formulario o te escribe, y el sistema prepara el presupuesto con tu plantilla, lo envía y hace el seguimiento.",
+        includes: ["Plantilla de presupuesto con tu marca", "Generación a partir de un formulario o una conversación", "Envío automático en PDF", "Recordatorio si el cliente no responde"],
+        time: "1–2 semanas",
+      },
+      {
+        name: "Reseñas en Google y reactivación de clientes",
+        hook: "Clientes contentos que lo cuentan",
+        text: "Después de cada servicio pido la reseña en el momento justo y contacto a los clientes que hace tiempo no vuelven.",
+        includes: ["Petición de reseña automática tras la visita o compra", "Aviso si llega una reseña negativa", "Mensajes de reactivación y recordatorios de revisión", "Campañas para fechas o días con menos movimiento"],
+        time: "1 semana",
+      },
+      {
+        name: "Cobros y facturación automática",
+        hook: "Cobras sin perseguir a nadie",
+        text: "Links de pago, señas para reservas, facturas que se generan solas al cobrar y recordatorios a quien tiene pagos pendientes.",
+        includes: ["Links de pago y señas para evitar ausencias", "Factura automática al recibir el pago", "Recordatorios de pagos pendientes", "Preparado para Verifactu"],
+        time: "1–2 semanas",
+      },
+      {
+        name: "Documentos y datos sin copiar a mano",
+        hook: "Lo que hoy copias, se carga solo",
+        text: "Facturas, pedidos, formularios o fichas de clientes que la IA lee, ordena y pasa a tus hojas de cálculo o sistemas.",
+        includes: ["Lectura automática de PDF, correos e imágenes", "Datos ordenados en tu hoja de cálculo o CRM", "Datos que pasan de una herramienta a otra solos", "Alertas cuando falta información"],
+        time: "1–2 semanas",
+      },
+      {
+        name: "Informes automáticos",
+        hook: "Tus números, sin hacer planillas",
+        text: "Un resumen semanal por correo o WhatsApp con consultas, reservas, ventas y lo que necesita tu atención.",
+        includes: ["Panel con los datos clave de tu negocio", "Resumen semanal automático", "Datos de varias herramientas en un solo lugar", "Alertas cuando algo se sale de lo normal"],
+        time: "1–2 semanas",
+      },
+      {
+        name: "Procesos a medida",
+        hook: "Si lo repites, se puede automatizar",
+        text: "Para tareas propias de tu negocio que no encajan en un servicio estándar. Analizo cómo trabajas y construyo el flujo exacto.",
+        includes: ["Análisis del proceso actual", "Automatización conectada a tus herramientas", "Pruebas antes de ponerlo en marcha", "Documentación para tu equipo"],
+        time: "1–2 semanas",
+      },
+      {
+        name: "Mantenimiento y mejoras",
+        hook: "Funciona hoy y sigue funcionando",
+        text: "Vigilo tus automatizaciones y tu web, aplico actualizaciones y hago mejoras cada mes para que nada se rompa sin que te enteres.",
+        includes: ["Monitoreo de automatizaciones y web", "Actualizaciones y copias de seguridad", "Horas de mejoras cada mes", "Soporte por WhatsApp"],
+        time: "cada mes",
+      },
+    ],
+  },
+];
+
+const sectors = [
+  "Clínicas y estética",
+  "Restaurantes",
+  "Alojamientos y turismo",
+  "Inmobiliarias",
+  "Tiendas online",
+  "Peluquerías y belleza",
+  "Gimnasios",
+  "Abogados y gestorías",
+  "Reformas y servicios del hogar",
+  "Academias y formación",
+];
+
+const reasons = [
+  ["Web y automatización en un solo lugar:", "sin intermediarios."],
+  ["Pruebas una versión antes del segundo pago.", ""],
+  ["Conecto lo que ya usas;", "no tienes que cambiar de herramientas."],
+  ["30 días de soporte incluidos", "y documentación para que no dependas de mí."],
+];
+
+// schema.org Service for every card, rendered into the prerendered HTML.
+const servicesSchema = {
+  "@context": "https://schema.org",
+  "@graph": serviceCatalog.flatMap((block) =>
+    block.items.map((item) => ({
+      "@type": "Service",
+      name: item.name,
+      description: item.text,
+      serviceType: block.tab,
+      url: `${SITE_URL}${item.page || block.page}`,
+      areaServed: { "@type": "Country", name: "España" },
+      provider: { "@type": "ProfessionalService", name: "Creaciones Digitales", url: `${SITE_URL}/`, telephone: PHONE },
+    })),
+  ),
+};
+
 const homeFaqs = [
-  ["¿Cuánto cuesta?", "La automatización a medida empieza en 390 €; la web, en 500 €, con precios de lanzamiento. Tras la auditoría gratuita te envío un presupuesto cerrado en 48 horas."],
+  ["¿Cuánto cuesta?", "La web empieza en 500 €; la agenda automática y la automatización a medida, en 390 €, con precios de lanzamiento. Tras la auditoría gratuita te envío un presupuesto cerrado en 48 horas."],
   ["¿Cuánto tarda?", "Una web, unos 3 días; la agenda automática, 5 días; una automatización a medida, 1 o 2 semanas."],
   ["¿Qué pasa después de la entrega?", "Tienes 30 días de soporte incluidos. Después puedes seguir con el mantenimiento mensual desde 49 € al mes o continuar por tu cuenta con la documentación."],
   ["¿Tengo que cambiar mis herramientas?", "No necesariamente. Primero reviso lo que ya usas y conecto el sistema con WhatsApp, correo, formularios, hojas de cálculo o CRM cuando sea posible."],
@@ -244,7 +419,6 @@ const homeFaqs = [
   ["¿Podré actualizar la web yo?", "Sí. Te enseño a cambiar textos, fotos y precios para que no dependas de nadie en el día a día."],
   ["¿También haces tiendas online?", "Sí: catálogo, carrito, pasarela de pago y envíos. El precio depende del número de productos y de la pasarela, así que te envío un presupuesto cerrado en 48 horas."],
   ["¿Cómo llegan los recordatorios?", "Por WhatsApp, 24 horas antes de cada cita, y la lista de espera ofrece los huecos que se cancelan."],
-  ["¿Con qué herramientas trabajas?", "Con n8n, conectando lo que ya usáis: correo, hojas de cálculo, CRM y WhatsApp."],
 ];
 
 const portfolioProjects = [
@@ -494,7 +668,7 @@ function App({ initialRoute }) {
             <Work navigate={navigate} />
             <Pricing onChooseService={chooseService} navigate={navigate} />
             <MapBand />
-            <Lineup groups={lineup} />
+            <Services navigate={navigate} />
             <HowItWorks />
             <Faq items={homeFaqs} />
             <Contact selectedService={selectedService} onServiceChange={setSelectedService} navigate={navigate} />
@@ -644,7 +818,7 @@ function Nav({ navigate, goToSection, onAccent }) {
           aria-label="Creaciones Digitales, inicio"
           className="block h-12 w-14 shrink-0 bg-[#d9d8d5] p-1 transition-transform duration-200 hover:-rotate-3"
         >
-          <img src={logoNavbar} alt="" width="56" height="45" className="h-full w-full object-contain" />
+          <img src={logoNavbar} alt="Creaciones Digitales"width="56" height="45" className="h-full w-full object-contain" />
         </a>
 
         <div className="hidden items-center gap-7 md:flex">
@@ -719,7 +893,9 @@ function Hero() {
 function DeviceShowcase({ project, eager = false, active = true, wide = false }) {
   const loading = eager ? "eager" : "lazy";
   const hasDevices = Boolean(project.tablet && project.mobile);
-  const alt = `Web de ${project.name}`;
+  const lower = (text) => text.charAt(0).toLowerCase() + text.slice(1);
+  // Every screen keeps a descriptive alt for search engines; the hidden ones stay out of the accessibility tree.
+  const describe = (caption, device) => `${project.name}, ${lower(project.webType)}: ${lower(caption)} en ${device}`;
   const screens = project.screens?.length ? project.screens : [[project.image, "Portada"]];
   const [screen, setScreen] = useState(0);
 
@@ -738,7 +914,8 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
               <img
                 key={caption}
                 src={src}
-                alt={index === screen ? `${alt} en ordenador: ${caption}` : ""}
+                alt={describe(caption, "ordenador")}
+                aria-hidden={index !== screen}
                 loading={index === 0 ? loading : "lazy"}
                 className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-500 ${index === screen ? "opacity-100" : "opacity-0"}`}
               />
@@ -772,7 +949,8 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
                 <img
                   key={caption}
                   src={tablet || project.tablet}
-                  alt={index === screen ? `${alt} en tablet: ${caption}` : ""}
+                  alt={describe(caption, "tablet")}
+                  aria-hidden={index !== screen}
                   loading={index === 0 ? loading : "lazy"}
                   className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-500 ${index === screen ? "opacity-100" : "opacity-0"}`}
                 />
@@ -785,7 +963,8 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
                 <img
                   key={caption}
                   src={mobile || project.mobile}
-                  alt={index === screen ? `${alt} en móvil: ${caption}` : ""}
+                  alt={describe(caption, "móvil")}
+                  aria-hidden={index !== screen}
                   loading={index === 0 ? loading : "lazy"}
                   className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-500 ${index === screen ? "opacity-100" : "opacity-0"}`}
                 />
@@ -1008,6 +1187,155 @@ function MapBand() {
   );
 }
 
+function ServiceCard({ item, page, navigate, index }) {
+  const link = item.page || null;
+  return (
+    <li data-reveal style={{ "--d": index % 3 }} className={`svc-card ${item.featured ? "is-featured" : ""}`}>
+      {item.featured && <p className="svc-tag">Destacado</p>}
+      <h3 className="t-lead font-medium leading-tight">{item.name}</h3>
+      <p className="svc-hook mt-2 font-medium">{item.hook}</p>
+      <p className="muted mt-4">{item.text}</p>
+      <p className="t-small mt-6 font-medium">Qué incluye</p>
+      <ul className="svc-list mt-2">
+        {item.includes.map((line) => (
+          <li key={line}>{line}</li>
+        ))}
+      </ul>
+      <div className="svc-foot">
+        <p className="t-small">
+          Plazo: <span className="font-medium">{item.time}</span>
+        </p>
+        {link && link !== page && (
+          <a
+            href={link}
+            onClick={(event) => {
+              event.preventDefault();
+              navigate(link);
+            }}
+            className="link t-small"
+          >
+            Ver la agenda automática
+          </a>
+        )}
+      </div>
+    </li>
+  );
+}
+
+function Services({ navigate }) {
+  const [activeId, setActiveId] = useState(serviceCatalog[0].id);
+
+  // Arrow keys, Home and End move between the tabs (WAI-ARIA tabs pattern, automatic activation).
+  function handleKeyDown(event) {
+    const index = serviceCatalog.findIndex((block) => block.id === activeId);
+    const last = serviceCatalog.length - 1;
+    const next = { ArrowRight: index === last ? 0 : index + 1, ArrowLeft: index === 0 ? last : index - 1, Home: 0, End: last }[event.key];
+    if (next === undefined) return;
+    event.preventDefault();
+    setActiveId(serviceCatalog[next].id);
+    document.getElementById(`tab-${serviceCatalog[next].id}`)?.focus();
+  }
+
+  return (
+    <section id="servicios" aria-labelledby="servicios-title" className="section wrap on-dark md:pr-[104px]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema).replace(/</g, "\\u003c") }} />
+
+      <div className="max-w-[60rem]">
+        <h2 id="servicios-title" data-reveal className="t-head">
+          Webs que captan clientes y automatizaciones que trabajan solas
+        </h2>
+        <p data-reveal style={{ "--d": 1 }} className="t-lead mt-8 max-w-[44ch]">
+          Diseño tu web y automatizo todo lo que pasa después del clic: cada consulta respondida, cada cita confirmada y cada cliente con seguimiento. Tú te dedicas a tu negocio; el sistema se ocupa del resto.
+        </p>
+      </div>
+
+      <div data-reveal style={{ "--d": 2 }} role="tablist" aria-label="Servicios" className="svc-tabs t-lead mt-14 flex flex-wrap gap-x-8 gap-y-2" onKeyDown={handleKeyDown}>
+        {serviceCatalog.map((block) => (
+          <button
+            key={block.id}
+            id={`tab-${block.id}`}
+            type="button"
+            role="tab"
+            aria-selected={block.id === activeId}
+            aria-controls={`panel-${block.id}`}
+            tabIndex={block.id === activeId ? 0 : -1}
+            onClick={() => setActiveId(block.id)}
+            className="min-h-[44px] font-medium"
+          >
+            {block.tab}
+          </button>
+        ))}
+      </div>
+
+      {serviceCatalog.map((block) => (
+        <div key={block.id} id={`panel-${block.id}`} role="tabpanel" aria-labelledby={`tab-${block.id}`} hidden={block.id !== activeId} tabIndex={0} className="mt-8">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3">
+            <p className="max-w-[60ch]">{block.intro}</p>
+            <a
+              href={block.page}
+              onClick={(event) => {
+                event.preventDefault();
+                navigate(block.page);
+              }}
+              className="link"
+            >
+              {block.pageLabel}
+            </a>
+          </div>
+          <ul className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {block.items.map((item, index) => (
+              <ServiceCard key={item.name} item={item} page={block.page} navigate={navigate} index={index} />
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      <div className="svc-band mt-24">
+        <h3 data-reveal className="t-lead font-medium">
+          Sistemas pensados para tu sector
+        </h3>
+        <ul data-reveal style={{ "--d": 1 }} className="mt-6 flex flex-wrap gap-2" aria-label="Sectores">
+          {sectors.map((sector) => (
+            <li key={sector} className="svc-chip">
+              {sector}
+            </li>
+          ))}
+        </ul>
+        <p data-reveal style={{ "--d": 2 }} className="muted mt-6 max-w-[60ch]">
+          Cada sector tiene sus tareas repetidas. En la auditoría te digo cuáles compensa automatizar primero en el tuyo.
+        </p>
+      </div>
+
+      <div className="svc-band mt-16">
+        <h3 data-reveal className="t-lead font-medium">
+          Por qué trabajar conmigo
+        </h3>
+        <ul className="mt-6 grid gap-x-6 gap-y-6 sm:grid-cols-2 xl:grid-cols-4">
+          {reasons.map(([lead, rest], index) => (
+            <li key={lead} data-reveal style={{ "--d": index }} className="svc-reason">
+              <span className="font-medium">{lead}</span> {rest && <span className="muted">{rest}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div data-reveal className="on-accent mt-20 p-6 sm:p-10 lg:p-14">
+        <h3 className="t-head max-w-[16ch]">¿Qué tarea repites cada semana?</h3>
+        <p className="t-lead mt-6 max-w-[44ch]">En 30 minutos la revisamos juntos y te digo las tres cosas que más compensa automatizar en tu negocio. Gratis y sin compromiso.</p>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a href="#contacto" className="btn">
+            Pedir auditoría gratis <span className="arrow" aria-hidden="true">→</span>
+          </a>
+          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-line">
+            <WhatsAppIcon size={20} />
+            Escribirme por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Lineup({ groups }) {
   return (
     <section id="servicios" aria-label="Servicios" className="section wrap on-dark md:pr-[104px]">
@@ -1058,7 +1386,7 @@ function HowItWorks() {
           </div>
           <div data-ui className="ui-reply mt-4 sm:ml-14">
             <p className="ui-label">Propuesta</p>
-            <p className="mt-1 font-medium">Agenda automática · 500 € · lista en 5 días · 30 días de soporte incluidos</p>
+            <p className="mt-1 font-medium">Agenda automática · 390 € · lista en 5 días · 30 días de soporte incluidos</p>
           </div>
         </div>
 
@@ -1349,58 +1677,7 @@ function ServicePage({ service, navigate, onChooseService }) {
         </div>
       </section>
 
-      <section aria-labelledby="precio-servicio" className="section wrap bg-surface">
-        <div className="grid12 items-center gap-y-12">
-          <div className="col-span-12 self-start lg:col-span-4">
-            <h2 id="precio-servicio" data-reveal className="t-head">
-              Precio cerrado
-            </h2>
-            <p data-reveal style={{ "--d": 1 }} className="mt-6 max-w-[38ch]">
-              Para {service.audience.charAt(0).toLowerCase() + service.audience.slice(1)}. {service.offer}.
-            </p>
-          </div>
-          <div className="col-span-12 lg:col-span-7 lg:col-start-6">
-            <PriceFigure pkg={service} />
-            <ul className="mt-8 grid max-w-[46ch] gap-1">
-              {service.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <ReadyDate pkg={service} />
-            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-              <a
-                href="/#contacto"
-                onClick={(event) => {
-                  event.preventDefault();
-                  onChooseService(service.id);
-                }}
-                className="btn btn-accent"
-              >
-                {service.cta} <span className="arrow" aria-hidden="true">→</span>
-              </a>
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="link">
-                Preguntar por WhatsApp
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="hecho-title" className="section">
-        <h2 id="hecho-title" data-reveal className="t-lead wrap mb-10 font-medium">
-          Hecho así
-        </h2>
-        <ul className="wrap flex snap-x snap-mandatory gap-2 overflow-x-auto pb-4">
-          {relatedWork[service.id].map(([src, caption], index) => (
-            <li key={caption} data-reveal style={{ "--d": index }} className="shrink-0 snap-start">
-              <img src={src} alt={caption} height="380" loading="lazy" className="h-[260px] w-auto max-w-none sm:h-[380px]" />
-              <p className="t-small mt-3 max-w-[36ch]">{caption}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {isWeb ? <Lineup groups={[lineup[0]]} /> : <Lineup groups={[lineup[1]]} />}
+      {isWeb && <Lineup groups={[lineup[0]]} />}
 
       <Faq items={service.faqs} title={`Sobre ${service.short.toLowerCase()}`} id="preguntas-servicio" />
 
@@ -1661,7 +1938,7 @@ function Footer({ navigate, goToSection }) {
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:gap-x-16">
           <div className="col-span-2 max-w-sm sm:col-span-3 lg:col-span-1">
             <div className="flex items-center gap-3">
-              <img src={logoNavbar} alt="" width="56" height="45" className="h-14 w-16 shrink-0 bg-[#d9d8d5] object-contain p-1" />
+              <img src={logoNavbar} alt="Creaciones Digitales"width="56" height="45" className="h-14 w-16 shrink-0 bg-[#d9d8d5] object-contain p-1" />
               <div>
                 <p className="font-medium leading-tight">Creaciones Digitales</p>
                 <p className="muted">Desarrollo web y automatizaciones</p>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Instagram, Mail, MapPin, Phone } from "lucide-react";
-import logoNavbar from "./assets/logo-creaciones-navbar.webp";
+import logoClarea from "./assets/logo-clarea.png";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
 import portfolioBlueIslandTablet from "./assets/portfolio-blue-island-tablet.webp";
 import portfolioBlueIslandMobile from "./assets/portfolio-blue-island-mobile.webp";
@@ -59,7 +59,7 @@ const N8N_CHAT_URL = "https://n8n.creaciones-digitales.com/webhook/5c3d9e2a-7b41
 const WHATSAPP_URL = "https://wa.me/34697955919?text=" + encodeURIComponent("Hola, vengo de la web y quiero información.");
 const EMAIL = "ubedadesarrolloweb@gmail.com";
 const PHONE = "+34 697 955 919";
-const INSTAGRAM_URL = "https://www.instagram.com/creacionesdigitales_lu/";
+const INSTAGRAM_URL = "https://www.instagram.com/holaclarea/";
 
 // Cerdà's 1859 plan of the Eixample, public domain, via Wikimedia Commons.
 const MAP_IMAGE = "/img/ensanche-eixample-barcelona.jpg";
@@ -87,9 +87,9 @@ const services = [
     cta: "Quiero mi web",
     slug: "desarrollo-web-ecommerce",
     image: portfolioBlueIsland,
-    imageAlt: "Web de Blue Island Boats, hecha por Creaciones Digitales",
+    imageAlt: "Web de Blue Island Boats, hecha por Clarea",
     pageTitle: "Desarrollo web",
-    metaTitle: "Desarrollo web y tiendas online | Creaciones Digitales",
+    metaTitle: "Desarrollo web y tiendas online | Clarea",
     metaDescription:
       "Webs rápidas y tiendas online pensadas para que te escriban y te compren, con formulario y WhatsApp conectados y listas para Google. Webs desde 500 €, en 3 días.",
     problem:
@@ -124,7 +124,7 @@ const services = [
     imageAlt: "Reserva de citas de la clínica veterinaria DogDreams",
     pageTitle: "Agenda automática",
     pageLead: "Con recordatorios por WhatsApp 24 horas antes de cada cita.",
-    metaTitle: "Agenda automática con WhatsApp | Creaciones Digitales",
+    metaTitle: "Agenda automática con WhatsApp | Clarea",
     metaDescription:
       "Tus clientes reservan online, reciben la confirmación al instante y un recordatorio por WhatsApp 24 horas antes. Para clínicas, centros de estética y veterinarias. Desde 390 €.",
     problem:
@@ -159,7 +159,7 @@ const services = [
     imageAlt: "Flujo de n8n del chat de esta web: mensaje recibido, agente de IA, memoria y hoja de preguntas frecuentes",
     pageTitle: "Automatizaciones",
     pageLead: "Flujos con n8n que conectan correo, hojas de cálculo, CRM y WhatsApp.",
-    metaTitle: "Automatización de procesos con n8n | Creaciones Digitales",
+    metaTitle: "Automatización de procesos con n8n | Clarea",
     metaDescription:
       "Convierto tareas repetitivas en flujos automáticos que conectan correo, hojas de cálculo, CRM y WhatsApp. Con pruebas, documentación y 30 días de soporte. Desde 390 €.",
     problem:
@@ -180,7 +180,7 @@ const maintenance = {
   items: ["Actualizaciones de la web y de los flujos", "Vigilancia de tus automatizaciones", "2 horas de mejoras cada mes", "Respuesta en 24–48 horas"],
   cta: "Me interesa",
   image: portfolioYouEyesTablet,
-  imageAlt: "Portal de noticias You Eyes, hecho por Creaciones Digitales",
+  imageAlt: "Portal de noticias You Eyes, hecho por Clarea",
 };
 
 const packages = [...services, maintenance];
@@ -405,7 +405,7 @@ const servicesSchema = {
       serviceType: block.tab,
       url: `${SITE_URL}${item.page || block.page}`,
       areaServed: { "@type": "Country", name: "España" },
-      provider: { "@type": "ProfessionalService", name: "Creaciones Digitales", url: `${SITE_URL}/`, telephone: PHONE },
+      provider: { "@type": "ProfessionalService", name: "Clarea", url: `${SITE_URL}/`, telephone: PHONE },
     })),
   ),
 };
@@ -535,31 +535,31 @@ export function servicePath(service) {
 export const SITE_PAGES = [
   {
     route: "/",
-    title: "Webs y automatizaciones en Barcelona | Creaciones Digitales",
+    title: "Webs y automatizaciones en Barcelona | Clarea",
     description:
       "Webs que captan clientes, agendas automáticas con recordatorios por WhatsApp y automatización de procesos para negocios. Auditoría gratuita de 30 minutos. Desde 390 €.",
   },
   ...services.map((service) => ({ route: servicePath(service), title: service.metaTitle, description: service.metaDescription })),
   {
     route: "/portfolio",
-    title: "Portfolio de webs y tiendas online | Creaciones Digitales",
-    description: "Proyectos de Creaciones Digitales: tiendas online, webs de reservas, agendas automáticas y webs a medida en React que puedes abrir y probar.",
+    title: "Portfolio de webs y tiendas online | Clarea",
+    description: "Proyectos de Clarea: tiendas online, webs de reservas, agendas automáticas y webs a medida en React que puedes abrir y probar.",
   },
   {
     route: "/privacidad",
-    title: "Política de privacidad | Creaciones Digitales",
-    description: "Cómo trata Creaciones Digitales los datos que envías a través del formulario de contacto, WhatsApp o correo.",
+    title: "Política de privacidad | Clarea",
+    description: "Cómo trata Clarea los datos que envías a través del formulario de contacto, WhatsApp o correo.",
   },
   {
     route: "/cookies",
-    title: "Política de cookies | Creaciones Digitales",
+    title: "Política de cookies | Clarea",
     description: "Qué cookies usa creaciones-digitales.com: ninguna. Las visitas se miden sin cookies y sin identificar a nadie.",
   },
 ];
 
 export const PAGE_TITLES = {
   ...Object.fromEntries(SITE_PAGES.map((page) => [page.route, page.title])),
-  404: "Página no encontrada | Creaciones Digitales",
+  404: "Página no encontrada | Clarea",
 };
 
 export function normalizePath(pathname) {
@@ -722,7 +722,7 @@ function ChatWidget() {
         initialMessages: [],
         i18n: {
           en: {
-            title: "Creaciones Digitales",
+            title: "Clarea",
             subtitle: "Respondemos rápidamente",
             footer: "",
             getStarted: "Envíanos un mensaje",
@@ -815,10 +815,10 @@ function Nav({ navigate, goToSection, onAccent }) {
             setMenuOpen(false);
             navigate("/");
           }}
-          aria-label="Creaciones Digitales, inicio"
-          className="block h-12 w-14 shrink-0 bg-[#d9d8d5] p-1 transition-transform duration-200 hover:-rotate-3"
+          aria-label="Clarea, inicio"
+          className="flex h-12 shrink-0 items-center transition-transform duration-200 hover:-rotate-2"
         >
-          <img src={logoNavbar} alt="Creaciones Digitales"width="56" height="45" className="h-full w-full object-contain" />
+          <img src={logoClarea} alt="Clarea" width="1367" height="324" className="h-7 w-auto sm:h-8" />
         </a>
 
         <div className="hidden items-center gap-7 md:flex">
@@ -866,16 +866,10 @@ function Nav({ navigate, goToSection, onAccent }) {
 function Hero() {
   return (
     <section aria-labelledby="hero-title" className="on-accent relative flex min-h-[100svh] flex-col justify-between overflow-hidden">
-      <h1 id="hero-title" aria-label="Creaciones Digitales" className="hero-name wrap pt-[30svh] sm:pt-[18svh]">
+      <h1 id="hero-title" className="hero-name wrap pt-[30svh] sm:pt-[18svh]">
+        <span className="sr-only">Clarea</span>
         <span className="line" aria-hidden="true">
-          <span data-line className="light" style={{ "--i": 0 }}>
-            Creacion_es
-          </span>
-        </span>
-        <span className="line" aria-hidden="true">
-          <span data-line style={{ "--i": 1 }}>
-            Digital_es
-          </span>
+          <img data-line src={logoClarea} alt="" width="1367" height="324" fetchPriority="high" style={{ "--i": 0 }} className="h-auto w-full max-w-[1180px]" />
         </span>
       </h1>
 
@@ -1617,7 +1611,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
           <p>
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="link inline-flex items-center gap-2">
               <Instagram size={16} strokeWidth={2} className="shrink-0" aria-hidden="true" />
-              @creacionesdigitales_lu
+              @holaclarea
             </a>
           </p>
         </div>
@@ -1839,7 +1833,7 @@ const cookieSections = [
 ];
 
 const privacySections = [
-  ["Responsable", `Creaciones Digitales, Barcelona (España). Contacto: ${EMAIL} · ${PHONE}.`],
+  ["Responsable", `Clarea, Barcelona (España). Contacto: ${EMAIL} · ${PHONE}.`],
   [
     "Qué datos recojo",
     "Los que escribes en el formulario de contacto: nombre, correo electrónico, WhatsApp (opcional), servicio y presupuesto (opcionales) y tu mensaje. Si me escribes por WhatsApp o correo, los datos de esa conversación.",
@@ -1937,16 +1931,13 @@ function Footer({ navigate, goToSection }) {
       <div className="mx-auto max-w-7xl text-[15px] leading-normal md:text-base">
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:gap-x-16">
           <div className="col-span-2 max-w-sm sm:col-span-3 lg:col-span-1">
-            <div className="flex items-center gap-3">
-              <img src={logoNavbar} alt="Creaciones Digitales"width="56" height="45" className="h-14 w-16 shrink-0 bg-[#d9d8d5] object-contain p-1" />
-              <div>
-                <p className="font-medium leading-tight">Creaciones Digitales</p>
-                <p className="muted">Desarrollo web y automatizaciones</p>
-              </div>
+            <div>
+              <img src={logoClarea} alt="Clarea" width="1367" height="324" loading="lazy" className="h-10 w-auto" />
+              <p className="muted mt-3">Desarrollo web y automatizaciones</p>
             </div>
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="link muted mt-4 inline-flex min-h-[44px] items-center gap-2 no-underline hover:underline">
               <Instagram size={17} strokeWidth={2} className="shrink-0" aria-hidden="true" />
-              @creacionesdigitales_lu
+              @holaclarea
             </a>
           </div>
 
@@ -1989,7 +1980,7 @@ function Footer({ navigate, goToSection }) {
         </div>
 
         <div className="mt-16 flex flex-col gap-2 pr-[80px] text-[13px] sm:flex-row sm:items-center sm:justify-between lg:pr-[96px]">
-          <p>© {new Date().getFullYear()} Creaciones Digitales. Todos los derechos reservados.</p>
+          <p>© {new Date().getFullYear()} Clarea. Todos los derechos reservados.</p>
           <nav aria-label="Textos legales" className="flex flex-wrap gap-x-6 gap-y-2">
             <a
               href="/privacidad"

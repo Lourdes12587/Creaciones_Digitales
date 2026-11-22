@@ -134,7 +134,8 @@
     color: var(--bg);
     font-weight: 500;
     text-decoration: none;
-    transition: background-color 200ms ease, color 200ms ease, transform 200ms var(--ease-out);
+    /* transform is driven by Motion (magnetic effect), so it is not transitioned here. */
+    transition: background-color 200ms ease, color 200ms ease;
   }
 
   .btn:hover {
@@ -292,13 +293,10 @@
 
 /* Entrances: every part of a section rises once, staggered by --d. Content stays visible without script. */
 @media (prefers-reduced-motion: no-preference) {
+  /* Hidden until Motion reveals it (src/motionFx.js). */
   .js [data-reveal] {
     opacity: 0;
-    transform: translateY(24px);
-    transition:
-      opacity 700ms var(--ease-out),
-      transform 900ms var(--ease-out);
-    transition-delay: calc(var(--d, 0) * 75ms);
+    transform: translateY(28px);
   }
 
   .js [data-reveal].is-in {
@@ -456,6 +454,29 @@
 
 .svc-card.is-featured {
   border: 2px solid var(--accent);
+}
+
+/* Pink glow under the cursor; the card tilts with Motion (useTilt). */
+.svc-card {
+  isolation: isolate;
+  will-change: transform;
+}
+
+.svc-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 77, 109, 0.22), transparent 60%);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .svc-card:hover::before {
+    opacity: 1;
+  }
 }
 
 .svc-tag {

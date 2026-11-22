@@ -1,5 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { EASE_OUT, cascade, magneticButtons, revealOnScroll, slideIn } from "./motionFx";
 import logoClarea from "./assets/logo-clarea.png";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
 import portfolioBlueIslandTablet from "./assets/portfolio-blue-island-tablet.webp";
@@ -614,27 +616,11 @@ function App({ initialRoute }) {
     document.title = PAGE_TITLES[route] || PAGE_TITLES[404];
   }, [route]);
 
-  // Each [data-reveal] element rises once when it enters the viewport.
-  useEffect(() => {
-    const targets = document.querySelectorAll("[data-reveal]:not(.is-in)");
-    if (!("IntersectionObserver" in window)) {
-      targets.forEach((target) => target.classList.add("is-in"));
-      return undefined;
-    }
+  // Each [data-reveal] element rises once when it enters the viewport (Motion, see motionFx.js).
+  useEffect(() => revealOnScroll(), [route]);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-in");
-          observer.unobserve(entry.target);
-        });
-      },
-      { rootMargin: "0px 0px -8% 0px" },
-    );
-    targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
-  }, [route]);
+  // Buttons lean towards the mouse.
+  useEffect(() => magneticButtons(), []);
 
   useEffect(() => {
     function handlePopState() {
@@ -789,8 +775,14 @@ function SkipLink() {
   );
 }
 
+const menuItem = {
+  hidden: { opacity: 0, y: 24 },
+  shown: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } },
+};
+
 function Nav({ navigate, goToSection, onAccent }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
   const links = [
     ["Trabajos", "/portfolio"],
     ["Precios", "#precios"],
@@ -843,22 +835,33 @@ function Nav({ navigate, goToSection, onAccent }) {
         </button>
       </nav>
 
-      {menuOpen && (
-        <div id="menu-movil" className="wrap bg-ink pb-8 pt-6 text-bg md:hidden">
-          <ul className="grid gap-2">
-            {links.map(([label, href]) => (
-              <li key={href}>
-                <a href={href.startsWith("/") ? href : `/${href}`} onClick={(event) => handleNav(event, href)} className="block py-1 text-[2rem] font-medium leading-tight">
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <a href="/#contacto" onClick={(event) => handleNav(event, "#contacto")} className="btn btn-accent mt-6 w-full">
-            Pedir auditoría gratis
-          </a>
-        </div>
-      )}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            id="menu-movil"
+            className="wrap bg-ink pb-8 pt-6 text-bg md:hidden"
+            initial={reduceMotion ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
+            animate={reduceMotion ? { opacity: 1 } : { clipPath: "inset(0 0 0% 0)" }}
+            exit={reduceMotion ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: 0.45, ease: EASE_OUT }}
+          >
+            <motion.ul className="grid gap-2" initial="hidden" animate="shown" variants={{ shown: { transition: { staggerChildren: 0.06, delayChildren: 0.12 } } }}>
+              {links.map(([label, href]) => (
+                <motion.li key={href} variants={menuItem}>
+                  <a href={href.startsWith("/") ? href : `/${href}`} onClick={(event) => handleNav(event, href)} className="block py-1 text-[2rem] font-medium leading-tight">
+                    {label}
+                  </a>
+                </motion.li>
+              ))}
+            </motion.ul>
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.36, duration: 0.4, ease: EASE_OUT }}>
+              <a href="/#contacto" onClick={(event) => handleNav(event, "#contacto")} className="btn btn-accent mt-6 w-full">
+                Pedir auditoría gratis
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
@@ -1009,6 +1012,11 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
   const describe = (caption, device) => `${project.name}, ${lower(project.webType)}: ${lower(caption)} en ${device}`;
   const screens = project.screens?.length ? project.screens : [[project.image, "Portada"]];
   const [screen, setScreen] = useState(0);
+  const frameRef = useRef(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: frameRef, offset: ["start end", "end start"] });
+  const tabletY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [28, -28]);
+  const phoneY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [60, -60]);
 
   useEffect(() => {
     if (!active || screens.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
@@ -1017,7 +1025,7 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
   }, [active, screens.length, screen]);
 
   return (
-    <div className={`relative mx-auto aspect-[16/9] w-full ${wide ? "max-w-5xl" : "max-w-3xl"}`}>
+    <div ref={frameRef} className={`relative mx-auto aspect-[16/9] w-full ${wide ? "max-w-5xl" : "max-w-3xl"}`}>
       <div className={`absolute top-[6%] ${hasDevices ? "right-[3%] w-[64%]" : "left-1/2 w-[80%] -translate-x-1/2"}`}>
         <div className="rounded-t-[0.9rem] bg-ink p-[1.4%]">
           <div className="relative aspect-[16/10] overflow-hidden rounded-[0.35rem] bg-ink">
@@ -1054,7 +1062,7 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
 
       {hasDevices && (
         <>
-          <div className="absolute left-[2%] top-[20%] w-[27%] rounded-[1.1rem] bg-ink p-[1.6%]">
+          <motion.div style={{ y: tabletY }} className="absolute left-[2%] top-[20%] w-[27%] rounded-[1.1rem] bg-ink p-[1.6%]">
             <div className="relative aspect-[41/59] overflow-hidden rounded-[0.6rem] bg-ink">
               {screens.map(([, caption, tablet], index) => (
                 <img
@@ -1067,8 +1075,8 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
                 />
               ))}
             </div>
-          </div>
-          <div className="absolute left-[22%] top-[32%] w-[12.5%] rounded-[1.1rem] border-[3px] border-surface bg-ink p-[1%]">
+          </motion.div>
+          <motion.div style={{ y: phoneY }} className="absolute left-[22%] top-[32%] w-[12.5%] rounded-[1.1rem] border-[3px] border-surface bg-ink p-[1%]">
             <div className="relative aspect-[39/84] overflow-hidden rounded-[0.8rem] bg-ink">
               {screens.map(([, caption, , mobile], index) => (
                 <img
@@ -1081,7 +1089,7 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
                 />
               ))}
             </div>
-          </div>
+          </motion.div>
         </>
       )}
     </div>
@@ -1091,9 +1099,27 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
 function Work({ navigate }) {
   const [active, setActive] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
+  const direction = useRef(1);
+  const slides = useRef([]);
+  const firstRender = useRef(true);
   const total = portfolioProjects.length;
-  const go = (step) => setActive((current) => (current + step + total) % total);
+  const go = (step) => {
+    direction.current = step;
+    setActive((current) => (current + step + total) % total);
+  };
+  const pick = (index) => {
+    direction.current = index >= active ? 1 : -1;
+    setActive(index);
+  };
   const project = portfolioProjects[active];
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    slideIn(slides.current[active], direction.current);
+  }, [active]);
 
   const arrowClass =
     "absolute top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-ink text-bg transition-colors duration-200 hover:bg-accent hover:text-ink sm:h-12 sm:w-12";
@@ -1119,7 +1145,7 @@ function Work({ navigate }) {
         }}
       >
         {portfolioProjects.map((item, index) => (
-          <div key={item.name} hidden={index !== active} aria-roledescription="diapositiva" aria-label={`${index + 1} de ${total}: ${item.name}`}>
+          <div key={item.name} ref={(el) => (slides.current[index] = el)} hidden={index !== active} aria-roledescription="diapositiva" aria-label={`${index + 1} de ${total}: ${item.name}`}>
             <DeviceShowcase project={item} eager={index === 0} active={index === active} wide />
           </div>
         ))}
@@ -1140,7 +1166,7 @@ function Work({ navigate }) {
             role="tab"
             aria-selected={index === active}
             aria-label={item.name}
-            onClick={() => setActive(index)}
+            onClick={() => pick(index)}
             className="grid h-11 place-items-center px-1"
           >
             <span className={`block h-2.5 rounded-full transition-[width,background-color] duration-300 ${index === active ? "w-8 bg-accent" : "w-2.5 bg-muted"}`} />
@@ -1148,7 +1174,16 @@ function Work({ navigate }) {
         ))}
       </div>
 
-      <div className="grid12 mt-10 gap-y-6" aria-live="polite">
+      <div aria-live="polite">
+      <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={project.name}
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.35, ease: EASE_OUT }}
+        className="grid12 mt-10 gap-y-6"
+      >
         <div className="col-span-12 lg:col-span-5">
           <p className="t-lead font-medium">{project.name}</p>
           <p className="t-small muted mt-1">
@@ -1177,6 +1212,8 @@ function Work({ navigate }) {
             </a>
           </div>
         </div>
+      </motion.div>
+      </AnimatePresence>
       </div>
     </section>
   );
@@ -1250,6 +1287,14 @@ function Pricing({ onChooseService, navigate }) {
         </div>
 
         <div className="col-span-12 lg:col-span-7 lg:col-start-6">
+          <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={pkg.id}
+            initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
+            transition={{ duration: 0.4, ease: EASE_OUT }}
+          >
           <PriceFigure pkg={pkg} />
           <ul className="mt-8 grid max-w-[46ch] gap-1">
             {pkg.items.map((item) => (
@@ -1281,6 +1326,8 @@ function Pricing({ onChooseService, navigate }) {
               </a>
             )}
           </div>
+          </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>
@@ -1298,10 +1345,45 @@ function MapBand() {
   );
 }
 
+// Card that tilts towards the mouse, lifts, and carries a glow under the cursor.
+function useTilt() {
+  const reduceMotion = useReducedMotion();
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const spring = { stiffness: 220, damping: 22, mass: 0.5 };
+  const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [7, -7]), spring);
+  const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-7, 7]), spring);
+
+  function onPointerMove(event) {
+    if (reduceMotion || event.pointerType !== "mouse") return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+    px.set(x - 0.5);
+    py.set(y - 0.5);
+    event.currentTarget.style.setProperty("--mx", `${(x * 100).toFixed(1)}%`);
+    event.currentTarget.style.setProperty("--my", `${(y * 100).toFixed(1)}%`);
+  }
+  function onPointerLeave() {
+    px.set(0);
+    py.set(0);
+  }
+
+  return {
+    style: { rotateX, rotateY, transformPerspective: 900 },
+    whileHover: reduceMotion ? undefined : { y: -6 },
+    transition: { type: "spring", stiffness: 260, damping: 20 },
+    onPointerMove,
+    onPointerLeave,
+  };
+}
+
 function ServiceCard({ item, page, navigate, index }) {
   const link = item.page || null;
+  const tilt = useTilt();
   return (
-    <li data-reveal style={{ "--d": index % 3 }} className={`svc-card ${item.featured ? "is-featured" : ""}`}>
+    <li data-reveal data-card style={{ "--d": index % 3 }} className="flex">
+      <motion.article {...tilt} className={`svc-card w-full ${item.featured ? "is-featured" : ""}`}>
       {item.featured && <p className="svc-tag">Destacado</p>}
       <h3 className="t-lead font-medium leading-tight">{item.name}</h3>
       <p className="svc-hook mt-2 font-medium">{item.hook}</p>
@@ -1329,12 +1411,23 @@ function ServiceCard({ item, page, navigate, index }) {
           </a>
         )}
       </div>
+      </motion.article>
     </li>
   );
 }
 
 function Services({ navigate }) {
   const [activeId, setActiveId] = useState(serviceCatalog[0].id);
+  const firstTab = useRef(true);
+
+  useEffect(() => {
+    if (firstTab.current) {
+      firstTab.current = false;
+      return;
+    }
+    // Cards already revealed once replay in cascade; new ones are revealed on scroll as usual.
+    cascade([...document.querySelectorAll(`#panel-${activeId} [data-card].is-in`)]);
+  }, [activeId]);
 
   // Arrow keys, Home and End move between the tabs (WAI-ARIA tabs pattern, automatic activation).
   function handleKeyDown(event) {

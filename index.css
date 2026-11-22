@@ -224,6 +224,45 @@
   color: var(--light);
 }
 
+/* Interactive title: each letter reacts to the pointer (see useLetterField). */
+.hero-field {
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.hero-field .word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.hero-field .ch {
+  display: inline-block;
+  transition: color 220ms var(--ease-out);
+  will-change: transform;
+}
+
+.hero-field .ch.hot {
+  color: var(--light);
+}
+
+/* After the entry reveal, let displaced letters overflow their line. */
+.hero-field.is-live .line {
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-field .caret {
+    animation: caret-blink 1.05s steps(1) 1.2s infinite;
+  }
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .js .hero-name [data-line] {
     transform: translateY(105%);
@@ -703,8 +742,8 @@
   --chat--toggle--size: 3.5rem;
   --chat--font-family: "General Sans", ui-sans-serif, system-ui, sans-serif;
   --chat--border-radius: 0;
-  --chat--header--background: #0b0b0b;
-  --chat--header--color: #d9d8d5;
+  --chat--header--background: #ff4d6d;
+  --chat--header--color: #0b0b0b;
   --chat--header--padding: 1rem 1.25rem;
   --chat--header--border-bottom: 0;
   --chat--heading--font-size: 1.125rem;
@@ -714,7 +753,7 @@
   --chat--window--width: 380px;
   --chat--window--height: 560px;
   --chat--window--z-index: 45;
-  --chat--window--border: 0;
+  --chat--window--border: 2px solid #0b0b0b;
   --chat--window--border-radius: 0;
   --chat--body--background: #d9d8d5;
   --chat--footer--background: #ffffff;
@@ -738,27 +777,27 @@
   --chat--button--background--primary--hover: #0b0b0b;
 }
 
-/* Header with the logo, and "Respondemos rápidamente" with an online dot. */
-.chat-window .chat-heading h1 {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  font-weight: 500;
-}
-
-.chat-window .chat-heading h1::before {
-  content: "";
-  flex: none;
-  width: 2.4rem;
-  height: 2.4rem;
-  background: #d9d8d5 url("/icon-192.png") center / 82% no-repeat;
+/* Pink header with the Clarea wordmark, and "Respondemos rápidamente" with an online dot.
+   The h1 keeps its text "Clarea" for screen readers; only the wordmark is visible. */
+.n8n-chat .chat-window .chat-header .chat-heading h1 {
+  display: block;
+  width: 7.75rem;
+  height: 1.85rem;
+  margin: 0;
+  overflow: hidden;
+  font-size: 0;
+  line-height: 0;
+  color: transparent;
+  text-indent: -999px;
+  background: url("./src/assets/logo-clarea.png") left center / contain no-repeat;
 }
 
 .chat-window .chat-header p {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  margin-left: 3.1rem;
+  margin-top: 0.35rem;
+  color: #3d0f19;
 }
 
 .chat-window .chat-header p::before {

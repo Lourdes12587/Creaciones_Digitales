@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import logoClarea from "./assets/logo-clarea.png";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
@@ -863,14 +863,131 @@ function Nav({ navigate, goToSection, onAccent }) {
   );
 }
 
+const HERO_LINES = ["Tu negocio,", "más claro_"];
+
+// Letters move away from the pointer, tilt and turn white as it gets close, then ease back.
+function useLetterField(sectionRef, titleRef) {
+  useEffect(() => {
+    const section = sectionRef.current;
+    const title = titleRef.current;
+    if (!section || !title) return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+
+    const letters = [...title.querySelectorAll("[data-ch]")].map((el) => ({ el, x: 0, y: 0, r: 0, h: 0, cx: 0, cy: 0 }));
+    const pointer = { x: 0, y: 0, active: false };
+    let frame = 0;
+
+    // Resting centres relative to the title, measured with each letter's own transform removed.
+    const measure = () => {
+      const base = title.getBoundingClientRect();
+      letters.forEach((l) => {
+        const kept = l.el.style.transform;
+        l.el.style.transform = "none";
+        const rect = l.el.getBoundingClientRect();
+        l.el.style.transform = kept;
+        l.cx = rect.left + rect.width / 2 - base.left;
+        l.cy = rect.top + rect.height / 2 - base.top;
+      });
+    };
+    measure();
+
+    const tick = () => {
+      const base = title.getBoundingClientRect();
+      const size = parseFloat(getComputedStyle(title).fontSize);
+      const radius = size * 1.5;
+      let moving = false;
+      letters.forEach((l) => {
+        let tx = 0, ty = 0, tr = 0, th = 0;
+        if (pointer.active) {
+          const dx = base.left + l.cx - pointer.x;
+          const dy = base.top + l.cy - pointer.y;
+          const d = Math.hypot(dx, dy) || 1;
+          const f = Math.max(0, 1 - d / radius) ** 2;
+          tx = (dx / d) * f * size * 0.32;
+          ty = (dy / d) * f * size * 0.32;
+          tr = (dx / radius) * f * 18;
+          th = f;
+        }
+        l.x += (tx - l.x) * 0.16;
+        l.y += (ty - l.y) * 0.16;
+        l.r += (tr - l.r) * 0.16;
+        l.h += (th - l.h) * 0.2;
+        if (Math.abs(tx - l.x) + Math.abs(ty - l.y) + Math.abs(th - l.h) > 0.02) moving = true;
+        l.el.style.transform = `translate(${l.x.toFixed(2)}px, ${l.y.toFixed(2)}px) rotate(${l.r.toFixed(2)}deg)`;
+        l.el.classList.toggle("hot", l.h > 0.28);
+      });
+      frame = moving || pointer.active ? requestAnimationFrame(tick) : 0;
+    };
+    const wake = () => {
+      if (!frame) frame = requestAnimationFrame(tick);
+    };
+    const move = (x, y) => {
+      pointer.x = x;
+      pointer.y = y;
+      pointer.active = true;
+      wake();
+    };
+    const onPointer = (event) => move(event.clientX, event.clientY);
+    const onTouch = (event) => event.touches[0] && move(event.touches[0].clientX, event.touches[0].clientY);
+    const leave = () => {
+      pointer.active = false;
+      wake();
+    };
+
+    // The entry animation shifts the lines, so measure again once it has finished and on every new approach.
+    const settle = window.setTimeout(() => {
+      title.classList.add("is-live");
+      measure();
+    }, 1400);
+    section.addEventListener("pointerenter", measure);
+    section.addEventListener("pointermove", onPointer);
+    section.addEventListener("pointerleave", leave);
+    section.addEventListener("touchstart", onTouch, { passive: true });
+    section.addEventListener("touchmove", onTouch, { passive: true });
+    section.addEventListener("touchend", leave);
+    window.addEventListener("resize", measure);
+    document.fonts?.ready.then(measure);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(settle);
+      section.removeEventListener("pointerenter", measure);
+      section.removeEventListener("pointermove", onPointer);
+      section.removeEventListener("pointerleave", leave);
+      section.removeEventListener("touchstart", onTouch);
+      section.removeEventListener("touchmove", onTouch);
+      section.removeEventListener("touchend", leave);
+      window.removeEventListener("resize", measure);
+    };
+  }, [sectionRef, titleRef]);
+}
+
 function Hero() {
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
+  useLetterField(sectionRef, titleRef);
+
   return (
-    <section aria-labelledby="hero-title" className="on-accent relative flex min-h-[100svh] flex-col justify-between overflow-hidden">
-      <h1 id="hero-title" className="hero-name wrap pt-[30svh] sm:pt-[18svh]">
-        <span className="sr-only">Clarea</span>
-        <span className="line" aria-hidden="true">
-          <img data-line src={logoClarea} alt="" width="1367" height="324" fetchPriority="high" style={{ "--i": 0 }} className="h-auto w-full max-w-[1180px]" />
-        </span>
+    <section ref={sectionRef} aria-labelledby="hero-title" className="on-accent relative flex min-h-[100svh] flex-col justify-between overflow-hidden">
+      <h1 id="hero-title" ref={titleRef} className="hero-name hero-field wrap pt-[30svh] sm:pt-[18svh]">
+        <span className="sr-only">{HERO_LINES.join(" ").replace(/_$/, "")}</span>
+        {HERO_LINES.map((line, i) => (
+          <span key={line} className="line" aria-hidden="true">
+            <span data-line style={{ "--i": i }}>
+              {line.split(" ").map((word, w) => (
+                <Fragment key={w}>
+                  {w > 0 ? " " : null}
+                  <span className="word">
+                    {[...word].map((ch, c) => (
+                      <span key={c} data-ch className={`ch${ch === "_" ? " caret" : ""}`}>
+                        {ch}
+                      </span>
+                    ))}
+                  </span>
+                </Fragment>
+              ))}
+            </span>
+          </span>
+        ))}
       </h1>
 
       <div className="hero-after wrap flex flex-col items-start gap-5 pb-[168px] pt-12 sm:items-end sm:pb-10 sm:pr-[112px] sm:text-right">

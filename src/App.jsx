@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Instagram, Mail, MapPin, Phone } from "lucide-react";
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { AnimatePresence, motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { EASE_OUT, cascade, magneticButtons, revealOnScroll, slideIn } from "./motionFx";
 import logoClarea from "./assets/logo-clarea.png";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
@@ -632,11 +632,13 @@ function App({ initialRoute }) {
   }, []);
 
   const isHome = route === "/";
+  // Pages that open on a dark band, so the nav switches to light text.
+  const isNotFound = !isHome && !currentService && !["/portfolio", "/privacidad", "/cookies"].includes(route);
 
   return (
     <div className="min-h-[100dvh] overflow-x-clip">
       <SkipLink />
-      <Nav navigate={navigate} goToSection={goToSection} onAccent={isHome} />
+      <Nav navigate={navigate} goToSection={goToSection} onAccent={isHome || isNotFound} />
       <main id="contenido">
         {route === "/portfolio" ? (
           <PortfolioPage onChooseService={chooseService} />
@@ -653,7 +655,6 @@ function App({ initialRoute }) {
             <Hero />
             <Work navigate={navigate} />
             <Pricing onChooseService={chooseService} navigate={navigate} />
-            <MapBand />
             <Services navigate={navigate} />
             <HowItWorks />
             <Faq items={homeFaqs} />
@@ -798,7 +799,7 @@ function Nav({ navigate, goToSection, onAccent }) {
   }
 
   return (
-    <header className={`absolute inset-x-0 top-0 z-30 ${onAccent ? "text-ink" : "text-ink"}`}>
+    <header className={`absolute inset-x-0 top-0 z-30 ${onAccent ? "text-[var(--crema)]" : "text-ink"}`}>
       <nav aria-label="Principal" className="wrap flex items-start justify-between gap-4 pt-5 sm:pt-6">
         <a
           href="/"
@@ -810,7 +811,9 @@ function Nav({ navigate, goToSection, onAccent }) {
           aria-label="Clarea, inicio"
           className="flex h-12 shrink-0 items-center transition-transform duration-200 hover:-rotate-2"
         >
-          <img src={logoClarea} alt="Clarea" width="1367" height="324" className="h-7 w-auto sm:h-8" />
+          <span className="logo-plate">
+            <img src={logoClarea} alt="Clarea" width="1367" height="324" className="h-6 w-auto sm:h-7" />
+          </span>
         </a>
 
         <div className="hidden items-center gap-7 md:flex">
@@ -829,7 +832,7 @@ function Nav({ navigate, goToSection, onAccent }) {
           onClick={() => setMenuOpen((open) => !open)}
           aria-expanded={menuOpen}
           aria-controls="menu-movil"
-          className="min-h-[44px] px-1 text-[15px] font-medium underline underline-offset-4 md:hidden"
+          className="min-h-[44px] px-1 text-base font-medium underline underline-offset-4 md:hidden"
         >
           {menuOpen ? "Cerrar" : "Menú"}
         </button>
@@ -967,10 +970,19 @@ function useLetterField(sectionRef, titleRef) {
 function Hero() {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
+  const reduceMotion = useReducedMotion();
   useLetterField(sectionRef, titleRef);
 
   return (
-    <section ref={sectionRef} aria-labelledby="hero-title" className="on-accent relative flex min-h-[100svh] flex-col justify-between overflow-hidden">
+    <section ref={sectionRef} aria-labelledby="hero-title" className="on-accent relative isolate flex min-h-[100svh] flex-col justify-between overflow-hidden">
+      {/* First light: a coral glow rising from below the horizon. */}
+      <motion.div
+        aria-hidden="true"
+        className="hero-sun"
+        initial={reduceMotion ? false : { opacity: 0, y: "22%" }}
+        animate={{ opacity: 1, y: "0%" }}
+        transition={{ duration: 2.6, delay: 0.2, ease: EASE_OUT }}
+      />
       <h1 id="hero-title" ref={titleRef} className="hero-name hero-field wrap pt-[30svh] sm:pt-[18svh]">
         <span className="sr-only">{HERO_LINES.join(" ").replace(/_$/, "")}</span>
         {HERO_LINES.map((line, i) => (
@@ -1014,9 +1026,12 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
   const [screen, setScreen] = useState(0);
   const frameRef = useRef(null);
   const reduceMotion = useReducedMotion();
+  const [smallScreen, setSmallScreen] = useState(false);
+  useEffect(() => setSmallScreen(window.matchMedia("(max-width: 767px)").matches), []);
+  const still = reduceMotion || smallScreen;
   const { scrollYProgress } = useScroll({ target: frameRef, offset: ["start end", "end start"] });
-  const tabletY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [28, -28]);
-  const phoneY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [60, -60]);
+  const tabletY = useTransform(scrollYProgress, [0, 1], still ? [0, 0] : [28, -28]);
+  const phoneY = useTransform(scrollYProgress, [0, 1], still ? [0, 0] : [60, -60]);
 
   useEffect(() => {
     if (!active || screens.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
@@ -1268,7 +1283,7 @@ function Pricing({ onChooseService, navigate }) {
   const service = services.find((item) => item.id === activeId);
 
   return (
-    <section id="precios" aria-labelledby="precios-title" className="section wrap bg-surface">
+    <section id="precios" aria-labelledby="precios-title" className="section wrap on-dark">
       <div className="grid12 min-h-[80svh] items-center gap-y-12">
         <div className="col-span-12 self-start lg:col-span-4">
           <h2 id="precios-title" data-reveal className="t-head">
@@ -1334,25 +1349,14 @@ function Pricing({ onChooseService, navigate }) {
   );
 }
 
-function MapBand() {
-  return (
-    <figure className="map-band relative m-0 h-[70svh] min-h-[420px] overflow-hidden bg-bg">
-      <img src={MAP_IMAGE} alt="Plano de Barcelona de 1859 con la cuadrícula del Eixample de Ildefons Cerdà" width="1920" height="1275" loading="lazy" className="h-full w-full object-cover" />
-      <figcaption className="wrap t-small absolute bottom-5 left-0 max-w-[60ch] bg-bg py-2">
-        Barcelona, 1859: el plan de Cerdà para el Eixample. Una ciudad pensada como un sistema; así trabajo cada web.
-      </figcaption>
-    </figure>
-  );
-}
-
 // Card that tilts towards the mouse, lifts, and carries a glow under the cursor.
 function useTilt() {
   const reduceMotion = useReducedMotion();
   const px = useMotionValue(0);
   const py = useMotionValue(0);
   const spring = { stiffness: 220, damping: 22, mass: 0.5 };
-  const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [7, -7]), spring);
-  const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-7, 7]), spring);
+  const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [4, -4]), spring);
+  const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-4, 4]), spring);
 
   function onPointerMove(event) {
     if (reduceMotion || event.pointerType !== "mouse") return;
@@ -1371,7 +1375,7 @@ function useTilt() {
 
   return {
     style: { rotateX, rotateY, transformPerspective: 900 },
-    whileHover: reduceMotion ? undefined : { y: -6 },
+    whileHover: reduceMotion ? undefined : { y: -4 },
     transition: { type: "spring", stiffness: 260, damping: 20 },
     onPointerMove,
     onPointerLeave,
@@ -1441,7 +1445,7 @@ function Services({ navigate }) {
   }
 
   return (
-    <section id="servicios" aria-labelledby="servicios-title" className="section wrap on-dark md:pr-[104px]">
+    <section id="servicios" aria-labelledby="servicios-title" className="section wrap md:pr-[104px]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema).replace(/</g, "\\u003c") }} />
 
       <div className="max-w-[60rem]">
@@ -1562,52 +1566,106 @@ function Lineup({ groups }) {
   );
 }
 
+// The process as a thin vertical rail: the line fills in coral and each step's dot lights up as you scroll past it.
 function HowItWorks() {
+  const railRef = useRef(null);
+  const stepRefs = useRef([]);
+  const reduceMotion = useReducedMotion();
+  const [lit, setLit] = useState(0);
+  const { scrollYProgress } = useScroll({ target: railRef, offset: ["start 65%", "end 65%"] });
+  const fill = useSpring(scrollYProgress, { stiffness: 140, damping: 30, restDelta: 0.001 });
+
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    const rail = railRef.current;
+    if (!rail || progress <= 0) return setLit(0);
+    const reached = progress * rail.offsetHeight + 8;
+    setLit(stepRefs.current.filter((step) => step && step.offsetTop <= reached).length);
+  });
+
+  const litCount = reduceMotion ? 4 : lit;
+
   return (
-    <section id="proceso" aria-labelledby="proceso-title" className="section wrap">
-      <div className="mx-auto max-w-[560px] lg:ml-[25%] lg:mr-0">
+    <section id="proceso" aria-labelledby="proceso-title" className="section wrap on-sky">
+      <div className="mx-auto max-w-[620px] lg:ml-[25%] lg:mr-0">
         <h2 id="proceso-title" data-reveal className="t-head mb-14">
           Cómo trabajo
         </h2>
 
-        <div data-reveal className="mb-[88px]">
-          <p className="t-lead font-medium">Primero, me cuentas cómo trabajas. Son 30 minutos y no cuestan nada.</p>
-          <div data-ui className="ui-input mt-4">
-            <p className="ui-from">Tú, por WhatsApp</p>
-            <p className="mt-1">Hola, tengo una clínica y cada semana se me escapan citas por olvidos.</p>
-          </div>
-          <div data-ui className="ui-reply mt-4 sm:ml-14">
-            <p className="ui-label">Lo que te llevas de la auditoría</p>
-            <p className="mt-1 font-medium">Las tres tareas que más compensa automatizar, en orden.</p>
-          </div>
-        </div>
+        <div ref={railRef} className="rail">
+          <span className="rail-line" aria-hidden="true" />
+          <motion.span className="rail-fill" aria-hidden="true" style={{ scaleY: reduceMotion ? 1 : fill }} />
 
-        <div data-reveal className="mb-[88px]">
-          <p className="t-lead font-medium">Después, te envío un precio cerrado en 48 horas.</p>
-          <div data-ui className="ui-input mt-4">
-            <p className="ui-from">Tú</p>
-            <p className="mt-1">¿Cuánto costaría la agenda con recordatorios?</p>
+          <div
+            data-reveal
+            ref={(el) => (stepRefs.current[0] = el)}
+            className={`rail-step${litCount > 0 ? " is-lit" : ""} mb-[88px]`}
+          >
+            <span className="rail-dot" aria-hidden="true" />
+            <p className="rail-label mb-2">
+              <span aria-hidden="true">01 · </span>Auditoría
+            </p>
+              <p className="t-lead font-medium">Primero, me cuentas cómo trabajas. Son 30 minutos y no cuestan nada.</p>
+              <div data-ui className="ui-input mt-4">
+                <p className="ui-from">Tú, por WhatsApp</p>
+                <p className="mt-1">Hola, tengo una clínica y cada semana se me escapan citas por olvidos.</p>
+              </div>
+              <div data-ui className="ui-reply mt-4 sm:ml-14">
+                <p className="ui-label">Lo que te llevas de la auditoría</p>
+                <p className="mt-1 font-medium">Las tres tareas que más compensa automatizar, en orden.</p>
+              </div>
           </div>
-          <div data-ui className="ui-reply mt-4 sm:ml-14">
-            <p className="ui-label">Propuesta</p>
-            <p className="mt-1 font-medium">Agenda automática · 390 € · lista en 5 días · 30 días de soporte incluidos</p>
-          </div>
-        </div>
 
-        <div data-reveal className="mb-[88px]">
-          <p className="t-lead font-medium">Luego lo construyo y lo pruebas antes del segundo pago.</p>
-          <div data-ui className="ui-input mt-4">
-            <p className="ui-from">Tú</p>
-            <p className="mt-1">¿Puedo verlo antes de que esté terminado?</p>
+          <div
+            data-reveal
+            ref={(el) => (stepRefs.current[1] = el)}
+            className={`rail-step${litCount > 1 ? " is-lit" : ""} mb-[88px]`}
+          >
+            <span className="rail-dot" aria-hidden="true" />
+            <p className="rail-label mb-2">
+              <span aria-hidden="true">02 · </span>Propuesta
+            </p>
+              <p className="t-lead font-medium">Después, te envío un precio cerrado en 48 horas.</p>
+              <div data-ui className="ui-input mt-4">
+                <p className="ui-from">Tú</p>
+                <p className="mt-1">¿Cuánto costaría la agenda con recordatorios?</p>
+              </div>
+              <div data-ui className="ui-reply mt-4 sm:ml-14">
+                <p className="ui-label">Propuesta</p>
+                <p className="mt-1 font-medium">Agenda automática · 390 € · lista en 5 días · 30 días de soporte incluidos</p>
+              </div>
           </div>
-          <div data-ui className="ui-reply mt-4 sm:ml-14">
-            <p className="ui-label">Versión de prueba</p>
-            <p className="mt-1 font-medium">Un enlace para reservar una cita de prueba y recibir tu propio recordatorio.</p>
-          </div>
-        </div>
 
-        <div data-reveal>
-          <p className="t-lead font-medium">Al final, funciona solo, y lo vigilo durante el primer mes.</p>
+          <div
+            data-reveal
+            ref={(el) => (stepRefs.current[2] = el)}
+            className={`rail-step${litCount > 2 ? " is-lit" : ""} mb-[88px]`}
+          >
+            <span className="rail-dot" aria-hidden="true" />
+            <p className="rail-label mb-2">
+              <span aria-hidden="true">03 · </span>Prueba
+            </p>
+              <p className="t-lead font-medium">Luego lo construyo y lo pruebas antes del segundo pago.</p>
+              <div data-ui className="ui-input mt-4">
+                <p className="ui-from">Tú</p>
+                <p className="mt-1">¿Puedo verlo antes de que esté terminado?</p>
+              </div>
+              <div data-ui className="ui-reply mt-4 sm:ml-14">
+                <p className="ui-label">Versión de prueba</p>
+                <p className="mt-1 font-medium">Un enlace para reservar una cita de prueba y recibir tu propio recordatorio.</p>
+              </div>
+          </div>
+
+          <div
+            data-reveal
+            ref={(el) => (stepRefs.current[3] = el)}
+            className={`rail-step${litCount > 3 ? " is-lit" : ""}`}
+          >
+            <span className="rail-dot" aria-hidden="true" />
+            <p className="rail-label mb-2">
+              <span aria-hidden="true">04 · </span>Entrega
+            </p>
+              <p className="t-lead font-medium">Al final, funciona solo, y lo vigilo durante el primer mes.</p>
+          </div>
         </div>
       </div>
 
@@ -1717,7 +1775,10 @@ function Contact({ selectedService, onServiceChange, navigate }) {
   const labelClass = "t-small block font-medium";
 
   return (
-    <section id="contacto" aria-labelledby="contacto-title" className="on-dark wrap flex min-h-[100svh] flex-col justify-between gap-16 pb-10 pt-[var(--section)]">
+    <section id="contacto" aria-labelledby="contacto-title" className="on-dark wrap relative isolate flex min-h-[100svh] flex-col justify-between gap-16 overflow-hidden pb-10 pt-[var(--section)]">
+      <div className="contact-map" aria-hidden="true">
+        <img src={MAP_IMAGE} alt="" width="1920" height="1275" loading="lazy" />
+      </div>
       <div className="grid12 gap-y-10">
         <div className="col-span-12 lg:col-span-4">
           <h2 id="contacto-title" data-reveal className="t-lead max-w-[24ch] font-medium">
@@ -2137,12 +2198,14 @@ function Footer({ navigate, goToSection }) {
   }
 
   return (
-    <footer className="on-accent wrap pb-6 pt-10">
-      <div className="mx-auto max-w-7xl text-[15px] leading-normal md:text-base">
+    <footer className="on-malva wrap pb-6 pt-10">
+      <div className="mx-auto max-w-7xl text-base">
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:gap-x-16">
           <div className="col-span-2 max-w-sm sm:col-span-3 lg:col-span-1">
             <div>
-              <img src={logoClarea} alt="Clarea" width="1367" height="324" loading="lazy" className="h-10 w-auto" />
+              <span className="logo-plate">
+                <img src={logoClarea} alt="Clarea" width="1367" height="324" loading="lazy" className="h-8 w-auto" />
+              </span>
               <p className="muted mt-3">Desarrollo web y automatizaciones</p>
             </div>
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="link muted mt-4 inline-flex min-h-[44px] items-center gap-2 no-underline hover:underline">
@@ -2189,7 +2252,7 @@ function Footer({ navigate, goToSection }) {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-2 pr-[80px] text-[13px] sm:flex-row sm:items-center sm:justify-between lg:pr-[96px]">
+        <div className="mt-16 flex flex-col gap-2 pr-[80px] text-base sm:flex-row sm:items-center sm:justify-between lg:pr-[96px]">
           <p>© {new Date().getFullYear()} Clarea. Todos los derechos reservados.</p>
           <nav aria-label="Textos legales" className="flex flex-wrap gap-x-6 gap-y-2">
             <a

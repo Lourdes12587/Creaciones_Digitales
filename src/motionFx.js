@@ -17,6 +17,10 @@ export function revealOnScroll(root = document) {
     return () => {};
   }
 
+  // Less movement on phones: shorter rise, no blur.
+  const small = window.matchMedia("(max-width: 767px)").matches;
+  const from = small ? { opacity: [0, 1], y: [14, 0] } : { opacity: [0, 1], y: [24, 0], filter: ["blur(4px)", "blur(0px)"] };
+
   const stops = targets.map((el) =>
     inView(
       el,
@@ -24,8 +28,8 @@ export function revealOnScroll(root = document) {
         const order = parseFloat(el.style.getPropertyValue("--d")) || 0;
         animate(
           el,
-          { opacity: [0, 1], y: [28, 0], filter: ["blur(6px)", "blur(0px)"] },
-          { duration: 0.9, delay: order * 0.09, ease: EASE_OUT },
+          from,
+          { duration: small ? 0.6 : 0.85, delay: order * (small ? 0.05 : 0.08), ease: EASE_OUT },
         ).then(() => {
           el.classList.add("is-in");
           el.style.filter = "";
@@ -59,8 +63,8 @@ export function magneticButtons() {
     current = btn;
     if (!btn) return;
     const rect = btn.getBoundingClientRect();
-    const x = (event.clientX - (rect.left + rect.width / 2)) * 0.22;
-    const y = (event.clientY - (rect.top + rect.height / 2)) * 0.32;
+    const x = (event.clientX - (rect.left + rect.width / 2)) * 0.12;
+    const y = (event.clientY - (rect.top + rect.height / 2)) * 0.18;
     animate(btn, { x, y }, spring);
   };
   const leaveWindow = () => {

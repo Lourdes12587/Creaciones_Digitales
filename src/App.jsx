@@ -63,8 +63,6 @@ const EMAIL = "ubedadesarrolloweb@gmail.com";
 const PHONE = "+34 697 955 919";
 const INSTAGRAM_URL = "https://www.instagram.com/holaclarea/";
 
-// Cerdà's 1859 plan of the Eixample, public domain, via Wikimedia Commons.
-const MAP_IMAGE = "/img/ensanche-eixample-barcelona.jpg";
 // The real n8n flow behind the chat on this site.
 const FLOW_IMAGE = "/img/flujo-n8n-chatbot.png";
 
@@ -173,19 +171,6 @@ const services = [
   },
 ];
 
-const maintenance = {
-  id: "mantenimiento",
-  short: "Mantenimiento",
-  title: "Mantenimiento mensual",
-  amount: 49,
-  per: "al mes",
-  items: ["Actualizaciones de la web y de los flujos", "Vigilancia de tus automatizaciones", "2 horas de mejoras cada mes", "Respuesta en 24–48 horas"],
-  cta: "Me interesa",
-  image: portfolioYouEyesTablet,
-  imageAlt: "Portal de noticias You Eyes, hecho por Clarea",
-};
-
-const packages = [...services, maintenance];
 
 // The line-up: every web and every automation, with its time and price.
 const lineup = [
@@ -572,22 +557,6 @@ function getCurrentRoute() {
   return normalizePath(window.location.pathname);
 }
 
-// Adds working days (Monday to Friday) to a date.
-function addWorkingDays(date, days) {
-  const result = new Date(date);
-  let added = 0;
-  while (added < days) {
-    result.setDate(result.getDate() + 1);
-    const weekday = result.getDay();
-    if (weekday !== 0 && weekday !== 6) added += 1;
-  }
-  return result;
-}
-
-function formatDay(date) {
-  return date.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
-}
-
 function App({ initialRoute }) {
   const [route, setRoute] = useState(() => initialRoute ?? getCurrentRoute());
   const [selectedService, setSelectedService] = useState("");
@@ -652,8 +621,6 @@ function App({ initialRoute }) {
           <>
             <Hero />
             <Work navigate={navigate} />
-            <Pricing onChooseService={chooseService} navigate={navigate} />
-            <MapBand />
             <Services navigate={navigate} />
             <HowItWorks />
             <Faq items={homeFaqs} />
@@ -784,8 +751,8 @@ function Nav({ navigate, goToSection, onAccent }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const reduceMotion = useReducedMotion();
   const links = [
+    ["Servicios", "#servicios"],
     ["Trabajos", "/portfolio"],
-    ["Precios", "#precios"],
     ["Proceso", "#proceso"],
     ["Contacto", "#contacto"],
   ];
@@ -994,7 +961,6 @@ function Hero() {
       </h1>
 
       <div className="hero-after wrap flex flex-col items-start gap-5 pb-[168px] pt-12 sm:items-end sm:pb-10 sm:pr-[112px] sm:text-right">
-        <p className="t-lead max-w-[30ch] font-medium">Desarrollo web desde 500 € en 3 días y automatizaciones que trabajan solas. Desde Barcelona.</p>
         <a href="#contacto" className="btn w-full sm:w-auto">
           Pedir auditoría gratis <span className="arrow" aria-hidden="true">→</span>
         </a>
@@ -1216,132 +1182,6 @@ function Work({ navigate }) {
       </AnimatePresence>
       </div>
     </section>
-  );
-}
-
-function PriceFigure({ pkg }) {
-  return (
-    <p className="price-figure" aria-label={`${pkg.amount} euros${pkg.per ? ` ${pkg.per}` : ""}`}>
-      <span aria-hidden="true">
-        {pkg.amount}
-        <span className="currency">€</span>
-        {pkg.per && <span className="per">{pkg.per}</span>}
-      </span>
-    </p>
-  );
-}
-
-// The live thing: pick a package, read its price and the real day it would be ready.
-function ReadyDate({ pkg }) {
-  const [today, setToday] = useState(null);
-
-  useEffect(() => {
-    setToday(new Date());
-  }, []);
-
-  if (!pkg.buildDays) return <p className="t-lead mt-8 max-w-[34ch]">Empieza el mes en que lo contrates y lo cancelas cuando quieras.</p>;
-
-  if (!today) {
-    return (
-      <p className="t-lead mt-8 max-w-[34ch]">
-        Presupuesto en 48 horas y listo en {pkg.timeline} desde que cerramos la propuesta.
-      </p>
-    );
-  }
-
-  const proposal = addWorkingDays(today, 2);
-  const [minDays, maxDays] = pkg.buildDays;
-  const ready = addWorkingDays(proposal, minDays);
-  const readyLate = addWorkingDays(proposal, maxDays);
-
-  return (
-    <p className="t-lead mt-8 max-w-[34ch]" aria-live="polite">
-      Si me escribes hoy, tienes la propuesta el {formatDay(proposal)} y {pkg.short === "Web" ? "la web" : pkg.short === "Agenda" ? "la agenda" : "el flujo"} lista{" "}
-      {minDays === maxDays ? `el ${formatDay(ready)}` : `entre el ${formatDay(ready)} y el ${formatDay(readyLate)}`}.
-    </p>
-  );
-}
-
-function Pricing({ onChooseService, navigate }) {
-  const [activeId, setActiveId] = useState(packages[0].id);
-  const pkg = packages.find((item) => item.id === activeId);
-  const service = services.find((item) => item.id === activeId);
-
-  return (
-    <section id="precios" aria-labelledby="precios-title" className="section wrap bg-surface">
-      <div className="grid12 min-h-[80svh] items-center gap-y-12">
-        <div className="col-span-12 self-start lg:col-span-4">
-          <h2 id="precios-title" data-reveal className="t-head">
-            Precio cerrado
-          </h2>
-          <p data-reveal style={{ "--d": 1 }} className="mt-6 max-w-[38ch]">
-            Precios de lanzamiento. Tras la auditoría gratuita de 30 minutos te envío un presupuesto fijo en 48 horas, y pagas la segunda parte cuando has probado una versión.
-          </p>
-          <div data-reveal style={{ "--d": 2 }} className="price-pick t-lead mt-10 flex flex-wrap gap-x-6 gap-y-2" role="group" aria-label="Elige un servicio">
-            {packages.map((item) => (
-              <button key={item.id} type="button" aria-pressed={item.id === activeId} onClick={() => setActiveId(item.id)} className="min-h-[44px] font-medium">
-                {item.short}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="col-span-12 lg:col-span-7 lg:col-start-6">
-          <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={pkg.id}
-            initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
-            transition={{ duration: 0.4, ease: EASE_OUT }}
-          >
-          <PriceFigure pkg={pkg} />
-          <ul className="mt-8 grid max-w-[46ch] gap-1">
-            {pkg.items.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-          <ReadyDate pkg={pkg} />
-          <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-            <a
-              href="#contacto"
-              onClick={(event) => {
-                event.preventDefault();
-                onChooseService(pkg.id);
-              }}
-              className="btn btn-accent"
-            >
-              {pkg.cta} <span className="arrow" aria-hidden="true">→</span>
-            </a>
-            {service && (
-              <a
-                href={servicePath(service)}
-                onClick={(event) => {
-                  event.preventDefault();
-                  navigate(servicePath(service));
-                }}
-                className="link"
-              >
-                Todo sobre {service.title.toLowerCase()}
-              </a>
-            )}
-          </div>
-          </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function MapBand() {
-  return (
-    <figure className="map-band relative m-0 h-[70svh] min-h-[420px] overflow-hidden bg-bg">
-      <img src={MAP_IMAGE} alt="Plano de Barcelona de 1859 con la cuadrícula del Eixample de Ildefons Cerdà" width="1920" height="1275" loading="lazy" className="h-full w-full object-cover" />
-      <figcaption className="wrap t-small absolute bottom-5 left-0 max-w-[60ch] bg-bg py-2">
-        Barcelona, 1859: el plan de Cerdà para el Eixample. Una ciudad pensada como un sistema; así trabajo cada web.
-      </figcaption>
-    </figure>
   );
 }
 
@@ -2116,14 +1956,13 @@ function Footer({ navigate, goToSection }) {
         ["Desarrollo web", "/servicios/desarrollo-web-ecommerce"],
         ["Agenda automática", "/servicios/agenda-automatica"],
         ["Automatizaciones", "/servicios/automatizacion-a-medida"],
-        ["Mantenimiento", "#precios"],
+        ["Mantenimiento", "#servicios"],
       ],
     },
     {
       title: "Navegación",
       links: [
         ["Trabajos", "/portfolio"],
-        ["Precios", "#precios"],
         ["Proceso", "#proceso"],
         ["Contacto", "#contacto"],
       ],

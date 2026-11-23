@@ -1,8 +1,10 @@
-import { Fragment, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Instagram, Mail, MapPin, Phone } from "lucide-react";
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { EASE_OUT, cascade, magneticButtons, revealOnScroll, slideIn } from "./motionFx";
+import { useEffect, useRef, useState } from "react";
+import { Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { EASE_OUT, magneticButtons, revealOnScroll } from "./motionFx";
 import logoClarea from "./assets/logo-clarea.png";
+import Home from "./Home";
+import { WhatsAppIcon } from "./icons";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
 import portfolioBlueIslandTablet from "./assets/portfolio-blue-island-tablet.webp";
 import portfolioBlueIslandMobile from "./assets/portfolio-blue-island-mobile.webp";
@@ -55,7 +57,7 @@ import shotLuxNovedades from "./assets/pantallas/lux-novedades.webp";
 import shotLuxCarrito from "./assets/pantallas/lux-carrito.webp";
 import portfolioDelux from "./assets/portfolio-delux-full.webp";
 
-const N8N_WEBHOOK_URL = "https://n8n.creaciones-digitales.com/webhook/formularion8n";
+
 // Production URL of the n8n "Chat Trigger" node. The chat widget stays off while this is empty.
 const N8N_CHAT_URL = "https://n8n.creaciones-digitales.com/webhook/5c3d9e2a-7b41-4f6e-9a12-cd0a8e7f4b21/chat";
 const WHATSAPP_URL = "https://wa.me/34697955919?text=" + encodeURIComponent("Hola, vengo de la web y quiero información.");
@@ -361,26 +363,6 @@ const serviceCatalog = [
   },
 ];
 
-const sectors = [
-  "Clínicas y estética",
-  "Restaurantes",
-  "Alojamientos y turismo",
-  "Inmobiliarias",
-  "Tiendas online",
-  "Peluquerías y belleza",
-  "Gimnasios",
-  "Abogados y gestorías",
-  "Reformas y servicios del hogar",
-  "Academias y formación",
-];
-
-const reasons = [
-  ["Web y automatización en un solo lugar:", "sin intermediarios."],
-  ["Pruebas una versión antes del segundo pago.", ""],
-  ["Conecto lo que ya usas;", "no tienes que cambiar de herramientas."],
-  ["30 días de soporte incluidos", "y documentación para que no dependas de mí."],
-];
-
 // schema.org Service for every card, rendered into the prerendered HTML.
 const servicesSchema = {
   "@context": "https://schema.org",
@@ -396,17 +378,6 @@ const servicesSchema = {
     })),
   ),
 };
-
-const homeFaqs = [
-  ["¿Cuánto cuesta?", "La web empieza en 500 €; la agenda automática y la automatización a medida, en 390 €, con precios de lanzamiento. Tras la auditoría gratuita te envío un presupuesto cerrado en 48 horas."],
-  ["¿Cuánto tarda?", "Una web, unos 3 días; la agenda automática, 5 días; una automatización a medida, 1 o 2 semanas."],
-  ["¿Qué pasa después de la entrega?", "Tienes 30 días de soporte incluidos. Después puedes seguir con el mantenimiento mensual desde 49 € al mes o continuar por tu cuenta con la documentación."],
-  ["¿Tengo que cambiar mis herramientas?", "No necesariamente. Primero reviso lo que ya usas y conecto el sistema con WhatsApp, correo, formularios, hojas de cálculo o CRM cuando sea posible."],
-  ["¿Puedo empezar con algo pequeño?", "Sí. La mejor entrada suele ser una agenda, un formulario conectado o un seguimiento automático que resuelva una tarea muy concreta."],
-  ["¿Podré actualizar la web yo?", "Sí. Te enseño a cambiar textos, fotos y precios para que no dependas de nadie en el día a día."],
-  ["¿También haces tiendas online?", "Sí: catálogo, carrito, pasarela de pago y envíos. El precio depende del número de productos y de la pasarela, así que te envío un presupuesto cerrado en 48 horas."],
-  ["¿Cómo llegan los recordatorios?", "Por WhatsApp, 24 horas antes de cada cita, y la lista de espera ofrece los huecos que se cancelan."],
-];
 
 const portfolioProjects = [
   {
@@ -559,7 +530,6 @@ function getCurrentRoute() {
 
 function App({ initialRoute }) {
   const [route, setRoute] = useState(() => initialRoute ?? getCurrentRoute());
-  const [selectedService, setSelectedService] = useState("");
 
   const currentService = services.find((service) => servicePath(service) === route);
 
@@ -576,8 +546,7 @@ function App({ initialRoute }) {
     }, 80);
   }
 
-  function chooseService(id) {
-    setSelectedService(id);
+  function chooseService() {
     goToSection("#contacto");
   }
 
@@ -605,7 +574,7 @@ function App({ initialRoute }) {
   return (
     <div className="min-h-[100dvh] overflow-x-clip">
       <SkipLink />
-      <Nav navigate={navigate} goToSection={goToSection} onAccent={isHome} />
+      <Nav navigate={navigate} goToSection={goToSection} light={isHome} />
       <main id="contenido">
         {route === "/portfolio" ? (
           <PortfolioPage onChooseService={chooseService} />
@@ -618,28 +587,23 @@ function App({ initialRoute }) {
         ) : !isHome ? (
           <NotFoundPage navigate={navigate} />
         ) : (
-          <>
-            <Hero />
-            <Work navigate={navigate} />
-            <Services navigate={navigate} />
-            <HowItWorks />
-            <Faq items={homeFaqs} />
-            <Contact selectedService={selectedService} onServiceChange={setSelectedService} navigate={navigate} />
-          </>
+          <Home
+            logo={logoClarea}
+            services={services}
+            projects={portfolioProjects}
+            whatsappUrl={WHATSAPP_URL}
+            email={EMAIL}
+            phone={PHONE}
+            instagramUrl={INSTAGRAM_URL}
+            navigate={navigate}
+            schema={servicesSchema}
+          />
         )}
       </main>
       <Footer navigate={navigate} goToSection={goToSection} />
       <WhatsAppButton />
       <ChatWidget />
     </div>
-  );
-}
-
-function WhatsAppIcon({ size = 24, className = "" }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" className={className} aria-hidden="true">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
-    </svg>
   );
 }
 
@@ -747,12 +711,12 @@ const menuItem = {
   shown: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } },
 };
 
-function Nav({ navigate, goToSection, onAccent }) {
+function Nav({ navigate, goToSection, light }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const reduceMotion = useReducedMotion();
   const links = [
     ["Servicios", "#servicios"],
-    ["Trabajos", "/portfolio"],
+    ["Trabajos", "#trabajos"],
     ["Proceso", "#proceso"],
     ["Contacto", "#contacto"],
   ];
@@ -765,7 +729,7 @@ function Nav({ navigate, goToSection, onAccent }) {
   }
 
   return (
-    <header className={`absolute inset-x-0 top-0 z-30 ${onAccent ? "text-ink" : "text-ink"}`}>
+    <header className={`absolute inset-x-0 top-0 z-30 ${light ? "nav-light" : "text-ink"}`}>
       <nav aria-label="Principal" className="wrap flex items-start justify-between gap-4 pt-5 sm:pt-6">
         <a
           href="/"
@@ -775,7 +739,7 @@ function Nav({ navigate, goToSection, onAccent }) {
             navigate("/");
           }}
           aria-label="Clarea, inicio"
-          className="flex h-12 shrink-0 items-center transition-transform duration-200 hover:-rotate-2"
+          className={`${light ? "invisible" : ""} flex h-12 shrink-0 items-center transition-transform duration-200 hover:-rotate-2`}
         >
           <img src={logoClarea} alt="Clarea" width="1367" height="324" className="h-7 w-auto sm:h-8" />
         </a>
@@ -830,142 +794,6 @@ function Nav({ navigate, goToSection, onAccent }) {
         )}
       </AnimatePresence>
     </header>
-  );
-}
-
-const HERO_LINES = ["Tu negocio,", "más claro_"];
-
-// Letters move away from the pointer, tilt and turn white as it gets close, then ease back.
-function useLetterField(sectionRef, titleRef) {
-  useEffect(() => {
-    const section = sectionRef.current;
-    const title = titleRef.current;
-    if (!section || !title) return undefined;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
-
-    const letters = [...title.querySelectorAll("[data-ch]")].map((el) => ({ el, x: 0, y: 0, r: 0, h: 0, cx: 0, cy: 0 }));
-    const pointer = { x: 0, y: 0, active: false };
-    let frame = 0;
-
-    // Resting centres relative to the title, measured with each letter's own transform removed.
-    const measure = () => {
-      const base = title.getBoundingClientRect();
-      letters.forEach((l) => {
-        const kept = l.el.style.transform;
-        l.el.style.transform = "none";
-        const rect = l.el.getBoundingClientRect();
-        l.el.style.transform = kept;
-        l.cx = rect.left + rect.width / 2 - base.left;
-        l.cy = rect.top + rect.height / 2 - base.top;
-      });
-    };
-    measure();
-
-    const tick = () => {
-      const base = title.getBoundingClientRect();
-      const size = parseFloat(getComputedStyle(title).fontSize);
-      const radius = size * 1.5;
-      let moving = false;
-      letters.forEach((l) => {
-        let tx = 0, ty = 0, tr = 0, th = 0;
-        if (pointer.active) {
-          const dx = base.left + l.cx - pointer.x;
-          const dy = base.top + l.cy - pointer.y;
-          const d = Math.hypot(dx, dy) || 1;
-          const f = Math.max(0, 1 - d / radius) ** 2;
-          tx = (dx / d) * f * size * 0.32;
-          ty = (dy / d) * f * size * 0.32;
-          tr = (dx / radius) * f * 18;
-          th = f;
-        }
-        l.x += (tx - l.x) * 0.16;
-        l.y += (ty - l.y) * 0.16;
-        l.r += (tr - l.r) * 0.16;
-        l.h += (th - l.h) * 0.2;
-        if (Math.abs(tx - l.x) + Math.abs(ty - l.y) + Math.abs(th - l.h) > 0.02) moving = true;
-        l.el.style.transform = `translate(${l.x.toFixed(2)}px, ${l.y.toFixed(2)}px) rotate(${l.r.toFixed(2)}deg)`;
-        l.el.classList.toggle("hot", l.h > 0.28);
-      });
-      frame = moving || pointer.active ? requestAnimationFrame(tick) : 0;
-    };
-    const wake = () => {
-      if (!frame) frame = requestAnimationFrame(tick);
-    };
-    const move = (x, y) => {
-      pointer.x = x;
-      pointer.y = y;
-      pointer.active = true;
-      wake();
-    };
-    const onPointer = (event) => move(event.clientX, event.clientY);
-    const onTouch = (event) => event.touches[0] && move(event.touches[0].clientX, event.touches[0].clientY);
-    const leave = () => {
-      pointer.active = false;
-      wake();
-    };
-
-    // The entry animation shifts the lines, so measure again once it has finished and on every new approach.
-    const settle = window.setTimeout(() => {
-      title.classList.add("is-live");
-      measure();
-    }, 1400);
-    section.addEventListener("pointerenter", measure);
-    section.addEventListener("pointermove", onPointer);
-    section.addEventListener("pointerleave", leave);
-    section.addEventListener("touchstart", onTouch, { passive: true });
-    section.addEventListener("touchmove", onTouch, { passive: true });
-    section.addEventListener("touchend", leave);
-    window.addEventListener("resize", measure);
-    document.fonts?.ready.then(measure);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.clearTimeout(settle);
-      section.removeEventListener("pointerenter", measure);
-      section.removeEventListener("pointermove", onPointer);
-      section.removeEventListener("pointerleave", leave);
-      section.removeEventListener("touchstart", onTouch);
-      section.removeEventListener("touchmove", onTouch);
-      section.removeEventListener("touchend", leave);
-      window.removeEventListener("resize", measure);
-    };
-  }, [sectionRef, titleRef]);
-}
-
-function Hero() {
-  const sectionRef = useRef(null);
-  const titleRef = useRef(null);
-  useLetterField(sectionRef, titleRef);
-
-  return (
-    <section ref={sectionRef} aria-labelledby="hero-title" className="on-accent relative flex min-h-[100svh] flex-col justify-between overflow-hidden">
-      <h1 id="hero-title" ref={titleRef} className="hero-name hero-field wrap pt-[30svh] sm:pt-[18svh]">
-        <span className="sr-only">{HERO_LINES.join(" ").replace(/_$/, "")}</span>
-        {HERO_LINES.map((line, i) => (
-          <span key={line} className="line" aria-hidden="true">
-            <span data-line style={{ "--i": i }}>
-              {line.split(" ").map((word, w) => (
-                <Fragment key={w}>
-                  {w > 0 ? " " : null}
-                  <span className="word">
-                    {[...word].map((ch, c) => (
-                      <span key={c} data-ch className={`ch${ch === "_" ? " caret" : ""}`}>
-                        {ch}
-                      </span>
-                    ))}
-                  </span>
-                </Fragment>
-              ))}
-            </span>
-          </span>
-        ))}
-      </h1>
-
-      <div className="hero-after wrap flex flex-col items-start gap-5 pb-[168px] pt-12 sm:items-end sm:pb-10 sm:pr-[112px] sm:text-right">
-        <a href="#contacto" className="btn w-full sm:w-auto">
-          Pedir auditoría gratis <span className="arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-    </section>
   );
 }
 
@@ -1062,324 +890,6 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
   );
 }
 
-function Work({ navigate }) {
-  const [active, setActive] = useState(0);
-  const [touchStart, setTouchStart] = useState(null);
-  const direction = useRef(1);
-  const slides = useRef([]);
-  const firstRender = useRef(true);
-  const total = portfolioProjects.length;
-  const go = (step) => {
-    direction.current = step;
-    setActive((current) => (current + step + total) % total);
-  };
-  const pick = (index) => {
-    direction.current = index >= active ? 1 : -1;
-    setActive(index);
-  };
-  const project = portfolioProjects[active];
-
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-    slideIn(slides.current[active], direction.current);
-  }, [active]);
-
-  const arrowClass =
-    "absolute top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-ink text-bg transition-colors duration-200 hover:bg-accent hover:text-ink sm:h-12 sm:w-12";
-
-  return (
-    <section id="trabajos" aria-labelledby="trabajos-title" className="section wrap">
-      <h2 id="trabajos-title" data-reveal className="t-head">
-        Webs hechas
-      </h2>
-
-      <div
-        data-reveal
-        style={{ "--d": 1 }}
-        className="relative mt-12 rounded-[1.75rem] bg-surface px-12 py-6 sm:px-20 sm:py-10"
-        aria-roledescription="carrusel"
-        aria-label="Proyectos"
-        onTouchStart={(event) => setTouchStart(event.touches[0].clientX)}
-        onTouchEnd={(event) => {
-          if (touchStart === null) return;
-          const distance = event.changedTouches[0].clientX - touchStart;
-          if (Math.abs(distance) > 40) go(distance < 0 ? 1 : -1);
-          setTouchStart(null);
-        }}
-      >
-        {portfolioProjects.map((item, index) => (
-          <div key={item.name} ref={(el) => (slides.current[index] = el)} hidden={index !== active} aria-roledescription="diapositiva" aria-label={`${index + 1} de ${total}: ${item.name}`}>
-            <DeviceShowcase project={item} eager={index === 0} active={index === active} wide />
-          </div>
-        ))}
-
-        <button type="button" onClick={() => go(-1)} aria-label="Proyecto anterior" className={`${arrowClass} left-2 sm:left-5`}>
-          <ArrowLeft size={20} strokeWidth={2} aria-hidden="true" />
-        </button>
-        <button type="button" onClick={() => go(1)} aria-label="Proyecto siguiente" className={`${arrowClass} right-2 sm:right-5`}>
-          <ArrowRight size={20} strokeWidth={2} aria-hidden="true" />
-        </button>
-      </div>
-
-      <div className="mt-6 flex justify-center gap-2" role="tablist" aria-label="Elegir proyecto">
-        {portfolioProjects.map((item, index) => (
-          <button
-            key={item.name}
-            type="button"
-            role="tab"
-            aria-selected={index === active}
-            aria-label={item.name}
-            onClick={() => pick(index)}
-            className="grid h-11 place-items-center px-1"
-          >
-            <span className={`block h-2.5 rounded-full transition-[width,background-color] duration-300 ${index === active ? "w-8 bg-accent" : "w-2.5 bg-muted"}`} />
-          </button>
-        ))}
-      </div>
-
-      <div aria-live="polite">
-      <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={project.name}
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.35, ease: EASE_OUT }}
-        className="grid12 mt-10 gap-y-6"
-      >
-        <div className="col-span-12 lg:col-span-5">
-          <p className="t-lead font-medium">{project.name}</p>
-          <p className="t-small muted mt-1">
-            {project.category} · {project.webType}
-          </p>
-        </div>
-        <div className="col-span-12 lg:col-span-6 lg:col-start-7">
-          <p className="max-w-[60ch]">{project.summary}</p>
-          <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4">
-            {project.url ? (
-              <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn">
-                Abrir la web <span className="arrow" aria-hidden="true">→</span>
-              </a>
-            ) : (
-              <p className="muted">Enlace de prueba disponible pronto.</p>
-            )}
-            <a
-              href="/portfolio"
-              onClick={(event) => {
-                event.preventDefault();
-                navigate("/portfolio");
-              }}
-              className="link"
-            >
-              Ver el portfolio completo
-            </a>
-          </div>
-        </div>
-      </motion.div>
-      </AnimatePresence>
-      </div>
-    </section>
-  );
-}
-
-// Card that tilts towards the mouse, lifts, and carries a glow under the cursor.
-function useTilt() {
-  const reduceMotion = useReducedMotion();
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const spring = { stiffness: 220, damping: 22, mass: 0.5 };
-  const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [7, -7]), spring);
-  const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-7, 7]), spring);
-
-  function onPointerMove(event) {
-    if (reduceMotion || event.pointerType !== "mouse") return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width;
-    const y = (event.clientY - rect.top) / rect.height;
-    px.set(x - 0.5);
-    py.set(y - 0.5);
-    event.currentTarget.style.setProperty("--mx", `${(x * 100).toFixed(1)}%`);
-    event.currentTarget.style.setProperty("--my", `${(y * 100).toFixed(1)}%`);
-  }
-  function onPointerLeave() {
-    px.set(0);
-    py.set(0);
-  }
-
-  return {
-    style: { rotateX, rotateY, transformPerspective: 900 },
-    whileHover: reduceMotion ? undefined : { y: -6 },
-    transition: { type: "spring", stiffness: 260, damping: 20 },
-    onPointerMove,
-    onPointerLeave,
-  };
-}
-
-function ServiceCard({ item, page, navigate, index }) {
-  const link = item.page || null;
-  const tilt = useTilt();
-  return (
-    <li data-reveal data-card style={{ "--d": index % 3 }} className="flex">
-      <motion.article {...tilt} className={`svc-card w-full ${item.featured ? "is-featured" : ""}`}>
-      {item.featured && <p className="svc-tag">Destacado</p>}
-      <h3 className="t-lead font-medium leading-tight">{item.name}</h3>
-      <p className="svc-hook mt-2 font-medium">{item.hook}</p>
-      <p className="muted mt-4">{item.text}</p>
-      <p className="t-small mt-6 font-medium">Qué incluye</p>
-      <ul className="svc-list mt-2">
-        {item.includes.map((line) => (
-          <li key={line}>{line}</li>
-        ))}
-      </ul>
-      <div className="svc-foot">
-        <p className="t-small">
-          Plazo: <span className="font-medium">{item.time}</span>
-        </p>
-        {link && link !== page && (
-          <a
-            href={link}
-            onClick={(event) => {
-              event.preventDefault();
-              navigate(link);
-            }}
-            className="link t-small"
-          >
-            Ver la agenda automática
-          </a>
-        )}
-      </div>
-      </motion.article>
-    </li>
-  );
-}
-
-function Services({ navigate }) {
-  const [activeId, setActiveId] = useState(serviceCatalog[0].id);
-  const firstTab = useRef(true);
-
-  useEffect(() => {
-    if (firstTab.current) {
-      firstTab.current = false;
-      return;
-    }
-    // Cards already revealed once replay in cascade; new ones are revealed on scroll as usual.
-    cascade([...document.querySelectorAll(`#panel-${activeId} [data-card].is-in`)]);
-  }, [activeId]);
-
-  // Arrow keys, Home and End move between the tabs (WAI-ARIA tabs pattern, automatic activation).
-  function handleKeyDown(event) {
-    const index = serviceCatalog.findIndex((block) => block.id === activeId);
-    const last = serviceCatalog.length - 1;
-    const next = { ArrowRight: index === last ? 0 : index + 1, ArrowLeft: index === 0 ? last : index - 1, Home: 0, End: last }[event.key];
-    if (next === undefined) return;
-    event.preventDefault();
-    setActiveId(serviceCatalog[next].id);
-    document.getElementById(`tab-${serviceCatalog[next].id}`)?.focus();
-  }
-
-  return (
-    <section id="servicios" aria-labelledby="servicios-title" className="section wrap on-dark md:pr-[104px]">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema).replace(/</g, "\\u003c") }} />
-
-      <div className="max-w-[60rem]">
-        <h2 id="servicios-title" data-reveal className="t-head">
-          Webs que captan clientes y automatizaciones que trabajan solas
-        </h2>
-        <p data-reveal style={{ "--d": 1 }} className="t-lead mt-8 max-w-[44ch]">
-          Diseño tu web y automatizo todo lo que pasa después del clic: cada consulta respondida, cada cita confirmada y cada cliente con seguimiento. Tú te dedicas a tu negocio; el sistema se ocupa del resto.
-        </p>
-      </div>
-
-      <div data-reveal style={{ "--d": 2 }} role="tablist" aria-label="Servicios" className="svc-tabs t-lead mt-14 flex flex-wrap gap-x-8 gap-y-2" onKeyDown={handleKeyDown}>
-        {serviceCatalog.map((block) => (
-          <button
-            key={block.id}
-            id={`tab-${block.id}`}
-            type="button"
-            role="tab"
-            aria-selected={block.id === activeId}
-            aria-controls={`panel-${block.id}`}
-            tabIndex={block.id === activeId ? 0 : -1}
-            onClick={() => setActiveId(block.id)}
-            className="min-h-[44px] font-medium"
-          >
-            {block.tab}
-          </button>
-        ))}
-      </div>
-
-      {serviceCatalog.map((block) => (
-        <div key={block.id} id={`panel-${block.id}`} role="tabpanel" aria-labelledby={`tab-${block.id}`} hidden={block.id !== activeId} tabIndex={0} className="mt-8">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3">
-            <p className="max-w-[60ch]">{block.intro}</p>
-            <a
-              href={block.page}
-              onClick={(event) => {
-                event.preventDefault();
-                navigate(block.page);
-              }}
-              className="link"
-            >
-              {block.pageLabel}
-            </a>
-          </div>
-          <ul className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {block.items.map((item, index) => (
-              <ServiceCard key={item.name} item={item} page={block.page} navigate={navigate} index={index} />
-            ))}
-          </ul>
-        </div>
-      ))}
-
-      <div className="svc-band mt-24">
-        <h3 data-reveal className="t-lead font-medium">
-          Sistemas pensados para tu sector
-        </h3>
-        <ul data-reveal style={{ "--d": 1 }} className="mt-6 flex flex-wrap gap-2" aria-label="Sectores">
-          {sectors.map((sector) => (
-            <li key={sector} className="svc-chip">
-              {sector}
-            </li>
-          ))}
-        </ul>
-        <p data-reveal style={{ "--d": 2 }} className="muted mt-6 max-w-[60ch]">
-          Cada sector tiene sus tareas repetidas. En la auditoría te digo cuáles compensa automatizar primero en el tuyo.
-        </p>
-      </div>
-
-      <div className="svc-band mt-16">
-        <h3 data-reveal className="t-lead font-medium">
-          Por qué trabajar conmigo
-        </h3>
-        <ul className="mt-6 grid gap-x-6 gap-y-6 sm:grid-cols-2 xl:grid-cols-4">
-          {reasons.map(([lead, rest], index) => (
-            <li key={lead} data-reveal style={{ "--d": index }} className="svc-reason">
-              <span className="font-medium">{lead}</span> {rest && <span className="muted">{rest}</span>}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div data-reveal className="on-accent mt-20 p-6 sm:p-10 lg:p-14">
-        <h3 className="t-head max-w-[16ch]">¿Qué tarea repites cada semana?</h3>
-        <p className="t-lead mt-6 max-w-[44ch]">En 30 minutos la revisamos juntos y te digo las tres cosas que más compensa automatizar en tu negocio. Gratis y sin compromiso.</p>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a href="#contacto" className="btn">
-            Pedir auditoría gratis <span className="arrow" aria-hidden="true">→</span>
-          </a>
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-line">
-            <WhatsAppIcon size={20} />
-            Escribirme por WhatsApp
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function Lineup({ groups }) {
   return (
     <section id="servicios" aria-label="Servicios" className="section wrap on-dark md:pr-[104px]">
@@ -1402,76 +912,6 @@ function Lineup({ groups }) {
   );
 }
 
-function HowItWorks() {
-  return (
-    <section id="proceso" aria-labelledby="proceso-title" className="section wrap">
-      <div className="mx-auto max-w-[560px] lg:ml-[25%] lg:mr-0">
-        <h2 id="proceso-title" data-reveal className="t-head mb-14">
-          Cómo trabajo
-        </h2>
-
-        <div data-reveal className="mb-[88px]">
-          <p className="t-lead font-medium">Primero, me cuentas cómo trabajas. Son 30 minutos y no cuestan nada.</p>
-          <div data-ui className="ui-input mt-4">
-            <p className="ui-from">Tú, por WhatsApp</p>
-            <p className="mt-1">Hola, tengo una clínica y cada semana se me escapan citas por olvidos.</p>
-          </div>
-          <div data-ui className="ui-reply mt-4 sm:ml-14">
-            <p className="ui-label">Lo que te llevas de la auditoría</p>
-            <p className="mt-1 font-medium">Las tres tareas que más compensa automatizar, en orden.</p>
-          </div>
-        </div>
-
-        <div data-reveal className="mb-[88px]">
-          <p className="t-lead font-medium">Después, te envío un precio cerrado en 48 horas.</p>
-          <div data-ui className="ui-input mt-4">
-            <p className="ui-from">Tú</p>
-            <p className="mt-1">¿Cuánto costaría la agenda con recordatorios?</p>
-          </div>
-          <div data-ui className="ui-reply mt-4 sm:ml-14">
-            <p className="ui-label">Propuesta</p>
-            <p className="mt-1 font-medium">Agenda automática · 390 € · lista en 5 días · 30 días de soporte incluidos</p>
-          </div>
-        </div>
-
-        <div data-reveal className="mb-[88px]">
-          <p className="t-lead font-medium">Luego lo construyo y lo pruebas antes del segundo pago.</p>
-          <div data-ui className="ui-input mt-4">
-            <p className="ui-from">Tú</p>
-            <p className="mt-1">¿Puedo verlo antes de que esté terminado?</p>
-          </div>
-          <div data-ui className="ui-reply mt-4 sm:ml-14">
-            <p className="ui-label">Versión de prueba</p>
-            <p className="mt-1 font-medium">Un enlace para reservar una cita de prueba y recibir tu propio recordatorio.</p>
-          </div>
-        </div>
-
-        <div data-reveal>
-          <p className="t-lead font-medium">Al final, funciona solo, y lo vigilo durante el primer mes.</p>
-        </div>
-      </div>
-
-      <div data-reveal className="mx-auto mt-6 max-w-[760px] lg:ml-[25%] lg:mr-0">
-        <div data-ui className="ui-chat" aria-label="Ejemplo del recordatorio por WhatsApp que recibe un cliente">
-          <div className="ui-bubble">
-            <p>Hola Marta, te recordamos tu cita de mañana a las 10:30. Responde 1 para confirmarla o 2 para cambiarla.</p>
-            <p className="ui-time mt-1 text-right">9:00</p>
-          </div>
-          <div className="ui-bubble me mt-3">
-            <p>1</p>
-            <p className="ui-time mt-1 text-right">9:04</p>
-          </div>
-          <div className="ui-bubble mt-3">
-            <p>Perfecto, cita confirmada. ¡Hasta mañana!</p>
-            <p className="ui-time mt-1 text-right">9:04</p>
-          </div>
-        </div>
-        <p className="t-small muted mt-3">Ejemplo de recordatorio, 24 horas antes de la cita.</p>
-      </div>
-    </section>
-  );
-}
-
 function Faq({ items, title = "Preguntas frecuentes", id = "preguntas" }) {
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="section wrap bg-surface">
@@ -1485,185 +925,6 @@ function Faq({ items, title = "Preguntas frecuentes", id = "preguntas" }) {
               <strong className="font-medium">{question}</strong> {answer}
             </p>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Contact({ selectedService, onServiceChange, navigate }) {
-  const [status, setStatus] = useState("idle");
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const formElement = event.currentTarget;
-    const form = new FormData(formElement);
-    const email = String(form.get("email") || "").trim();
-
-    // Honeypot: people never see this field, form-filling bots do. Pretend success and drop it.
-    if (String(form.get("website") || "").trim()) {
-      formElement.reset();
-      onServiceChange("");
-      setStatus("success");
-      return;
-    }
-
-    if (!email.includes("@")) {
-      setStatus("error");
-      return;
-    }
-
-    if (window.location.protocol === "https:" && N8N_WEBHOOK_URL.startsWith("http://")) {
-      setStatus("webhook-http-error");
-      return;
-    }
-
-    setStatus("loading");
-
-    const payload = {
-      nombre: String(form.get("nombre") || "").trim(),
-      empresa: String(form.get("empresa") || "").trim(),
-      email,
-      telefono: String(form.get("telefono") || "").trim(),
-      servicio: String(form.get("servicio") || "").trim(),
-      presupuesto: String(form.get("presupuesto") || "").trim(),
-      mensaje: String(form.get("mensaje") || "").trim(),
-      website: "",
-      origen: "creaciones-digitales-web",
-      fecha: new Date().toISOString(),
-    };
-
-    try {
-      const response = await fetch(N8N_WEBHOOK_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error("No se pudo enviar el formulario");
-      }
-
-      formElement.reset();
-      onServiceChange("");
-      setStatus("success");
-    } catch (error) {
-      setStatus("submit-error");
-    }
-  }
-
-  const labelClass = "t-small block font-medium";
-
-  return (
-    <section id="contacto" aria-labelledby="contacto-title" className="on-dark wrap flex min-h-[100svh] flex-col justify-between gap-16 pb-10 pt-[var(--section)]">
-      <div className="grid12 gap-y-10">
-        <div className="col-span-12 lg:col-span-4">
-          <h2 id="contacto-title" data-reveal className="t-lead max-w-[24ch] font-medium">
-            Cuéntame qué repites cada semana y te digo cómo quitártelo de encima.
-          </h2>
-          <p data-reveal style={{ "--d": 1 }} className="muted mt-4 max-w-[34ch]">
-            La auditoría dura 30 minutos y es gratis. Te respondo en menos de 24 horas laborables.
-          </p>
-        </div>
-
-        <form data-reveal style={{ "--d": 2 }} onSubmit={handleSubmit} className="col-span-12 grid gap-5 lg:col-span-7 lg:col-start-6 sm:grid-cols-2">
-          <label className={labelClass}>
-            Nombre
-            <input name="nombre" autoComplete="name" required placeholder="Tu nombre" className="field" />
-          </label>
-          <label className={labelClass}>
-            Correo electrónico
-            <input name="email" type="email" autoComplete="email" required placeholder="nombre@empresa.com" className="field" />
-          </label>
-
-          <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
-            <label>
-              No rellenes este campo
-              <input name="website" type="text" tabIndex={-1} autoComplete="off" />
-            </label>
-          </div>
-
-          <label className={labelClass}>
-            WhatsApp <span className="muted font-normal">(opcional)</span>
-            <input name="telefono" type="tel" autoComplete="tel" placeholder="+34 600 000 000" className="field" />
-          </label>
-          <label className={labelClass}>
-            Servicio <span className="muted font-normal">(opcional)</span>
-            <select name="servicio" value={selectedService} onChange={(event) => onServiceChange(event.target.value)} className="field cursor-pointer">
-              <option value="">Elige un servicio</option>
-              <option value="web-profesional">Desarrollo web</option>
-              <option value="agenda-automatica">Agenda automática</option>
-              <option value="automatizaciones">Automatización a medida</option>
-              <option value="app-web">Aplicación a medida</option>
-              <option value="mantenimiento">Mantenimiento mensual</option>
-              <option value="agente-ia">Agente de IA</option>
-              <option value="otro">Otro / no estoy seguro</option>
-            </select>
-          </label>
-          <label className={`${labelClass} sm:col-span-2`}>
-            Presupuesto <span className="muted font-normal">(opcional)</span>
-            <select name="presupuesto" defaultValue="" className="field cursor-pointer">
-              <option value="">Elige un rango</option>
-              <option value="500-1000">500 € – 1.000 €</option>
-              <option value="1000-3000">1.000 € – 3.000 €</option>
-              <option value="3000-5000">3.000 € – 5.000 €</option>
-              <option value="5000-10000">5.000 € – 10.000 €</option>
-            </select>
-          </label>
-          <label className={`${labelClass} sm:col-span-2`}>
-            ¿Qué quieres mejorar?
-            <textarea name="mensaje" required rows={4} placeholder="Cuéntame qué proceso repites, qué herramientas usas y qué resultado buscas." className="field" />
-          </label>
-
-          <div className="sm:col-span-2" aria-live="polite">
-            {status === "error" && <p className="bg-accent px-4 py-3 font-medium text-ink">Revisa el correo antes de enviar.</p>}
-            {status === "success" && <p className="bg-bg px-4 py-3 font-medium text-ink">Gracias. He recibido tu mensaje y te respondo en menos de 24 horas laborables.</p>}
-            {status === "submit-error" && <p className="bg-accent px-4 py-3 font-medium text-ink">No se pudo enviar tu mensaje. Inténtalo de nuevo o escríbeme por WhatsApp.</p>}
-            {status === "webhook-http-error" && <p className="bg-accent px-4 py-3 font-medium text-ink">Para usarlo en Vercel, el webhook de n8n debe ser HTTPS.</p>}
-          </div>
-
-          <div className="flex flex-col gap-4 sm:col-span-2">
-            <p className="t-small muted">
-              Al enviar aceptas la{" "}
-              <a
-                href="/privacidad"
-                onClick={(event) => {
-                  event.preventDefault();
-                  navigate("/privacidad");
-                }}
-                className="link"
-              >
-                política de privacidad
-              </a>
-              .
-            </p>
-            <button type="submit" disabled={status === "loading"} className="btn btn-accent self-start disabled:cursor-wait disabled:opacity-60">
-              {status === "loading" ? "Enviando…" : "Pedir auditoría gratis"} <span className="arrow" aria-hidden="true">→</span>
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <div>
-        <a href={`mailto:${EMAIL}`} className="email-display">
-          ubedadesarrolloweb@<wbr />
-          gmail.com
-        </a>
-        <div className="t-small mt-8 flex flex-col gap-3 sm:flex-row sm:justify-between">
-          <p>
-            <a href="tel:+34697955919" className="link">
-              {PHONE}
-            </a>{" "}
-            · Barcelona
-          </p>
-          <p>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="link inline-flex items-center gap-2">
-              <Instagram size={16} strokeWidth={2} className="shrink-0" aria-hidden="true" />
-              @holaclarea
-            </a>
-          </p>
         </div>
       </div>
     </section>

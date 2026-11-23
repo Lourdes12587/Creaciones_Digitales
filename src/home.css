@@ -1,0 +1,678 @@
+/* Home: a day in the Barcelona sky, shot as one continuous take. */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/Fraunces-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+.cine {
+  --storm: #161a26;
+  --night: #0f1830;
+  --rift: #ff4d6d;
+  --dawn: #f4e9dc;
+  --gold: #f6a84b;
+  --dawn-soft: rgba(244, 233, 220, 0.74);
+  background: var(--storm);
+  color: var(--dawn);
+}
+
+.cine ::selection {
+  background: var(--rift);
+  color: var(--storm);
+}
+
+.cine :focus-visible {
+  outline: 2px solid var(--dawn);
+  outline-offset: 4px;
+}
+
+/* Soft, light serif: reads like a title card and echoes the rounded logo. */
+.cine .display {
+  font-family: "Fraunces", Georgia, serif;
+  font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 144;
+  font-weight: 330;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+/* ---------- Scenes ---------- */
+
+.scene {
+  position: relative;
+}
+
+.scene-opening {
+  height: 210svh;
+}
+
+.scene-night {
+  height: 420svh;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.plate {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.plate-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.opening-img {
+  object-position: 62% 50%;
+}
+
+.night-img {
+  object-position: 34% 50%;
+}
+
+.sunset-img {
+  object-position: 50% 45%;
+}
+
+.scene-opening .plate {
+  transform-origin: 62% 50%;
+}
+
+/* Living background: a slow drift that never quite stops. */
+.drift {
+  position: absolute;
+  inset: 0;
+  animation: opening-exposure 2.6s cubic-bezier(0.22, 1, 0.36, 1) both, drift 38s ease-in-out 2.6s infinite alternate;
+  transform-origin: 62% 52%;
+}
+
+@keyframes opening-exposure {
+  from {
+    transform: scale(1.14);
+    filter: brightness(0.25) saturate(0.6);
+  }
+  to {
+    transform: scale(1.04);
+    filter: brightness(1) saturate(1);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.8%, 0.8%, 0);
+  }
+}
+
+/* The light through the gap in the clouds breathes. */
+.light-leak {
+  position: absolute;
+  left: 48%;
+  top: 14%;
+  width: 46%;
+  height: 52%;
+  background: radial-gradient(closest-side, rgba(255, 120, 140, 0.55), rgba(255, 190, 160, 0.18) 55%, transparent 75%);
+  mix-blend-mode: screen;
+  filter: blur(20px);
+  animation: breathe 7s ease-in-out 2s infinite alternate;
+  opacity: 0;
+}
+
+@keyframes breathe {
+  from {
+    opacity: 0.25;
+    transform: translate3d(0, 0, 0) scale(0.95);
+  }
+  to {
+    opacity: 0.85;
+    transform: translate3d(-3%, 2%, 0) scale(1.08);
+  }
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.shade-opening {
+  background:
+    linear-gradient(to top, rgba(22, 26, 38, 0.92) 0%, rgba(22, 26, 38, 0.35) 38%, transparent 62%),
+    linear-gradient(to right, rgba(22, 26, 38, 0.55), transparent 55%);
+}
+
+.shade-night {
+  background:
+    linear-gradient(to top, rgba(15, 24, 48, 0.94) 0%, rgba(15, 24, 48, 0.55) 40%, rgba(15, 24, 48, 0.1) 70%),
+    linear-gradient(to right, rgba(15, 24, 48, 0.6), transparent 60%);
+}
+
+.shade-sunset {
+  background:
+    linear-gradient(to top, rgba(30, 14, 20, 0.88) 0%, rgba(30, 14, 20, 0.4) 42%, transparent 70%),
+    linear-gradient(to right, rgba(30, 14, 20, 0.45), transparent 50%);
+}
+
+/* Film grain, shifting a few times a second. */
+.grain {
+  position: absolute;
+  inset: -50%;
+  pointer-events: none;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.9s steps(5) infinite;
+  mix-blend-mode: overlay;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-4%, 3%); }
+  40% { transform: translate(3%, -5%); }
+  60% { transform: translate(-6%, -2%); }
+  80% { transform: translate(5%, 4%); }
+  100% { transform: translate(0, 0); }
+}
+
+.dip {
+  position: absolute;
+  inset: 0;
+  background: var(--storm);
+  pointer-events: none;
+}
+
+/* Cinema bars that open on load. */
+.letterbox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: #05060a;
+  z-index: 3;
+  animation: letterbox-open 1.6s cubic-bezier(0.76, 0, 0.24, 1) 0.15s both;
+}
+
+.letterbox.top {
+  top: 0;
+  transform-origin: top;
+}
+
+.letterbox.bottom {
+  bottom: 0;
+  transform-origin: bottom;
+}
+
+@keyframes letterbox-open {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+
+/* ---------- Opening title ---------- */
+
+.opening-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(48px, 11svh, 120px);
+  z-index: 2;
+}
+
+.opening-title h1 {
+  margin: 0;
+  font-weight: inherit;
+}
+
+.logo-wipe {
+  display: block;
+  width: clamp(240px, 54vw, 860px);
+  animation: wipe 1.5s cubic-bezier(0.65, 0, 0.35, 1) 1.1s both;
+}
+
+.opening-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: invert(1) brightness(0.96) sepia(0.12);
+}
+
+@keyframes wipe {
+  from {
+    clip-path: inset(-10% 100% -10% 0);
+    filter: drop-shadow(0 0 0 rgba(255, 140, 160, 0));
+  }
+  60% {
+    filter: drop-shadow(0 0 28px rgba(255, 140, 160, 0.55));
+  }
+  to {
+    clip-path: inset(-10% -2% -10% 0);
+    filter: drop-shadow(0 0 0 rgba(255, 140, 160, 0));
+  }
+}
+
+.opening-phrase {
+  display: block;
+  margin-top: clamp(14px, 2.4vw, 28px);
+  font-family: "Fraunces", Georgia, serif;
+  font-variation-settings: "SOFT" 100, "opsz" 144;
+  font-weight: 300;
+  font-size: clamp(2rem, 1.2rem + 3.6vw, 4.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+.opening-sub {
+  margin-top: 14px;
+  max-width: 40ch;
+  color: var(--dawn-soft);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
+}
+
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+}
+
+.rise {
+  display: inline-block;
+  animation: rise 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(2.05s + var(--i) * 0.16s);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Night: services as subtitles ---------- */
+
+.captions {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.caption {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(88px, 16svh, 170px);
+  max-width: 34rem;
+}
+
+.caption-intro {
+  max-width: 44rem;
+}
+
+.caption-intro .display {
+  font-size: clamp(2.1rem, 1.3rem + 3.4vw, 4.6rem);
+}
+
+.caption-title {
+  font-size: clamp(2.4rem, 1.4rem + 4vw, 5.4rem);
+}
+
+.caption-text {
+  margin-top: 14px;
+  max-width: 36ch;
+  color: var(--dawn-soft);
+  font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  line-height: 1.45;
+}
+
+.caption-meta {
+  margin-top: 20px;
+  font-size: 0.9375rem;
+  color: var(--dawn-soft);
+}
+
+.caption-track {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(48px, 9svh, 96px);
+  width: min(34rem, calc(100% - 2 * var(--gutter)));
+  height: 1px;
+  background: rgba(244, 233, 220, 0.22);
+}
+
+.caption-track span {
+  display: block;
+  height: 100%;
+  background: var(--dawn);
+  transform-origin: left;
+}
+
+.cine-link {
+  color: var(--dawn);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: color 200ms ease, text-decoration-color 200ms ease;
+}
+
+.cine-link:hover {
+  color: #fff;
+  text-decoration-color: var(--rift);
+}
+
+/* Without motion every caption is simply shown, one after another. */
+.scene-night.is-static {
+  height: auto;
+}
+
+.scene-night.is-static .stage {
+  position: relative;
+  height: auto;
+  min-height: 100svh;
+}
+
+.scene-night.is-static .captions {
+  position: relative;
+  display: grid;
+  gap: 64px;
+  padding-block: 30svh 96px;
+}
+
+.scene-night.is-static .caption {
+  position: static;
+}
+
+.scene-night.is-static .caption-track {
+  display: none;
+}
+
+/* ---------- Reel: projects as film frames ---------- */
+
+.scene-reel {
+  background: var(--storm);
+}
+
+.reel-stage {
+  display: flex;
+  align-items: center;
+}
+
+.reel-track {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(28px, 4vw, 64px);
+  padding-inline: var(--gutter);
+  will-change: transform;
+}
+
+.reel-intro,
+.reel-end {
+  flex: 0 0 auto;
+  width: min(78vw, 26rem);
+  align-self: center;
+}
+
+.reel-intro .display {
+  font-size: clamp(3rem, 2rem + 5vw, 7rem);
+}
+
+.reel-end .display {
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);
+  margin-bottom: 28px;
+}
+
+.frame {
+  flex: 0 0 auto;
+  width: min(80vw, 52rem);
+}
+
+.frame-shot {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #222738;
+  /* Sprocket-like edge: thin light rails above and below the picture. */
+  box-shadow: 0 -10px 0 -9px rgba(244, 233, 220, 0.25), 0 10px 0 -9px rgba(244, 233, 220, 0.25);
+}
+
+.frame-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.frame-shot:hover img {
+  transform: scale(1.03);
+}
+
+.frame-caption {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 8px 24px;
+  margin-top: 18px;
+  font-size: 0.9375rem;
+}
+
+.frame-caption h3 {
+  font-weight: 500;
+  font-size: 1.0625rem;
+}
+
+.frame-caption p {
+  color: var(--dawn-soft);
+}
+
+@media (max-width: 640px) {
+  .frame-caption {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scene-reel.is-static .stage {
+  position: relative;
+  height: auto;
+  padding-block: 120px;
+  overflow-x: auto;
+}
+
+/* ---------- Process: the sky warms up ---------- */
+
+.scene-process {
+  position: relative;
+  padding-block: clamp(120px, 22svh, 220px) clamp(120px, 30svh, 300px);
+}
+
+.process-head {
+  font-size: 1rem;
+  font-weight: 500;
+  opacity: 0.74;
+  margin-bottom: clamp(48px, 12svh, 120px);
+}
+
+.steps {
+  display: grid;
+  gap: clamp(96px, 28svh, 260px);
+  max-width: 56rem;
+  margin-left: clamp(0px, 12vw, 220px);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 8px 20px;
+  align-items: baseline;
+}
+
+.step-n {
+  font-family: "Fraunces", Georgia, serif;
+  font-variation-settings: "SOFT" 100, "opsz" 144;
+  font-weight: 300;
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+
+.step .display {
+  font-size: clamp(2.2rem, 1.3rem + 3.8vw, 5rem);
+}
+
+.step p {
+  margin-top: 16px;
+  max-width: 40ch;
+  font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  line-height: 1.45;
+  opacity: 0.8;
+}
+
+
+/* ---------- Sunset: contact ---------- */
+
+.scene-sunset {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.scene-sunset .plate {
+  transform-origin: 52% 40%;
+}
+
+/* Picks up the last colour of the process sky so the cut to the beach is soft. */
+.sunset-blend {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 38svh;
+  background: linear-gradient(#e9956c, rgba(233, 149, 108, 0));
+  pointer-events: none;
+}
+
+.sunset-copy {
+  position: relative;
+  z-index: 2;
+  padding-bottom: clamp(56px, 12svh, 140px);
+  padding-top: 40svh;
+}
+
+.sunset-copy .display {
+  font-size: clamp(2.4rem, 1.4rem + 4.4vw, 6rem);
+  max-width: 14ch;
+}
+
+.sunset-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
+  margin-top: 36px;
+}
+
+.sunset-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin-top: 48px;
+  font-size: 0.9375rem;
+  color: var(--dawn-soft);
+}
+
+.cine-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 28px;
+  border-radius: 999px;
+  background: var(--dawn);
+  color: var(--storm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 250ms ease, transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cine-btn:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.cine-btn-wa svg {
+  color: #1ea952;
+}
+
+/* ---------- Header over the opening shot ---------- */
+
+.nav-light {
+  color: var(--light, #fff);
+}
+
+.nav-light .btn {
+  background: rgba(244, 233, 220, 0.94);
+  color: #161a26;
+  border-radius: 999px;
+}
+
+.nav-light .btn:hover {
+  background: #fff;
+}
+
+/* ---------- Phones: keep text clear of the floating WhatsApp and chat buttons ---------- */
+
+@media (max-width: 640px) {
+  .opening-title {
+    bottom: 168px;
+  }
+
+  .caption {
+    bottom: 196px;
+    right: calc(var(--gutter) + 64px);
+  }
+
+  .caption-track {
+    bottom: 168px;
+  }
+
+  .sunset-copy {
+    padding-bottom: 168px;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .drift,
+  .light-leak,
+  .grain,
+  .logo-wipe,
+  .rise {
+    animation: none;
+  }
+
+  .letterbox {
+    display: none;
+  }
+
+  .light-leak {
+    opacity: 0.5;
+  }
+
+  .scene-opening {
+    height: 100svh;
+  }
+}

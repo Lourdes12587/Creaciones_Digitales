@@ -620,8 +620,8 @@ function App({ initialRoute }) {
         ) : (
           <>
             <Hero />
-            <Work navigate={navigate} />
             <Services navigate={navigate} />
+            <Work navigate={navigate} />
             <HowItWorks />
             <Faq items={homeFaqs} />
             <Contact selectedService={selectedService} onServiceChange={setSelectedService} navigate={navigate} />

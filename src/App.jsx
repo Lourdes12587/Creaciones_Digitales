@@ -64,7 +64,7 @@ import portfolioDelux from "./assets/portfolio-delux-full.webp";
 const N8N_WEBHOOK_URL = "https://n8n.creaciones-digitales.com/webhook/formularion8n";
 // Production URL of the n8n "Chat Trigger" node. The chat widget stays off while this is empty.
 const N8N_CHAT_URL = "https://n8n.creaciones-digitales.com/webhook/5c3d9e2a-7b41-4f6e-9a12-cd0a8e7f4b21/chat";
-const EMAIL = "hola@holaclarea.com";
+const EMAIL = "ubedadesarrolloweb@gmail.com";
 const PHONE = "+34 697 955 919";
 const INSTAGRAM_URL = "https://www.instagram.com/holaclarea/";
 
@@ -1040,8 +1040,8 @@ function Contact({ selectedService, onServiceChange, navigate }) {
 
       <div>
         <a href={`mailto:${EMAIL}`} className="email-display">
-          hola@<wbr />
-          holaclarea.com
+          ubedadesarrolloweb@<wbr />
+          gmail.com
         </a>
         <div className="t-small mt-8 flex flex-col gap-3 sm:flex-row sm:justify-between">
           <p>
@@ -1458,7 +1458,7 @@ function Footer({ navigate, goToSection }) {
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:gap-x-16">
           <div className="col-span-2 max-w-sm sm:col-span-3 lg:col-span-1">
             <Logo className="footer-logo" />
-            <p className="muted mt-3">Webs y automatizaciones para negocios en Barcelona.</p>
+            <p className="footer-tagline">Desarrollo web y automatizaciones para tu negocio de Barcelona.</p>
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="link muted mt-4 inline-flex min-h-[44px] items-center gap-2 no-underline hover:underline">
               <Instagram size={17} strokeWidth={2} className="shrink-0" aria-hidden="true" />
               @holaclarea

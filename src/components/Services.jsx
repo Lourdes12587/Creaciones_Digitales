@@ -1,8 +1,8 @@
-// Home services: two small cards, web development and automations, each with its intro and a link that
-// opens the page of its category, where every service is explained in detail. No prices here.
+// Home services as in the original page: two tabs (web development, automations) with every service as a
+// card, in the current dark design. Each tab links to the page of its category. No prices here.
 // The opening repeats the hero's design: thin vertical lines on the right and a large title aligned
 // with the logo whose letters move away from the pointer and catch the light.
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 import useLetterField from "./useLetterField";
 
 // Four balanced lines; the longest ("automatizaciones", "que trabajan solas") is about 10.6 em wide in Syne.
@@ -13,6 +13,18 @@ export default function Services({ navigate, schema, catalog, catalogPage }) {
   const headRef = useRef(null);
   const titleRef = useRef(null);
   useLetterField(headRef, titleRef);
+  const [activeId, setActiveId] = useState(catalog[0].id);
+
+  // Arrow keys, Home and End move between the tabs (WAI-ARIA tabs pattern, automatic activation).
+  function handleTabKey(event) {
+    const index = catalog.findIndex((block) => block.id === activeId);
+    const last = catalog.length - 1;
+    const next = { ArrowRight: index === last ? 0 : index + 1, ArrowLeft: index === 0 ? last : index - 1, Home: 0, End: last }[event.key];
+    if (next === undefined) return;
+    event.preventDefault();
+    setActiveId(catalog[next].id);
+    document.getElementById(`pestana-${catalog[next].id}`)?.focus();
+  }
 
   function open(event, path) {
     event.preventDefault();
@@ -55,29 +67,61 @@ export default function Services({ navigate, schema, catalog, catalogPage }) {
         </p>
       </div>
 
+      {/* As in the original home page: two tabs, Desarrollo web and Automatizaciones, each showing every
+          service as a card (hook, what it is, what it includes, how long it takes), in the current design. */}
       <div className="services-body section wrap">
-      <div className="services-split">
-        {catalog.map((block, blockIndex) => {
+        <div role="tablist" aria-label="Servicios" className="services-tabs" onKeyDown={handleTabKey}>
+          {catalog.map((block) => (
+            <button
+              key={block.id}
+              id={`pestana-${block.id}`}
+              type="button"
+              role="tab"
+              aria-selected={block.id === activeId}
+              aria-controls={`panel-${block.id}`}
+              tabIndex={block.id === activeId ? 0 : -1}
+              onClick={() => setActiveId(block.id)}
+              className="services-tab"
+            >
+              {block.tab}
+            </button>
+          ))}
+        </div>
+
+        {catalog.map((block) => {
           const page = catalogPage[block.id];
           return (
-            <article key={block.id} data-reveal style={{ "--d": blockIndex }} aria-labelledby={`bloque-${block.id}`} className={`service-block${block.id === "web" ? " is-featured" : ""}`}>
-              <span className="service-mark" aria-hidden="true" />
-              <h3 id={`bloque-${block.id}`} className="service-block-title">
-                {block.tab}
-              </h3>
-              <p className="service-block-intro">{block.intro}</p>
-
-              {/* Opens the category page, where every service is explained in detail. */}
-              <a href={page} onClick={(event) => open(event, page)} className="service-link">
-                {block.id === "web" ? "Ver los servicios de desarrollo web" : "Ver los servicios de automatización"}{" "}
-                <span className="arrow" aria-hidden="true">
-                  →
-                </span>
-              </a>
-            </article>
+            <div key={block.id} id={`panel-${block.id}`} role="tabpanel" aria-labelledby={`pestana-${block.id}`} hidden={block.id !== activeId} className="services-panel">
+              <div className="services-panel-head">
+                <p className="services-panel-intro">{block.intro}</p>
+                <a href={page} onClick={(event) => open(event, page)} className="service-link">
+                  {block.id === "web" ? "Todo sobre desarrollo web" : "Todo sobre automatizaciones"}{" "}
+                  <span className="arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </div>
+              <ul className="catalog-grid">
+                {block.items.map((item) => (
+                  <li key={item.name} className={`catalog-card${item.featured ? " is-featured" : ""}`}>
+                    <h3 className="catalog-name">{item.name}</h3>
+                    <p className="catalog-hook">{item.hook}</p>
+                    <p className="catalog-text">{item.text}</p>
+                    <p className="catalog-includes-title">Qué incluye</p>
+                    <ul className="catalog-includes">
+                      {item.includes.map((line) => (
+                        <li key={line}>{line}</li>
+                      ))}
+                    </ul>
+                    <div className="catalog-foot">
+                      <p className="catalog-time">Plazo: {item.time}.</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           );
         })}
-      </div>
       </div>
     </section>
   );

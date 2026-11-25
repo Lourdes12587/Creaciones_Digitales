@@ -277,7 +277,7 @@
 }
 
 .site-header {
-  position: fixed;
+  position: absolute;
   inset: 0 0 auto;
   z-index: 40;
   color: var(--ink);
@@ -973,14 +973,6 @@
   line-height: 1.45;
 }
 
-/* The logo's underscore, large, in place of a number. */
-.service-mark {
-  display: block;
-  width: 56px;
-  height: 8px;
-  background: var(--color-primary);
-}
-
 /* Secondary link: a 2 px underline that thickens on hover. */
 .service-link {
   justify-self: start;
@@ -1015,13 +1007,6 @@
   font-weight: 700; /* Syne widens a lot at 800 */
   line-height: 0.98;
   letter-spacing: -0.03em;
-}
-
-.pending {
-  display: inline-block;
-  padding: 2px 8px;
-  border: 2px dashed currentColor;
-  font-weight: 700;
 }
 
 /* ---------- Cases: deep magenta chapter ---------- */
@@ -1060,60 +1045,6 @@
   display: grid;
   gap: 40px;
   margin-top: clamp(40px, 6vw, 80px);
-}
-
-@media (min-width: 1024px) {
-  .cases-grid {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    align-items: start;
-  }
-
-  .case-panel {
-    position: sticky;
-    top: calc(var(--header) + 24px);
-  }
-}
-
-.cases-list {
-  display: grid;
-  gap: 12px;
-}
-
-/* Each project is a big, outlined row; the selected one fills with pink. */
-.case-tab {
-  display: grid;
-  gap: 2px;
-  width: 100%;
-  min-height: 72px;
-  padding: 16px 20px;
-  border: var(--line) solid var(--color-card);
-  color: var(--color-card);
-  text-align: left;
-  transition: background-color 250ms ease, color 250ms ease, translate 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
-}
-
-.case-tab:hover {
-  translate: -2px -2px;
-  box-shadow: 4px 4px 0 var(--color-card);
-}
-
-.case-tab[aria-selected="true"] {
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-  border-color: var(--color-on-primary);
-  box-shadow: 5px 5px 0 var(--color-card);
-}
-
-.case-tab-name {
-  font-family: var(--font-heading);
-  font-size: clamp(1.375rem, 1rem + 1.2vw, 2rem);
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.case-tab-type {
-  font-size: 15px;
-  opacity: 0.85;
 }
 
 .case-preview {
@@ -1329,7 +1260,7 @@
 
   .faq-title {
     position: sticky;
-    top: calc(var(--header) + 24px);
+    top: 24px;
     align-self: start;
     font-size: clamp(2.5rem, 1rem + 3.4vw, 4.25rem);
   }
@@ -1448,63 +1379,12 @@
   outline-color: var(--color-on-primary);
 }
 
-/* The logo, small, on the left above the motto. */
+/* The logo on the left, above the tagline. */
 .footer-logo {
   display: block;
-  height: 32px;
+  height: clamp(48px, 5vw, 72px);
   margin-bottom: 20px;
   color: var(--color-on-primary);
-}
-/* ---------- Services (home): two blocks, web and automations ---------- */
-.services-split {
-  display: grid;
-  gap: 32px;
-  margin-top: clamp(48px, 7vw, 96px);
-}
-
-@media (min-width: 1024px) {
-  .services-split {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
-  }
-}
-
-.service-block {
-  display: flex;
-  flex-direction: column;
-  padding: clamp(24px, 3vw, 40px);
-  border: var(--line) solid var(--color-foreground);
-  background: var(--color-card);
-  box-shadow: var(--shadow-hard);
-}
-
-/* Pink fields carry black text. */
-.service-block.is-featured {
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-}
-
-.service-block.is-featured .service-mark {
-  background: var(--color-on-primary);
-}
-
-.service-block.is-featured .service-link {
-  text-decoration-color: currentColor;
-}
-
-.service-block-title {
-  margin-top: 28px;
-  font-family: var(--font-heading);
-  font-size: clamp(2rem, 1.2rem + 2.4vw, 3.25rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.service-block-intro {
-  margin-top: 16px;
-  max-width: 52ch;
-  line-height: 1.6;
 }
 
 .service-link {
@@ -1557,7 +1437,7 @@
   border: var(--line) solid var(--color-foreground);
   background: var(--color-card);
   box-shadow: var(--shadow-hard-sm);
-  scroll-margin-top: calc(var(--header) + 24px);
+  scroll-margin-top: 24px;
   transition: box-shadow 300ms var(--ease-out), translate 300ms var(--ease-out);
 }
 
@@ -1661,18 +1541,6 @@
   outline-color: var(--color-border);
 }
 
-/* Cards keep their own ink on the black ground, with a pink hard shadow. */
-.service-block {
-  color: var(--color-foreground);
-  border-color: var(--color-card);
-  box-shadow: 6px 6px 0 var(--color-primary);
-}
-
-.service-block.is-featured {
-  border-color: var(--color-on-primary);
-  box-shadow: 6px 6px 0 var(--color-card);
-}
-
 .process-rail {
   background: rgba(255, 255, 255, 0.2);
 }
@@ -1748,21 +1616,6 @@
   border-bottom: var(--line) solid var(--color-night);
 }
 
-/* The automations block: black card, white outline and text, cyan accents. */
-.service-block:not(.is-featured) {
-  background: var(--color-night);
-  color: var(--color-card);
-  border-color: var(--color-card);
-  box-shadow: 6px 6px 0 var(--color-accent);
-}
-
-.service-block:not(.is-featured) .service-mark {
-  background: var(--color-accent);
-}
-
-.service-block:not(.is-featured) .service-link {
-  text-decoration-color: var(--color-accent);
-}
 /* ---------- Services opening with the hero's design: lines on the right, big interactive title ---------- */
 .services-head {
   position: relative;
@@ -1825,14 +1678,7 @@
     font-size: clamp(1.75rem, calc((100vw - 2 * var(--edge)) / 10.8), 3.5rem);
   }
 }
-/* Two small cards: title, intro and the link to the category page. */
-.service-block .service-block-title {
-  font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem);
-}
 
-.service-block .service-link {
-  margin-top: 28px;
-}
 /* ---------- No white cards: dark surfaces, dark grey lines, white text ---------- */
 .service-block:not(.is-featured),
 .faq-item,
@@ -1843,10 +1689,6 @@
   background: var(--color-surface-dark);
   color: var(--color-card);
   border-color: var(--color-line-dark);
-}
-
-.service-block.is-featured {
-  box-shadow: 6px 6px 0 var(--color-accent);
 }
 
 .faq-item[open] summary {
@@ -1865,14 +1707,6 @@
 .case-tab,
 .case-arrow {
   border-color: var(--color-line-dark);
-}
-
-.case-tab:hover {
-  box-shadow: 4px 4px 0 var(--color-accent);
-}
-
-.case-tab[aria-selected="true"] {
-  box-shadow: 5px 5px 0 var(--color-accent);
 }
 
 .case-arrow:hover {
@@ -1941,4 +1775,99 @@
 
 .catalog :focus-visible {
   outline-color: var(--color-border);
+}
+/* Contacto in the header is a button. */
+.nav-contact {
+  min-height: 44px;
+  padding: 10px 20px;
+  font-size: 15px;
+}
+
+.footer-tagline {
+  max-width: 30ch;
+  margin-top: 4px;
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 1rem + 0.8vw, 1.625rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* ---------- Services tabs (original structure, current design) ---------- */
+.services-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.services-tab {
+  min-height: 52px;
+  padding: 12px 24px;
+  border: var(--line) solid var(--color-line-dark);
+  background: var(--color-surface-dark);
+  color: var(--color-card);
+  font-family: var(--font-heading);
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  font-weight: 700;
+  transition: background-color 200ms ease, color 200ms ease, box-shadow 200ms var(--ease-out), translate 200ms var(--ease-out);
+}
+
+.services-tab:hover {
+  translate: -2px -2px;
+  box-shadow: 4px 4px 0 var(--color-accent);
+}
+
+.services-tab[aria-selected="true"] {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-color: var(--color-primary);
+  box-shadow: 4px 4px 0 var(--color-accent);
+}
+
+.services-panel {
+  margin-top: 32px;
+}
+
+.services-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 32px;
+}
+
+.services-panel-intro {
+  max-width: 60ch;
+  color: var(--color-text-soft);
+  font-size: var(--step-lead);
+  line-height: 1.45;
+}
+
+.services-panel .service-link {
+  color: var(--color-card);
+  text-decoration-color: var(--color-accent);
+}
+
+.services-panel .catalog-grid {
+  margin-top: 40px;
+}
+/* Cases without the project list: the case takes the full width, its name on top. */
+.case-name {
+  margin-bottom: 20px;
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.case-type {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-border);
+}
+
+.case-panel .case-preview {
+  max-width: 64rem;
 }

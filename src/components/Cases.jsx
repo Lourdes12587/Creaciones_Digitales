@@ -1,14 +1,11 @@
-// "Webs hechas": one case at a time. Adapted from the 21st.dev "Portfolio Projects Showcase" pattern:
-// a list of projects on one side and a floating device preview of the selected one on the other.
+// "Webs hechas": one case at a time, moved with previous and next arrows: the project's name, its device
+// preview (pattern from the 21st.dev "Portfolio Projects Showcase") and its story.
 // Each case reads business -> problem -> what I did -> result. Results are not invented: until there is
-// a real figure in project.outcome, the gap is shown as [PENDIENTE] in previews and left out in production.
+// a real figure in project.outcome, the result row is left out.
 // (project.result is a different thing: the "try it" hint used on the portfolio page.)
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-
-/* global __SHOW_PENDING__ */
-const SHOW_PENDING = typeof __SHOW_PENDING__ !== "undefined" && __SHOW_PENDING__;
 
 export default function Cases({ projects, navigate, Showcase }) {
   const [active, setActive] = useState(0);
@@ -46,39 +43,13 @@ export default function Cases({ projects, navigate, Showcase }) {
       </div>
 
       <div className="cases-grid">
-        <div className="cases-list" role="tablist" aria-label="Proyectos" aria-orientation="vertical">
-          {projects.map((item, index) => (
-            <button
-              key={item.name}
-              id={`caso-tab-${index}`}
-              type="button"
-              role="tab"
-              aria-selected={index === active}
-              aria-controls="caso-panel"
-              tabIndex={index === active ? 0 : -1}
-              onClick={() => setActive(index)}
-              onMouseEnter={() => setActive(index)}
-              onKeyDown={(event) => {
-                const next = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[event.key];
-                if (!next) return;
-                event.preventDefault();
-                const target = (index + next + total) % total;
-                setActive(target);
-                document.getElementById(`caso-tab-${target}`)?.focus();
-              }}
-              data-reveal
-              style={{ "--d": index }}
-              className="case-tab"
-            >
-              <span className="case-tab-name">{item.name}</span>
-              <span className="case-tab-type">{item.webType}</span>
-            </button>
-          ))}
-        </div>
-
-        <div id="caso-panel" role="tabpanel" aria-labelledby={`caso-tab-${active}`} className="case-panel" aria-live="polite">
+        {/* One case at a time, moved with the previous and next arrows. */}
+        <div className="case-panel" role="region" aria-roledescription="carrusel" aria-label="Proyectos" aria-live="polite">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div key={project.name} {...swap}>
+              <h3 className="case-name">
+                {project.name} <span className="case-type">{project.webType}</span>
+              </h3>
               <div className="case-preview">
                 <Showcase project={project} eager={active === 0} active />
               </div>
@@ -98,10 +69,10 @@ export default function Cases({ projects, navigate, Showcase }) {
                   <dt>Qué hice</dt>
                   <dd>{project.summary}</dd>
                 </div>
-                {(project.outcome || SHOW_PENDING) && (
+                {project.outcome && (
                   <div>
                     <dt>Resultado</dt>
-                    <dd>{project.outcome || <span className="pending">[PENDIENTE: resultado real del cliente]</span>}</dd>
+                    <dd>{project.outcome}</dd>
                   </div>
                 )}
               </dl>

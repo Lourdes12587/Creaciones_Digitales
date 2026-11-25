@@ -17,8 +17,8 @@ const menuItem = {
   shown: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } },
 };
 
-// Fixed header. Over the home photo it is transparent with white text; once the visitor scrolls past
-// the hero (or, on other pages, past the first few pixels) it becomes a black bar at 90 % with a blur.
+// Header at the top of the page. It does not follow the scroll: it scrolls away with the page.
+// Over the home photo it is transparent with white text.
 export default function Nav({ navigate, goToSection, isHome }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [solid, setSolid] = useState(false);
@@ -90,7 +90,7 @@ export default function Nav({ navigate, goToSection, isHome }) {
           <ul className="hidden items-center gap-7 md:flex">
             {links.map(([label, href]) => (
               <li key={href}>
-                <a href={`/${href}`} onClick={(event) => handleNav(event, href)} className="nav-link">
+                <a href={`/${href}`} onClick={(event) => handleNav(event, href)} className={href === "#contacto" ? "btn nav-contact" : "nav-link"}>
                   {label}
                 </a>
               </li>

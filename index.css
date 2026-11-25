@@ -374,10 +374,10 @@
   padding-bottom: 64px;
 }
 
-/* The copy ends before the first line (54 % of the width), so the slogan sits on two lines. */
+/* The copy ends before the first line (60 % of the width). */
 .hero-copy {
   position: relative;
-  max-width: calc(54vw - var(--gutter) - 32px);
+  max-width: calc(60vw - max(var(--gutter), (100vw - var(--container)) / 2) - 32px);
 }
 
 .hero-title {
@@ -385,11 +385,11 @@
   font-weight: 700;
 }
 
-/* Sized so that "Tu negocio," (about 5.6 em wide) always ends before the first vertical line at 54 %,
+/* Sized so that "Tu negocio," (about 5.6 em wide) always ends before the first vertical line at 60 %,
    leaving room for the letters to move away from the pointer. */
 .hero-slogan {
   display: block;
-  font-size: clamp(3rem, min(8vw, calc((54vw - var(--gutter) - 64px) / 5.6)), 7.5rem);
+  font-size: clamp(3rem, min(9.5vw, calc((60vw - max(var(--gutter), (100vw - var(--container)) / 2) - 56px) / 5.6)), 9.5rem);
   line-height: 0.95;
   letter-spacing: -0.02em;
 }
@@ -509,7 +509,7 @@
   position: absolute;
   top: var(--header);
   bottom: 0;
-  left: calc(54% + var(--x) * 11%);
+  left: calc(60% + var(--x) * 10%);
   width: 1px;
   background: var(--light);
   opacity: 0.85;
@@ -525,7 +525,7 @@
 
 .hero-node {
   position: absolute;
-  left: calc(54% + var(--x) * 11%);
+  left: calc(60% + var(--x) * 10%);
   top: var(--y);
   pointer-events: auto;
 }
@@ -633,7 +633,7 @@
   }
 
   .hero-slogan {
-    font-size: clamp(3rem, 12vw, 4.5rem);
+    font-size: clamp(3rem, 14.5vw, 5.75rem);
   }
 
   .hero-inner {
@@ -731,119 +731,6 @@
 .work-frame img.is-full {
   object-fit: contain;
   object-position: center;
-}
-
-/* Services: two tabs of flat cards on ink; the featured ones carry the brand pink. */
-.svc-tabs button {
-  color: #b4b2ad;
-  text-decoration: none;
-  transition: color 200ms ease;
-}
-
-.svc-tabs button:hover {
-  color: var(--bg);
-}
-
-.svc-tabs button[aria-selected="true"] {
-  color: var(--accent);
-  text-decoration: underline;
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.2em;
-}
-
-.on-dark :focus-visible {
-  outline-color: var(--accent);
-}
-
-.svc-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(1.25rem, 2.4vw, 2rem);
-  border: 1px solid rgba(217, 216, 213, 0.22);
-}
-
-.svc-card.is-featured {
-  border: 2px solid var(--accent);
-}
-
-/* Pink glow under the cursor; the card tilts with Motion (useTilt). */
-.svc-card {
-  isolation: isolate;
-  will-change: transform;
-}
-
-.svc-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 77, 109, 0.22), transparent 60%);
-  opacity: 0;
-  transition: opacity 300ms ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .svc-card:hover::before {
-    opacity: 1;
-  }
-}
-
-.svc-tag {
-  align-self: flex-start;
-  margin-bottom: 1rem;
-  padding: 0.2rem 0.6rem;
-  background: var(--accent);
-  color: var(--ink);
-  font-size: var(--step-small);
-  font-weight: 500;
-}
-
-.svc-hook {
-  color: var(--accent);
-}
-
-.svc-list li {
-  position: relative;
-  padding-left: 1.1em;
-  margin-top: 0.35rem;
-  line-height: 1.4;
-}
-
-.svc-list li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.6em;
-  width: 0.45em;
-  height: 2px;
-  background: var(--accent);
-}
-
-.svc-foot {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
-  margin-top: auto;
-  padding-top: 1.5rem;
-}
-
-.svc-band {
-  padding-top: 2rem;
-  border-top: 1px solid rgba(217, 216, 213, 0.22);
-}
-
-.svc-chip {
-  padding: 0.45rem 0.9rem;
-  border: 1px solid rgba(217, 216, 213, 0.35);
-  font-size: var(--step-small);
-}
-
-.svc-reason {
-  padding-left: 1rem;
-  border-left: 2px solid var(--accent);
 }
 
 .btn-line {
@@ -1178,4 +1065,181 @@
     --chat--window--bottom: 1.5rem;
     --chat--window--right: 1.5rem;
   }
+}
+/* ---------- Services (home): stone ground, three highlights, a compact row of the rest ---------- */
+.services {
+  background: var(--clarea-piedra);
+  color: var(--ink);
+}
+
+.services-title {
+  max-width: none;
+  font-size: clamp(2.25rem, 1rem + 4vw, 4.5rem);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+.services-intro {
+  max-width: 54ch;
+  margin-top: 32px;
+  font-size: var(--step-lead);
+  line-height: 1.45;
+}
+
+.services-grid {
+  display: grid;
+  gap: 24px;
+  margin-top: clamp(48px, 7vw, 96px);
+}
+
+@media (min-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Square cards with a 2 px black border and no shadow; the featured one is a field of pink. */
+.service {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3vw, 40px);
+  border: 2px solid var(--ink);
+  transition: transform 300ms var(--ease-out);
+}
+
+.service.is-featured {
+  background: var(--clarea-rosa);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .service:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* The logo's underscore, large, in place of a number. */
+.service-mark {
+  display: block;
+  width: 56px;
+  height: 8px;
+  background: var(--clarea-rosa);
+}
+
+.service.is-featured .service-mark {
+  background: var(--ink);
+}
+
+.service-hook {
+  margin-top: 32px;
+  font-size: clamp(1.75rem, 1.2rem + 1.4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.service-text {
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+.service-text strong {
+  font-weight: 600;
+}
+
+.service-includes-title {
+  margin-top: 28px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.service-includes {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.service-includes li {
+  position: relative;
+  padding-left: 24px;
+}
+
+.service-includes li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 12px;
+  height: 3px;
+  background: var(--ink);
+}
+
+.service-foot {
+  display: grid;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 32px;
+}
+
+.service-terms {
+  font-weight: 600;
+}
+
+/* Secondary link: a 2 px underline that thickens on hover. */
+.service-link {
+  justify-self: start;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--ink);
+  text-underline-offset: 6px;
+  transition: text-decoration-thickness 200ms ease, text-underline-offset 200ms ease;
+}
+
+.service-link .arrow {
+  display: inline-block;
+  transition: transform 200ms var(--ease-out);
+}
+
+.service-link:hover {
+  text-decoration-thickness: 4px;
+}
+
+.service-link:hover .arrow {
+  transform: translateX(4px);
+}
+
+.services-also {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px 24px;
+  margin-top: clamp(40px, 5vw, 64px);
+}
+
+.services-also-title {
+  font-weight: 600;
+}
+
+.services-also ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+.services-also li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.services-also li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.75em;
+  width: 12px;
+  height: 3px;
+  background: var(--clarea-rosa);
 }

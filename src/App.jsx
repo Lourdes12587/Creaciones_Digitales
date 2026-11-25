@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { EASE_OUT, cascade, magneticButtons, revealOnScroll, slideIn } from "./motionFx";
+import { EASE_OUT, magneticButtons, revealOnScroll, slideIn } from "./motionFx";
 import logoClarea from "./assets/logo-clarea.png";
 import { SITE_HOST, SITE_URL } from "./site";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
+import Services from "./components/Services";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
 import portfolioBlueIslandTablet from "./assets/portfolio-blue-island-tablet.webp";
 import portfolioBlueIslandMobile from "./assets/portfolio-blue-island-mobile.webp";
@@ -362,26 +363,6 @@ const serviceCatalog = [
   },
 ];
 
-const sectors = [
-  "Clínicas y estética",
-  "Restaurantes",
-  "Alojamientos y turismo",
-  "Inmobiliarias",
-  "Tiendas online",
-  "Peluquerías y belleza",
-  "Gimnasios",
-  "Abogados y gestorías",
-  "Reformas y servicios del hogar",
-  "Academias y formación",
-];
-
-const reasons = [
-  ["Web y automatización en un solo lugar:", "sin intermediarios."],
-  ["Pruebas una versión antes del segundo pago.", ""],
-  ["Conecto lo que ya usas;", "no tienes que cambiar de herramientas."],
-  ["30 días de soporte incluidos", "y documentación para que no dependas de mí."],
-];
-
 // schema.org Service for every card, rendered into the prerendered HTML.
 const servicesSchema = {
   "@context": "https://schema.org",
@@ -634,7 +615,7 @@ function App({ initialRoute }) {
         ) : (
           <>
             <Hero navigate={navigate} goToSection={goToSection} />
-            <Services navigate={navigate} />
+            <Services navigate={navigate} schema={servicesSchema} />
             <Work navigate={navigate} />
             <HowItWorks />
             <Faq items={homeFaqs} />
@@ -969,201 +950,6 @@ function Work({ navigate }) {
         </div>
       </motion.div>
       </AnimatePresence>
-      </div>
-    </section>
-  );
-}
-
-// Card that tilts towards the mouse, lifts, and carries a glow under the cursor.
-function useTilt() {
-  const reduceMotion = useReducedMotion();
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const spring = { stiffness: 220, damping: 22, mass: 0.5 };
-  const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [7, -7]), spring);
-  const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-7, 7]), spring);
-
-  function onPointerMove(event) {
-    if (reduceMotion || event.pointerType !== "mouse") return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width;
-    const y = (event.clientY - rect.top) / rect.height;
-    px.set(x - 0.5);
-    py.set(y - 0.5);
-    event.currentTarget.style.setProperty("--mx", `${(x * 100).toFixed(1)}%`);
-    event.currentTarget.style.setProperty("--my", `${(y * 100).toFixed(1)}%`);
-  }
-  function onPointerLeave() {
-    px.set(0);
-    py.set(0);
-  }
-
-  return {
-    style: { rotateX, rotateY, transformPerspective: 900 },
-    whileHover: reduceMotion ? undefined : { y: -6 },
-    transition: { type: "spring", stiffness: 260, damping: 20 },
-    onPointerMove,
-    onPointerLeave,
-  };
-}
-
-function ServiceCard({ item, page, navigate, index }) {
-  const link = item.page || null;
-  const tilt = useTilt();
-  return (
-    <li data-reveal data-card style={{ "--d": index % 3 }} className="flex">
-      <motion.article {...tilt} className={`svc-card w-full ${item.featured ? "is-featured" : ""}`}>
-      {item.featured && <p className="svc-tag">Destacado</p>}
-      <h3 className="t-lead font-medium leading-tight">{item.name}</h3>
-      <p className="svc-hook mt-2 font-medium">{item.hook}</p>
-      <p className="muted mt-4">{item.text}</p>
-      <p className="t-small mt-6 font-medium">Qué incluye</p>
-      <ul className="svc-list mt-2">
-        {item.includes.map((line) => (
-          <li key={line}>{line}</li>
-        ))}
-      </ul>
-      <div className="svc-foot">
-        <p className="t-small">
-          Plazo: <span className="font-medium">{item.time}</span>
-        </p>
-        {link && link !== page && (
-          <a
-            href={link}
-            onClick={(event) => {
-              event.preventDefault();
-              navigate(link);
-            }}
-            className="link t-small"
-          >
-            Ver la agenda automática
-          </a>
-        )}
-      </div>
-      </motion.article>
-    </li>
-  );
-}
-
-function Services({ navigate }) {
-  const [activeId, setActiveId] = useState(serviceCatalog[0].id);
-  const firstTab = useRef(true);
-
-  useEffect(() => {
-    if (firstTab.current) {
-      firstTab.current = false;
-      return;
-    }
-    // Cards already revealed once replay in cascade; new ones are revealed on scroll as usual.
-    cascade([...document.querySelectorAll(`#panel-${activeId} [data-card].is-in`)]);
-  }, [activeId]);
-
-  // Arrow keys, Home and End move between the tabs (WAI-ARIA tabs pattern, automatic activation).
-  function handleKeyDown(event) {
-    const index = serviceCatalog.findIndex((block) => block.id === activeId);
-    const last = serviceCatalog.length - 1;
-    const next = { ArrowRight: index === last ? 0 : index + 1, ArrowLeft: index === 0 ? last : index - 1, Home: 0, End: last }[event.key];
-    if (next === undefined) return;
-    event.preventDefault();
-    setActiveId(serviceCatalog[next].id);
-    document.getElementById(`tab-${serviceCatalog[next].id}`)?.focus();
-  }
-
-  return (
-    <section id="servicios" aria-labelledby="servicios-title" className="section wrap on-dark md:pr-[104px]">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema).replace(/</g, "\\u003c") }} />
-
-      <div className="max-w-[60rem]">
-        <h2 id="servicios-title" data-reveal className="t-head">
-          Webs que captan clientes y automatizaciones que trabajan solas
-        </h2>
-        <p data-reveal style={{ "--d": 1 }} className="t-lead mt-8 max-w-[44ch]">
-          Diseño tu web y automatizo todo lo que pasa después del clic: cada consulta respondida, cada cita confirmada y cada cliente con seguimiento. Tú te dedicas a tu negocio; el sistema se ocupa del resto.
-        </p>
-      </div>
-
-      <div data-reveal style={{ "--d": 2 }} role="tablist" aria-label="Servicios" className="svc-tabs t-lead mt-14 flex flex-wrap gap-x-8 gap-y-2" onKeyDown={handleKeyDown}>
-        {serviceCatalog.map((block) => (
-          <button
-            key={block.id}
-            id={`tab-${block.id}`}
-            type="button"
-            role="tab"
-            aria-selected={block.id === activeId}
-            aria-controls={`panel-${block.id}`}
-            tabIndex={block.id === activeId ? 0 : -1}
-            onClick={() => setActiveId(block.id)}
-            className="min-h-[44px] font-medium"
-          >
-            {block.tab}
-          </button>
-        ))}
-      </div>
-
-      {serviceCatalog.map((block) => (
-        <div key={block.id} id={`panel-${block.id}`} role="tabpanel" aria-labelledby={`tab-${block.id}`} hidden={block.id !== activeId} tabIndex={0} className="mt-8">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3">
-            <p className="max-w-[60ch]">{block.intro}</p>
-            <a
-              href={block.page}
-              onClick={(event) => {
-                event.preventDefault();
-                navigate(block.page);
-              }}
-              className="link"
-            >
-              {block.pageLabel}
-            </a>
-          </div>
-          <ul className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {block.items.map((item, index) => (
-              <ServiceCard key={item.name} item={item} page={block.page} navigate={navigate} index={index} />
-            ))}
-          </ul>
-        </div>
-      ))}
-
-      <div className="svc-band mt-24">
-        <h3 data-reveal className="t-lead font-medium">
-          Sistemas pensados para tu sector
-        </h3>
-        <ul data-reveal style={{ "--d": 1 }} className="mt-6 flex flex-wrap gap-2" aria-label="Sectores">
-          {sectors.map((sector) => (
-            <li key={sector} className="svc-chip">
-              {sector}
-            </li>
-          ))}
-        </ul>
-        <p data-reveal style={{ "--d": 2 }} className="muted mt-6 max-w-[60ch]">
-          Cada sector tiene sus tareas repetidas. En la auditoría te digo cuáles compensa automatizar primero en el tuyo.
-        </p>
-      </div>
-
-      <div className="svc-band mt-16">
-        <h3 data-reveal className="t-lead font-medium">
-          Por qué trabajar conmigo
-        </h3>
-        <ul className="mt-6 grid gap-x-6 gap-y-6 sm:grid-cols-2 xl:grid-cols-4">
-          {reasons.map(([lead, rest], index) => (
-            <li key={lead} data-reveal style={{ "--d": index }} className="svc-reason">
-              <span className="font-medium">{lead}</span> {rest && <span className="muted">{rest}</span>}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div data-reveal className="on-accent mt-20 p-6 sm:p-10 lg:p-14">
-        <h3 className="t-head max-w-[16ch]">¿Qué tarea repites cada semana?</h3>
-        <p className="t-lead mt-6 max-w-[44ch]">En 30 minutos la revisamos juntos y te digo las tres cosas que más compensa automatizar en tu negocio. Gratis y sin compromiso.</p>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a href="#contacto" className="btn">
-            Pedir auditoría gratis <span className="arrow" aria-hidden="true">→</span>
-          </a>
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="btn btn-line">
-            <WhatsAppIcon size={20} />
-            Escribirme por WhatsApp
-          </a>
-        </div>
       </div>
     </section>
   );

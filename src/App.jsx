@@ -959,12 +959,6 @@ function Hero() {
           </span>
         ))}
       </h1>
-
-      <div className="hero-after wrap flex flex-col items-start gap-5 pb-[168px] pt-12 sm:items-end sm:pb-10 sm:pr-[112px] sm:text-right">
-        <a href="#contacto" className="btn w-full sm:w-auto">
-          Pedir auditoría gratis <span className="arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
     </section>
   );
 }

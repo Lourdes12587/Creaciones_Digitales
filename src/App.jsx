@@ -642,7 +642,7 @@ function App({ initialRoute }) {
         ) : (
           <>
             <Hero navigate={navigate} goToSection={goToSection} />
-            <Services navigate={navigate} schema={servicesSchema} catalog={serviceCatalog} catalogPage={catalogPage} cardId={cardId} />
+            <Services navigate={navigate} schema={servicesSchema} catalog={serviceCatalog} catalogPage={catalogPage} />
             <Cases projects={portfolioProjects} navigate={navigate} Showcase={DeviceShowcase} />
             <Process />
             <Faq items={homeFaqs} />

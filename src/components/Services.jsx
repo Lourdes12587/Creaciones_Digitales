@@ -1,6 +1,5 @@
-// Home services, split in two: web development and automations. Each block lists every service with its
-// one-line hook; each service links to its detailed card (what it is, what it includes, how long it takes)
-// on the service page of its category. Texts come from the site's own catalog; no prices here.
+// Home services: two small cards, web development and automations, each with its intro and a link that
+// opens the page of its category, where every service is explained in detail. No prices here.
 // The opening repeats the hero's design: thin vertical lines on the right and a large title aligned
 // with the logo whose letters move away from the pointer and catch the light.
 import { Fragment, useRef } from "react";
@@ -10,7 +9,7 @@ import useLetterField from "./useLetterField";
 const TITLE = ["Webs que captan", "clientes y", "automatizaciones", "que trabajan solas"];
 const LINES = [0, 1, 2, 3];
 
-export default function Services({ navigate, schema, catalog, catalogPage, cardId }) {
+export default function Services({ navigate, schema, catalog, catalogPage }) {
   const headRef = useRef(null);
   const titleRef = useRef(null);
   useLetterField(headRef, titleRef);
@@ -68,25 +67,9 @@ export default function Services({ navigate, schema, catalog, catalogPage, cardI
               </h3>
               <p className="service-block-intro">{block.intro}</p>
 
-              <ul className="service-list">
-                {block.items.map((item) => {
-                  const href = `${page}#${cardId(item.name)}`;
-                  return (
-                    <li key={item.name}>
-                      <a href={href} onClick={(event) => open(event, href)} className="service-row">
-                        <span className="service-row-name">{item.name}</span>
-                        <span className="service-row-hook">{item.hook}</span>
-                        <span className="service-row-arrow" aria-hidden="true">
-                          →
-                        </span>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <a href={`${page}#catalogo`} onClick={(event) => open(event, `${page}#catalogo`)} className="service-link">
-                {block.id === "web" ? "Ver en detalle todas las webs" : "Ver en detalle todas las automatizaciones"}{" "}
+              {/* Opens the category page, where every service is explained in detail. */}
+              <a href={page} onClick={(event) => open(event, page)} className="service-link">
+                {block.id === "web" ? "Ver los servicios de desarrollo web" : "Ver los servicios de automatización"}{" "}
                 <span className="arrow" aria-hidden="true">
                   →
                 </span>

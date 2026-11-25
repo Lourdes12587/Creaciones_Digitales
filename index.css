@@ -1503,58 +1503,6 @@
   line-height: 1.6;
 }
 
-.service-list {
-  margin-top: 28px;
-  margin-bottom: 28px;
-  border-top: var(--line) solid currentColor;
-}
-
-/* One row per service: name, its hook, an arrow. The whole row is the link to the detailed card. */
-.service-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 2px 16px;
-  align-items: center;
-  min-height: 64px;
-  padding: 12px 4px;
-  border-bottom: 2px solid currentColor;
-  transition: background-color 200ms ease, padding 250ms var(--ease-out);
-}
-
-.service-row-name {
-  font-family: var(--font-heading);
-  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.service-row-hook {
-  grid-column: 1;
-  font-size: 15px;
-  line-height: 1.4;
-}
-
-.service-row-arrow {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  font-size: 1.25rem;
-  font-weight: 700;
-  transition: transform 250ms var(--ease-out);
-}
-
-.service-row:hover {
-  padding-inline: 12px;
-  background: var(--color-background);
-}
-
-.service-block.is-featured .service-row:hover {
-  background: var(--color-secondary);
-}
-
-.service-row:hover .service-row-arrow {
-  transform: translateX(4px);
-}
-
 .service-link {
   margin-top: auto;
 }
@@ -1808,10 +1756,6 @@
   background: var(--color-accent);
 }
 
-.service-block:not(.is-featured) .service-row:hover {
-  background: rgba(8, 145, 178, 0.12);
-}
-
 .service-block:not(.is-featured) .service-link {
   text-decoration-color: var(--color-accent);
 }
@@ -1876,4 +1820,12 @@
   .services-head .services-title {
     font-size: clamp(1.75rem, calc((100vw - 2 * var(--edge)) / 10.8), 3.5rem);
   }
+}
+/* Two small cards: title, intro and the link to the category page. */
+.service-block .service-block-title {
+  font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem);
+}
+
+.service-block .service-link {
+  margin-top: 28px;
 }

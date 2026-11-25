@@ -721,8 +721,9 @@
 }
 
 /* Pink header with the Clarea wordmark, and "Respondemos rápidamente" with an online dot.
-   The h1 keeps its text "Clarea" for screen readers; only the wordmark is visible. */
-.n8n-chat .chat-window .chat-header .chat-heading h1 {
+   The title keeps its text "Clarea" for screen readers; only the wordmark is visible.
+   It is a <p class="chat-title"> (patched in /public/vendor/n8n-chat) so pages keep a single H1. */
+.n8n-chat .chat-window .chat-header .chat-heading .chat-title {
   display: block;
   width: 7.75rem;
   height: 1.85rem;
@@ -749,6 +750,11 @@
   height: 0.5rem;
   border-radius: 999px;
   background: #22c55e;
+}
+
+/* The online dot belongs to the subtitle only, not to the title. */
+.chat-window .chat-header .chat-heading .chat-title::before {
+  content: none;
 }
 
 .chat-window .chat-get-started {

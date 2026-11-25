@@ -57522,7 +57522,7 @@ var RJe = { class: "chat-heading" }, zJe = ["title"], BJe = { key: 0 }, $9 = /* 
 		}), x(() => {
 			h && h(), g && g();
 		}), (e, n) => (q(), L(ire, { class: "chat-wrapper" }, {
-			header: z(() => [R("div", RJe, [R("h1", null, k(N(t)("title")), 1), s.value ? (q(), K("button", {
+			header: z(() => [R("div", RJe, [R("p", { class: "chat-title" }, k(N(t)("title")), 1), s.value ? (q(), K("button", {
 				key: 0,
 				class: "chat-close-button",
 				title: N(t)("closeButtonTooltip"),

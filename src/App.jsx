@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Instagram, Mail, MapPin, Phone } from "lucide-re
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { EASE_OUT, cascade, magneticButtons, revealOnScroll, slideIn } from "./motionFx";
 import logoClarea from "./assets/logo-clarea.png";
+import { SITE_HOST, SITE_URL } from "./site";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
 import portfolioBlueIslandTablet from "./assets/portfolio-blue-island-tablet.webp";
 import portfolioBlueIslandMobile from "./assets/portfolio-blue-island-mobile.webp";
@@ -59,7 +60,7 @@ const N8N_WEBHOOK_URL = "https://n8n.creaciones-digitales.com/webhook/formulario
 // Production URL of the n8n "Chat Trigger" node. The chat widget stays off while this is empty.
 const N8N_CHAT_URL = "https://n8n.creaciones-digitales.com/webhook/5c3d9e2a-7b41-4f6e-9a12-cd0a8e7f4b21/chat";
 const WHATSAPP_URL = "https://wa.me/34697955919?text=" + encodeURIComponent("Hola, vengo de la web y quiero información.");
-const EMAIL = "ubedadesarrolloweb@gmail.com";
+const EMAIL = "hola@holaclarea.com";
 const PHONE = "+34 697 955 919";
 const INSTAGRAM_URL = "https://www.instagram.com/holaclarea/";
 
@@ -199,8 +200,6 @@ const lineup = [
     ],
   },
 ];
-
-const SITE_URL = "https://www.creaciones-digitales.com";
 
 // The home services section: two tabs of cards, no prices, every card with its delivery time.
 const serviceCatalog = [
@@ -540,7 +539,12 @@ export const SITE_PAGES = [
   {
     route: "/cookies",
     title: "Política de cookies | Clarea",
-    description: "Qué cookies usa creaciones-digitales.com: ninguna. Las visitas se miden sin cookies y sin identificar a nadie.",
+    description: `Qué cookies usa ${SITE_HOST}: ninguna. Las visitas se miden sin cookies y sin identificar a nadie.`,
+  },
+  {
+    route: "/aviso-legal",
+    title: "Aviso legal | Clarea",
+    description: "Datos del titular de la web de Clarea, condiciones de uso, propiedad intelectual y legislación aplicable.",
   },
 ];
 
@@ -613,6 +617,14 @@ function App({ initialRoute }) {
           <LegalPage title="Política de privacidad" intro="Cómo trato los datos que me envías a través de esta web, de forma clara y en pocas líneas." sections={privacySections} />
         ) : route === "/cookies" ? (
           <LegalPage title="Política de cookies" intro="Qué cookies usa esta web y cómo puedes gestionarlas." sections={cookieSections} navigate={navigate} />
+        ) : route === "/aviso-legal" ? (
+          <LegalPage
+            title="Aviso legal"
+            intro="Quién está detrás de esta web y en qué condiciones puedes usarla, como pide la Ley de Servicios de la Sociedad de la Información (LSSI-CE)."
+            sections={legalNoticeSections}
+            navigate={navigate}
+            updated="noviembre de 2026"
+          />
         ) : currentService ? (
           <ServicePage service={currentService} navigate={navigate} onChooseService={chooseService} />
         ) : !isHome ? (
@@ -644,6 +656,8 @@ function WhatsAppIcon({ size = 24, className = "" }) {
 }
 
 // n8n chat widget, self-hosted in /public/vendor/n8n-chat (copied from @n8n/chat 1.42.4).
+// Patched: the chat header title renders as <p class="chat-title"> instead of <h1>, so every page keeps
+// a single H1 (chat.bundle.es.js and style.css). Repeat the patch if the widget is ever updated.
 // Loaded once, after the page has finished loading and the browser is idle.
 const N8N_CHAT_SCRIPT = "/vendor/n8n-chat/loader.js";
 const N8N_CHAT_STYLES = "/vendor/n8n-chat/style.css";
@@ -1642,8 +1656,8 @@ function Contact({ selectedService, onServiceChange, navigate }) {
 
       <div>
         <a href={`mailto:${EMAIL}`} className="email-display">
-          ubedadesarrolloweb@<wbr />
-          gmail.com
+          hola@<wbr />
+          holaclarea.com
         </a>
         <div className="t-small mt-8 flex flex-col gap-3 sm:flex-row sm:justify-between">
           <p>
@@ -1864,7 +1878,7 @@ function NotFoundPage({ navigate }) {
 
 const cookieSections = [
   ["Qué son las cookies", "Son pequeños archivos que algunas webs guardan en tu navegador para recordar datos de tu visita, como tus preferencias o tu sesión, o para medir cómo se usa la web."],
-  ["Esta web no usa cookies", "creaciones-digitales.com no instala cookies propias ni de terceros, ni de análisis ni de publicidad. Por eso no te mostramos un aviso para aceptarlas."],
+  ["Esta web no usa cookies", `${SITE_HOST} no instala cookies propias ni de terceros, ni de análisis ni de publicidad. Por eso no te mostramos un aviso para aceptarlas.`],
   [
     "Chat de la web",
     "Para que el chat funcione, se guarda en el almacenamiento local de tu navegador un identificador de conversación (n8n-chat/sessionId). No es una cookie de seguimiento ni sirve para identificarte, y puedes borrarlo desde la configuración de tu navegador.",
@@ -1906,7 +1920,43 @@ const privacySections = [
   ],
 ];
 
-function LegalPage({ title, intro, sections, navigate }) {
+// Legal notice required by the LSSI-CE (art. 10). [COMPLETAR] marks data only the owner can provide.
+const legalNoticeSections = [
+  [
+    "Titular de la web",
+    `Esta web (${SITE_HOST}) pertenece a [COMPLETAR: nombre y apellidos o razón social], que presta sus servicios con el nombre comercial Clarea.`,
+  ],
+  ["NIF", "[COMPLETAR: NIF o CIF]"],
+  ["Domicilio", "[COMPLETAR: domicilio a efectos de notificaciones], Barcelona (España)."],
+  ["Contacto", `Correo electrónico: ${EMAIL}. Teléfono y WhatsApp: ${PHONE}.`],
+  ["Datos registrales", "[COMPLETAR: si eres una sociedad, los datos de inscripción en el Registro Mercantil; si trabajas como autónoma, borra este apartado]"],
+  [
+    "Actividad",
+    "Diseño y desarrollo de webs y tiendas online, agendas automáticas y automatización de procesos para negocios.",
+  ],
+  [
+    "Condiciones de uso",
+    "Al navegar por esta web aceptas usarla de forma lícita y no dañar su funcionamiento ni el de los sistemas que la sostienen. La información que contiene es orientativa: los precios, plazos y condiciones de cada encargo se fijan en el presupuesto que te envío por escrito.",
+  ],
+  [
+    "Propiedad intelectual e industrial",
+    "Los textos, el diseño, el código, el logotipo y la marca Clarea pertenecen a su titular y no se pueden copiar, distribuir ni modificar sin permiso por escrito. Las capturas de los proyectos del portfolio se muestran como ejemplo del trabajo realizado; los nombres y marcas de esos proyectos pertenecen a sus respectivos titulares.",
+  ],
+  [
+    "Enlaces a otras webs",
+    "Esta web enlaza a servicios externos, como WhatsApp, Instagram o las webs del portfolio. No me hago responsable de su contenido ni de sus políticas, que puedes consultar en cada uno de ellos.",
+  ],
+  [
+    "Responsabilidad",
+    "Reviso que la información de esta web sea correcta y esté actualizada, pero no puedo garantizar que no contenga errores ni que esté disponible en todo momento. Si ves algo incorrecto, escríbeme y lo corrijo.",
+  ],
+  [
+    "Legislación aplicable",
+    "Este aviso legal se rige por la legislación española. Para cualquier controversia, serán competentes los juzgados y tribunales que correspondan según la ley; si actúas como consumidor, los de tu domicilio.",
+  ],
+];
+
+function LegalPage({ title, intro, sections, navigate, updated = "octubre de 2026" }) {
   return (
     <section className="wrap pb-[var(--section)] pt-36">
       <div className="max-w-[68ch]">
@@ -1936,7 +1986,7 @@ function LegalPage({ title, intro, sections, navigate }) {
             .
           </p>
         )}
-        <p className="t-small muted mt-12">Última actualización: octubre de 2026.</p>
+        <p className="t-small muted mt-12">Última actualización: {updated}.</p>
       </div>
     </section>
   );
@@ -2044,6 +2094,16 @@ function Footer({ navigate, goToSection }) {
               className="link no-underline hover:underline"
             >
               Política de cookies
+            </a>
+            <a
+              href="/aviso-legal"
+              onClick={(event) => {
+                event.preventDefault();
+                navigate("/aviso-legal");
+              }}
+              className="link no-underline hover:underline"
+            >
+              Aviso legal
             </a>
           </nav>
         </div>

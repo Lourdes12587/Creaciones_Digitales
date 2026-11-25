@@ -1,13 +1,13 @@
 // Prerenders every page to static HTML after `vite build`, so search engines
-// get the full content without running JavaScript. Also writes the sitemap.
+// get the full content without running JavaScript. Also writes the sitemap and robots.txt.
 import { readFileSync, writeFileSync, rmSync, mkdirSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join } from "node:path";
+import { SITE_URL as SITE, SITE_HOST } from "../src/site.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
 const ssrDir = join(root, "dist-ssr");
-const SITE = "https://www.creaciones-digitales.com";
 
 const { render, PAGE_TITLES, SITE_PAGES } = await import(pathToFileURL(join(ssrDir, "entry-server.js")).href);
 const template = readFileSync(join(dist, "index.html"), "utf8");
@@ -22,7 +22,7 @@ const pages = [
     file: "404.html",
     notFound: true,
     title: PAGE_TITLES[404],
-    description: "La página que buscas no existe en creaciones-digitales.com.",
+    description: `La página que buscas no existe en ${SITE_HOST}.`,
   },
 ];
 
@@ -74,5 +74,12 @@ ${pages
 `;
 writeFileSync(join(dist, "sitemap.xml"), sitemap);
 console.log("wrote dist/sitemap.xml");
+
+writeFileSync(join(dist, "robots.txt"), `User-agent: *
+Allow: /
+
+Sitemap: ${SITE}/sitemap.xml
+`);
+console.log("wrote dist/robots.txt");
 
 rmSync(ssrDir, { recursive: true, force: true });

@@ -1057,7 +1057,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
               .
             </p>
             <button type="submit" disabled={status === "loading"} className="btn self-start disabled:cursor-wait disabled:opacity-60">
-              {status === "loading" ? "Enviando…" : "Pedir auditoría gratis"} <span className="arrow" aria-hidden="true">→</span>
+              {status === "loading" ? "Enviando…" : "Enviar mensaje"} <span className="arrow" aria-hidden="true">→</span>
             </button>
           </div>
         </form>
@@ -1308,7 +1308,7 @@ function PortfolioPage({ onChooseService }) {
           }}
           className="btn mt-10"
         >
-          Pedir auditoría gratis <span className="arrow" aria-hidden="true">→</span>
+          Contacta <span className="arrow" aria-hidden="true">→</span>
         </a>
       </section>
     </>

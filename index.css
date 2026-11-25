@@ -316,20 +316,6 @@
   text-decoration-color: var(--accent);
 }
 
-.nav-cta {
-  min-height: 44px;
-  padding: 10px 12px;
-  font-size: 13px;
-  white-space: nowrap;
-}
-
-@media (min-width: 640px) {
-  .nav-cta {
-    padding: 12px 20px;
-    font-size: 15px;
-  }
-}
-
 .site-menu {
   position: fixed;
   inset: var(--header) 0 0;
@@ -1845,4 +1831,66 @@
 
 .service-block:not(.is-featured) .service-link {
   text-decoration-color: var(--color-accent);
+}
+/* ---------- Services opening with the hero's design: lines on the right, big interactive title ---------- */
+.services-head {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--header) + 48px) var(--edge) 64px;
+  overflow: hidden;
+  background: var(--color-night);
+  color: var(--color-card);
+}
+
+.services-lines span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(60% + var(--x) * 10%);
+  width: 1px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* The title stays left of the first line, like the slogan in the hero. */
+.services-head .services-title {
+  position: relative;
+  max-width: calc(60vw - var(--edge) - 48px);
+  font-size: clamp(2.5rem, min(6vw, calc((60vw - var(--edge) - 56px) / 10.8)), 6.5rem);
+  line-height: 0.98;
+}
+
+.services-head .services-title .line {
+  display: block;
+}
+
+.services-head .services-intro {
+  position: relative;
+  max-width: min(52ch, calc(60vw - var(--edge) - 48px));
+  margin-top: 32px;
+  color: var(--color-card);
+  opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+  .services-lines {
+    display: none;
+  }
+
+  .services-head {
+    min-height: auto;
+    padding-top: clamp(80px, 14vw, 120px);
+  }
+
+  .services-head .services-title,
+  .services-head .services-intro {
+    max-width: none;
+  }
+
+  .services-head .services-title {
+    font-size: clamp(1.75rem, calc((100vw - 2 * var(--edge)) / 10.8), 3.5rem);
+  }
 }

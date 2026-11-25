@@ -83,14 +83,14 @@ export default function Nav({ navigate, goToSection, isHome }) {
           aria-label="Clarea, inicio"
           className="flex min-h-[44px] shrink-0 items-center"
         >
-          <Logo label="" className="h-6 sm:h-7" />
+          <Logo label="" className="h-8 sm:h-10" />
         </a>
 
         <div className="flex items-center gap-2 sm:gap-7">
           <ul className="hidden items-center gap-7 md:flex">
             {links.map(([label, href]) => (
               <li key={href}>
-                <a href={`/${href}`} onClick={(event) => handleNav(event, href)} className={href === "#contacto" ? "btn nav-contact" : "nav-link"}>
+                <a href={`/${href}`} onClick={(event) => handleNav(event, href)} className="nav-link">
                   {label}
                 </a>
               </li>

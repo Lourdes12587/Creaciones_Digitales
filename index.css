@@ -797,7 +797,7 @@
 
 .email-display {
   display: block;
-  font-size: clamp(2.6rem, 8.2vw, 8.5rem);
+  font-size: clamp(1.75rem, 5.6vw, 5.5rem);
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: -0.04em;
@@ -1382,7 +1382,7 @@
 /* The logo on the left, above the tagline. */
 .footer-logo {
   display: block;
-  height: clamp(48px, 5vw, 72px);
+  height: clamp(36px, 3.2vw, 48px);
   margin-bottom: 20px;
   color: var(--color-on-primary);
 }
@@ -1775,12 +1775,6 @@
 
 .catalog :focus-visible {
   outline-color: var(--color-border);
-}
-/* Contacto in the header is a button. */
-.nav-contact {
-  min-height: 44px;
-  padding: 10px 20px;
-  font-size: 15px;
 }
 
 .footer-tagline {

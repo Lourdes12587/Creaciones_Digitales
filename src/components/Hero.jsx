@@ -88,7 +88,6 @@ export default function Hero({ navigate, goToSection }) {
             </span>
             <span className="hero-sub">Webs y automatizaciones para negocios en Barcelona.</span>
           </h1>
-          <p className="hero-price">Desde 390 €.</p>
           <ul className="hero-benefits">
             {benefits.map((text) => (
               <li key={text}>{text}</li>

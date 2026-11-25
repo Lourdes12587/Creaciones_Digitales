@@ -39,6 +39,10 @@
   --color-destructive: #dc2626;
   /* Black ground for the reading sections of the home page (the owner prefers it to white). */
   --color-night: #0b0b0b;
+  /* Cards on black: no white anywhere. A near-black surface one step above the ground, dark grey lines. */
+  --color-surface-dark: #161616;
+  --color-line-dark: #2e2e2e;
+  --color-text-soft: rgba(255, 255, 255, 0.72);
 
   /* Roles used across the site. */
   --bg: var(--color-background);
@@ -1828,4 +1832,113 @@
 
 .service-block .service-link {
   margin-top: 28px;
+}
+/* ---------- No white cards: dark surfaces, dark grey lines, white text ---------- */
+.service-block:not(.is-featured),
+.faq-item,
+.bubble,
+.case-preview,
+.contact-card,
+.catalog-card:not(.is-featured) {
+  background: var(--color-surface-dark);
+  color: var(--color-card);
+  border-color: var(--color-line-dark);
+}
+
+.service-block.is-featured {
+  box-shadow: 6px 6px 0 var(--color-accent);
+}
+
+.faq-item[open] summary {
+  border-bottom-color: var(--color-line-dark);
+}
+
+.bubble-from,
+.contact-card .muted {
+  color: var(--color-text-soft);
+}
+
+.process-dot {
+  border-color: var(--color-accent);
+}
+
+.case-tab,
+.case-arrow {
+  border-color: var(--color-line-dark);
+}
+
+.case-tab:hover {
+  box-shadow: 4px 4px 0 var(--color-accent);
+}
+
+.case-tab[aria-selected="true"] {
+  box-shadow: 5px 5px 0 var(--color-accent);
+}
+
+.case-arrow:hover {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+/* Form fields on the dark card. */
+.contact-card .field {
+  background: var(--color-night);
+  color: var(--color-card);
+  border-color: var(--color-line-dark);
+}
+
+.contact-card .field::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.contact-card .field:hover,
+.contact-card .field:focus {
+  border-color: var(--color-primary);
+}
+
+.contact-card select.field option {
+  background: var(--color-night);
+  color: var(--color-card);
+}
+
+/* The sample WhatsApp chat in WhatsApp's own dark theme. */
+.process-phone {
+  background: #0b141a;
+  border-color: var(--color-line-dark);
+}
+
+.wa-bubble {
+  background: #202c33;
+  color: #e9edef;
+}
+
+.wa-me {
+  background: #005c4b;
+}
+
+.wa-time {
+  color: #8696a0;
+}
+
+.process-note {
+  color: #8696a0;
+}
+
+/* Detailed cards on the service pages: dark section, dark cards. */
+.catalog {
+  background: var(--color-night);
+  color: var(--color-card);
+}
+
+.catalog-card:not(.is-featured) {
+  box-shadow: 4px 4px 0 var(--color-accent);
+}
+
+.catalog-card.is-featured {
+  border-color: var(--color-line-dark);
+  box-shadow: 4px 4px 0 var(--color-accent);
+}
+
+.catalog :focus-visible {
+  outline-color: var(--color-border);
 }

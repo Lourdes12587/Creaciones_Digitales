@@ -9,14 +9,14 @@ export default {
         ink: "var(--ink)",
         muted: "var(--muted)",
         accent: "var(--accent)",
-        // Clarea palette (defined in index.css).
-        rosa: "var(--clarea-rosa)",
-        negro: "var(--clarea-negro)",
-        piedra: "var(--clarea-piedra)",
-        blanco: "var(--clarea-blanco)",
-        noche: "var(--clarea-noche)",
-        luz: "var(--clarea-luz)",
-        alba: "var(--clarea-alba)",
+        // Palette from ui-ux-pro-max ("Creative Agency"), defined in index.css.
+        primary: "var(--color-primary)",
+        "on-primary": "var(--color-on-primary)",
+        secondary: "var(--color-secondary)",
+        cyan: "var(--color-accent)",
+        foreground: "var(--color-foreground)",
+        card: "var(--color-card)",
+        border: "var(--color-border)",
       },
       maxWidth: {
         container: "var(--container)",

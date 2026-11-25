@@ -27,25 +27,30 @@
   font-display: swap;
 }
 
-/* Clarea's own colours (logo pink, black, stone, white) plus three taken from the hero photo:
-   the dark side of the storm, the coral light coming through and the cream of the clear sky.
-   Pink always carries black text: white on pink does not reach AA. */
+/* Palette from the ui-ux-pro-max skill, profile "Creative Agency": bold pink with a cyan accent
+   on a pink-tinted white, text in deep magenta. Contrast (WCAG): black on primary 5.2, foreground on
+   background 9.0, black on accent 5.7, white on foreground 9.7. Text on pink is always black. */
 :root {
-  --clarea-rosa: #ff4d6d;
-  --clarea-negro: #0b0b0b;
-  --clarea-piedra: #d9d8d5;
-  --clarea-blanco: #ffffff;
-  --clarea-noche: #090d17;
-  --clarea-luz: #ffa59b;
-  --clarea-alba: #e3d8d0;
+  --color-primary: #ec4899;
+  --color-on-primary: #000000;
+  --color-secondary: #f472b6;
+  --color-accent: #0891b2;
+  --color-on-accent: #000000;
+  --color-background: #fdf2f8;
+  --color-foreground: #831843;
+  --color-card: #ffffff;
+  --color-muted: #f1eef5;
+  --color-muted-foreground: #475569;
+  --color-border: #fbcfe8;
+  --color-destructive: #dc2626;
 
   /* Roles used across the site. */
-  --bg: var(--clarea-piedra);
-  --surface: #cdcbc6;
-  --ink: var(--clarea-negro);
-  --muted: #4a4843;
-  --accent: var(--clarea-rosa);
-  --light: var(--clarea-blanco);
+  --bg: var(--color-background);
+  --surface: var(--color-muted);
+  --ink: var(--color-foreground);
+  --muted: var(--color-muted-foreground);
+  --accent: var(--color-primary);
+  --light: var(--color-card);
 
   --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
   --step-body: clamp(1.0625rem, 1rem + 0.2vw, 1.125rem);
@@ -88,8 +93,8 @@
   }
 
   ::selection {
-    background: var(--accent);
-    color: var(--ink);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
   }
 
   /* Focus ring: coral light on dark grounds; on light grounds coral is too faint (under 3:1), so black. */
@@ -103,7 +108,7 @@
   .hero :focus-visible,
   .site-header[data-light] :focus-visible,
   .site-footer :focus-visible {
-    outline-color: var(--clarea-luz);
+    outline-color: var(--color-border);
   }
 
   section[id] {
@@ -156,8 +161,8 @@
     justify-content: center;
     gap: 0.6em;
     padding: 14px 24px;
-    background: var(--ink);
-    color: var(--light);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
     font-weight: 500;
     text-decoration: none;
     /* transform is driven by Motion (magnetic effect), so it is not transitioned here. */
@@ -165,22 +170,34 @@
   }
 
   .btn:hover {
-    background: var(--accent);
-    color: var(--ink);
+    background: var(--color-foreground);
+    color: var(--color-card);
   }
 
   .btn:active {
     transform: translateY(1px) scale(0.98);
   }
 
+  /* Cyan variant, for a second action next to the pink one. */
   .btn-accent {
-    background: var(--accent);
-    color: var(--ink);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
   }
 
   .btn-accent:hover {
-    background: var(--ink);
-    color: var(--bg);
+    background: var(--color-foreground);
+    color: var(--color-card);
+  }
+
+  /* On a pink field the primary button would vanish: it turns deep magenta. */
+  .on-accent .btn {
+    background: var(--color-foreground);
+    color: var(--color-card);
+  }
+
+  .on-accent .btn:hover {
+    background: var(--color-card);
+    color: var(--color-foreground);
   }
 
   .btn .arrow {
@@ -214,16 +231,17 @@
   }
 
   .on-dark .muted {
-    color: #b4b2ad;
+    color: var(--color-border);
   }
 
+  /* Pink fields always carry black text: magenta on pink is only 2.3:1. */
   .on-accent {
-    background: var(--accent);
-    color: var(--ink);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
   }
 
   .on-accent .muted {
-    color: #3d0f19;
+    color: var(--color-on-primary);
   }
 }
 
@@ -256,14 +274,14 @@
 
 /* Past the hero: a black bar at 90 % with a blur. */
 .site-header[data-solid] {
-  background: rgba(11, 11, 11, 0.9);
+  background: rgba(131, 24, 67, 0.92);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
 
 /* While the phone menu is open the bar is solid and unblurred, so the fixed menu is not trapped inside it. */
 .site-header[data-menu] {
-  background: var(--clarea-negro);
+  background: var(--color-foreground);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
@@ -279,7 +297,7 @@
 }
 
 .nav-link:hover {
-  text-decoration-color: var(--clarea-luz);
+  text-decoration-color: var(--color-accent);
 }
 
 .site-header:not([data-light]) .nav-link:hover {
@@ -305,7 +323,7 @@
   inset: var(--header) 0 0;
   display: flex;
   align-items: center;
-  background: var(--clarea-negro);
+  background: var(--color-foreground);
   color: var(--light);
 }
 
@@ -319,7 +337,7 @@
 }
 
 .site-menu-link:hover {
-  color: var(--clarea-luz);
+  color: var(--color-accent);
 }
 
 /* ---------- Hero ---------- */
@@ -329,7 +347,7 @@
   display: flex;
   min-height: 100svh;
   overflow: hidden;
-  background: var(--clarea-noche);
+  background: var(--color-foreground);
   color: var(--light);
 }
 
@@ -427,7 +445,7 @@
 }
 
 .hero-field .ch.hot {
-  color: var(--clarea-luz);
+  color: var(--color-accent);
 }
 
 /* After the entry, displaced letters may leave their line box. */
@@ -451,7 +469,7 @@
 }
 
 .hero-slogan .caret {
-  color: var(--clarea-luz);
+  color: var(--color-accent);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -497,7 +515,7 @@
   top: 0.8em;
   width: 14px;
   height: 3px;
-  background: var(--clarea-luz);
+  background: var(--color-accent);
 }
 
 /* Four vertical 1 px lines and five underscore nodes on the right half.
@@ -551,7 +569,7 @@
   display: block;
   width: 18px;
   height: 3px;
-  background: var(--clarea-luz);
+  background: var(--color-accent);
   box-shadow: 0 0 10px rgba(9, 13, 23, 0.55); /* taste-skill-ignore: halo that keeps the node legible on the bright sky */
   transition: width 250ms var(--ease-out);
 }
@@ -573,7 +591,7 @@
   width: max-content;
   max-width: 22ch;
   padding: 8px 12px;
-  background: var(--clarea-noche);
+  background: var(--color-foreground);
   color: var(--light);
   font-size: 14px;
   line-height: 1.4;
@@ -780,7 +798,7 @@
   .lineup-row .when,
   .lineup-row .price {
     font-size: 0.875rem;
-    color: #b4b2ad;
+    color: var(--color-border);
   }
 
   .lineup-row .when {
@@ -949,23 +967,23 @@
 /* n8n chat widget in the site's colours.
    :root:root beats the :root rules of the widget stylesheet, which loads later. */
 :root:root {
-  --chat--color--primary: #ff4d6d;
-  --chat--color--primary-shade-50: #f03d5e;
-  --chat--color--primary--shade-100: #dc2f50;
-  --chat--color--secondary: #ff4d6d;
-  --chat--color-secondary-shade-50: #f03d5e;
-  --chat--color-dark: #0b0b0b;
-  --chat--toggle--background: #0b0b0b;
-  --chat--toggle--hover--background: #ff4d6d;
-  --chat--toggle--active--background: #0b0b0b;
-  --chat--toggle--color: #ffffff;
+  --chat--color--primary: var(--color-primary);
+  --chat--color--primary-shade-50: var(--color-primary);
+  --chat--color--primary--shade-100: var(--color-primary);
+  --chat--color--secondary: var(--color-primary);
+  --chat--color-secondary-shade-50: var(--color-primary);
+  --chat--color-dark: var(--color-foreground);
+  --chat--toggle--background: var(--color-foreground);
+  --chat--toggle--hover--background: var(--color-primary);
+  --chat--toggle--active--background: var(--color-foreground);
+  --chat--toggle--color: var(--color-card);
   --chat--toggle--width: 3.5rem;
   --chat--toggle--height: 3.5rem;
   --chat--toggle--size: 3.5rem;
   --chat--font-family: "General Sans", ui-sans-serif, system-ui, sans-serif;
   --chat--border-radius: 0;
-  --chat--header--background: #ff4d6d;
-  --chat--header--color: #0b0b0b;
+  --chat--header--background: var(--color-primary);
+  --chat--header--color: var(--color-on-primary);
   --chat--header--padding: 1rem 1.25rem;
   --chat--header--border-bottom: 0;
   --chat--heading--font-size: 1.125rem;
@@ -975,28 +993,28 @@
   --chat--window--width: 380px;
   --chat--window--height: 560px;
   --chat--window--z-index: 45;
-  --chat--window--border: 2px solid #0b0b0b;
+  --chat--window--border: 2px solid var(--color-foreground);
   --chat--window--border-radius: 0;
-  --chat--body--background: #d9d8d5;
-  --chat--footer--background: #ffffff;
+  --chat--body--background: var(--color-background);
+  --chat--footer--background: var(--color-card);
   --chat--message--font-size: 0.95rem;
   --chat--message--border-radius: 10px;
-  --chat--message--bot--background: #ffffff;
-  --chat--message--bot--color: #0b0b0b;
+  --chat--message--bot--background: var(--color-card);
+  --chat--message--bot--color: var(--color-foreground);
   --chat--message--bot--border: 0;
-  --chat--message--user--background: #ff4d6d;
-  --chat--message--user--color: #0b0b0b;
+  --chat--message--user--background: var(--color-primary);
+  --chat--message--user--color: var(--color-on-primary);
   --chat--message--user--border: 0;
-  --chat--input--background: #ffffff;
-  --chat--input--text-color: #0b0b0b;
-  --chat--input--send--button--color: #0b0b0b;
-  --chat--input--send--button--color-hover: #ff4d6d;
+  --chat--input--background: var(--color-card);
+  --chat--input--text-color: var(--color-foreground);
+  --chat--input--send--button--color: var(--color-foreground);
+  --chat--input--send--button--color-hover: var(--color-primary);
   --chat--button--border-radius: 0;
   --chat--button--padding: 0.8rem 1.6rem;
-  --chat--button--color--primary: #0b0b0b;
-  --chat--button--background--primary: #ff4d6d;
-  --chat--button--color--primary--hover: #d9d8d5;
-  --chat--button--background--primary--hover: #0b0b0b;
+  --chat--button--color--primary: var(--color-on-primary);
+  --chat--button--background--primary: var(--color-primary);
+  --chat--button--color--primary--hover: var(--color-card);
+  --chat--button--background--primary--hover: var(--color-foreground);
 }
 
 /* Pink header with the Clarea wordmark, and "Respondemos rápidamente" with an online dot.
@@ -1071,7 +1089,7 @@
 }
 /* ---------- Services (home): stone ground, three highlights, a compact row of the rest ---------- */
 .services {
-  background: var(--clarea-piedra);
+  background: var(--color-background);
   color: var(--ink);
 }
 
@@ -1112,7 +1130,9 @@
 }
 
 .service.is-featured {
-  background: var(--clarea-rosa);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-color: var(--color-on-primary);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1126,11 +1146,16 @@
   display: block;
   width: 56px;
   height: 8px;
-  background: var(--clarea-rosa);
+  background: var(--color-primary);
 }
 
-.service.is-featured .service-mark {
-  background: var(--ink);
+.service.is-featured .service-mark,
+.service.is-featured .service-includes li::before {
+  background: var(--color-on-primary);
+}
+
+.service.is-featured .service-link {
+  text-decoration-color: currentColor;
 }
 
 .service-hook {
@@ -1244,5 +1269,5 @@
   top: 0.75em;
   width: 12px;
   height: 3px;
-  background: var(--clarea-rosa);
+  background: var(--color-primary);
 }

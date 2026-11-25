@@ -96,7 +96,7 @@ export default function Nav({ navigate, goToSection, isHome }) {
               </li>
             ))}
           </ul>
-          <a href="/#contacto" onClick={(event) => handleNav(event, "#contacto")} className={`btn nav-cta ${solid || menuOpen ? "btn-accent" : ""}`}>
+          <a href="/#contacto" onClick={(event) => handleNav(event, "#contacto")} className="btn nav-cta">
             Pedir auditoría gratis
           </a>
           <button

@@ -1796,8 +1796,11 @@
   border-bottom: var(--line) solid var(--color-night);
 }
 
+/* The automations block: black card, white outline and text, cyan accents. */
 .service-block:not(.is-featured) {
-  color: var(--color-night);
+  background: var(--color-night);
+  color: var(--color-card);
+  border-color: var(--color-card);
   box-shadow: 6px 6px 0 var(--color-accent);
 }
 

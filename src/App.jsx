@@ -1,9 +1,11 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { EASE_OUT, cascade, magneticButtons, revealOnScroll, slideIn } from "./motionFx";
 import logoClarea from "./assets/logo-clarea.png";
 import { SITE_HOST, SITE_URL } from "./site";
+import Nav from "./components/Nav";
+import Hero from "./components/Hero";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
 import portfolioBlueIslandTablet from "./assets/portfolio-blue-island-tablet.webp";
 import portfolioBlueIslandMobile from "./assets/portfolio-blue-island-mobile.webp";
@@ -609,7 +611,7 @@ function App({ initialRoute }) {
   return (
     <div className="min-h-[100dvh] overflow-x-clip">
       <SkipLink />
-      <Nav navigate={navigate} goToSection={goToSection} onAccent={isHome} />
+      <Nav navigate={navigate} goToSection={goToSection} isHome={isHome} />
       <main id="contenido">
         {route === "/portfolio" ? (
           <PortfolioPage onChooseService={chooseService} />
@@ -631,7 +633,7 @@ function App({ initialRoute }) {
           <NotFoundPage navigate={navigate} />
         ) : (
           <>
-            <Hero />
+            <Hero navigate={navigate} goToSection={goToSection} />
             <Services navigate={navigate} />
             <Work navigate={navigate} />
             <HowItWorks />
@@ -753,227 +755,6 @@ function SkipLink() {
     <a href="#contenido" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-3 focus:text-bg">
       Saltar al contenido
     </a>
-  );
-}
-
-const menuItem = {
-  hidden: { opacity: 0, y: 24 },
-  shown: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } },
-};
-
-function Nav({ navigate, goToSection, onAccent }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const reduceMotion = useReducedMotion();
-  const links = [
-    ["Servicios", "#servicios"],
-    ["Trabajos", "/portfolio"],
-    ["Proceso", "#proceso"],
-    ["Contacto", "#contacto"],
-  ];
-
-  function handleNav(event, href) {
-    event.preventDefault();
-    setMenuOpen(false);
-    if (href.startsWith("/")) navigate(href);
-    else goToSection(href);
-  }
-
-  return (
-    <header className={`absolute inset-x-0 top-0 z-30 ${onAccent ? "text-ink" : "text-ink"}`}>
-      <nav aria-label="Principal" className="wrap flex items-start justify-between gap-4 pt-5 sm:pt-6">
-        <a
-          href="/"
-          onClick={(event) => {
-            event.preventDefault();
-            setMenuOpen(false);
-            navigate("/");
-          }}
-          aria-label="Clarea, inicio"
-          className="flex h-12 shrink-0 items-center transition-transform duration-200 hover:-rotate-2"
-        >
-          <img src={logoClarea} alt="Clarea" width="1367" height="324" className="h-7 w-auto sm:h-8" />
-        </a>
-
-        <div className="hidden items-center gap-7 md:flex">
-          {links.map(([label, href]) => (
-            <a key={href} href={href.startsWith("/") ? href : `/${href}`} onClick={(event) => handleNav(event, href)} className="link t-small no-underline hover:underline">
-              {label}
-            </a>
-          ))}
-          <a href="/#contacto" onClick={(event) => handleNav(event, "#contacto")} className="btn t-small">
-            Pedir auditoría gratis
-          </a>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => setMenuOpen((open) => !open)}
-          aria-expanded={menuOpen}
-          aria-controls="menu-movil"
-          className="min-h-[44px] px-1 text-[15px] font-medium underline underline-offset-4 md:hidden"
-        >
-          {menuOpen ? "Cerrar" : "Menú"}
-        </button>
-      </nav>
-
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            id="menu-movil"
-            className="wrap bg-ink pb-8 pt-6 text-bg md:hidden"
-            initial={reduceMotion ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
-            animate={reduceMotion ? { opacity: 1 } : { clipPath: "inset(0 0 0% 0)" }}
-            exit={reduceMotion ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
-            transition={{ duration: 0.45, ease: EASE_OUT }}
-          >
-            <motion.ul className="grid gap-2" initial="hidden" animate="shown" variants={{ shown: { transition: { staggerChildren: 0.06, delayChildren: 0.12 } } }}>
-              {links.map(([label, href]) => (
-                <motion.li key={href} variants={menuItem}>
-                  <a href={href.startsWith("/") ? href : `/${href}`} onClick={(event) => handleNav(event, href)} className="block py-1 text-[2rem] font-medium leading-tight">
-                    {label}
-                  </a>
-                </motion.li>
-              ))}
-            </motion.ul>
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.36, duration: 0.4, ease: EASE_OUT }}>
-              <a href="/#contacto" onClick={(event) => handleNav(event, "#contacto")} className="btn btn-accent mt-6 w-full">
-                Pedir auditoría gratis
-              </a>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
-  );
-}
-
-const HERO_LINES = ["Tu negocio,", "más claro_"];
-
-// Letters move away from the pointer, tilt and turn white as it gets close, then ease back.
-function useLetterField(sectionRef, titleRef) {
-  useEffect(() => {
-    const section = sectionRef.current;
-    const title = titleRef.current;
-    if (!section || !title) return undefined;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
-
-    const letters = [...title.querySelectorAll("[data-ch]")].map((el) => ({ el, x: 0, y: 0, r: 0, h: 0, cx: 0, cy: 0 }));
-    const pointer = { x: 0, y: 0, active: false };
-    let frame = 0;
-
-    // Resting centres relative to the title, measured with each letter's own transform removed.
-    const measure = () => {
-      const base = title.getBoundingClientRect();
-      letters.forEach((l) => {
-        const kept = l.el.style.transform;
-        l.el.style.transform = "none";
-        const rect = l.el.getBoundingClientRect();
-        l.el.style.transform = kept;
-        l.cx = rect.left + rect.width / 2 - base.left;
-        l.cy = rect.top + rect.height / 2 - base.top;
-      });
-    };
-    measure();
-
-    const tick = () => {
-      const base = title.getBoundingClientRect();
-      const size = parseFloat(getComputedStyle(title).fontSize);
-      const radius = size * 1.5;
-      let moving = false;
-      letters.forEach((l) => {
-        let tx = 0, ty = 0, tr = 0, th = 0;
-        if (pointer.active) {
-          const dx = base.left + l.cx - pointer.x;
-          const dy = base.top + l.cy - pointer.y;
-          const d = Math.hypot(dx, dy) || 1;
-          const f = Math.max(0, 1 - d / radius) ** 2;
-          tx = (dx / d) * f * size * 0.32;
-          ty = (dy / d) * f * size * 0.32;
-          tr = (dx / radius) * f * 18;
-          th = f;
-        }
-        l.x += (tx - l.x) * 0.16;
-        l.y += (ty - l.y) * 0.16;
-        l.r += (tr - l.r) * 0.16;
-        l.h += (th - l.h) * 0.2;
-        if (Math.abs(tx - l.x) + Math.abs(ty - l.y) + Math.abs(th - l.h) > 0.02) moving = true;
-        l.el.style.transform = `translate(${l.x.toFixed(2)}px, ${l.y.toFixed(2)}px) rotate(${l.r.toFixed(2)}deg)`;
-        l.el.classList.toggle("hot", l.h > 0.28);
-      });
-      frame = moving || pointer.active ? requestAnimationFrame(tick) : 0;
-    };
-    const wake = () => {
-      if (!frame) frame = requestAnimationFrame(tick);
-    };
-    const move = (x, y) => {
-      pointer.x = x;
-      pointer.y = y;
-      pointer.active = true;
-      wake();
-    };
-    const onPointer = (event) => move(event.clientX, event.clientY);
-    const onTouch = (event) => event.touches[0] && move(event.touches[0].clientX, event.touches[0].clientY);
-    const leave = () => {
-      pointer.active = false;
-      wake();
-    };
-
-    // The entry animation shifts the lines, so measure again once it has finished and on every new approach.
-    const settle = window.setTimeout(() => {
-      title.classList.add("is-live");
-      measure();
-    }, 1400);
-    section.addEventListener("pointerenter", measure);
-    section.addEventListener("pointermove", onPointer);
-    section.addEventListener("pointerleave", leave);
-    section.addEventListener("touchstart", onTouch, { passive: true });
-    section.addEventListener("touchmove", onTouch, { passive: true });
-    section.addEventListener("touchend", leave);
-    window.addEventListener("resize", measure);
-    document.fonts?.ready.then(measure);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.clearTimeout(settle);
-      section.removeEventListener("pointerenter", measure);
-      section.removeEventListener("pointermove", onPointer);
-      section.removeEventListener("pointerleave", leave);
-      section.removeEventListener("touchstart", onTouch);
-      section.removeEventListener("touchmove", onTouch);
-      section.removeEventListener("touchend", leave);
-      window.removeEventListener("resize", measure);
-    };
-  }, [sectionRef, titleRef]);
-}
-
-function Hero() {
-  const sectionRef = useRef(null);
-  const titleRef = useRef(null);
-  useLetterField(sectionRef, titleRef);
-
-  return (
-    <section ref={sectionRef} aria-labelledby="hero-title" className="on-accent relative flex min-h-[100svh] flex-col justify-between overflow-hidden">
-      <h1 id="hero-title" ref={titleRef} className="hero-name hero-field wrap pt-[30svh] sm:pt-[18svh]">
-        <span className="sr-only">{HERO_LINES.join(" ").replace(/_$/, "")}</span>
-        {HERO_LINES.map((line, i) => (
-          <span key={line} className="line" aria-hidden="true">
-            <span data-line style={{ "--i": i }}>
-              {line.split(" ").map((word, w) => (
-                <Fragment key={w}>
-                  {w > 0 ? " " : null}
-                  <span className="word">
-                    {[...word].map((ch, c) => (
-                      <span key={c} data-ch className={`ch${ch === "_" ? " caret" : ""}`}>
-                        {ch}
-                      </span>
-                    ))}
-                  </span>
-                </Fragment>
-              ))}
-            </span>
-          </span>
-        ))}
-      </h1>
-    </section>
   );
 }
 

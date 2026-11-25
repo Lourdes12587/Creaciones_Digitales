@@ -825,26 +825,6 @@
   }
 }
 
-/* Floating buttons: WhatsApp sits above the chat toggle. */
-.float-wa {
-  position: fixed;
-  right: 20px;
-  z-index: 40;
-  display: grid;
-  width: 56px;
-  height: 56px;
-  place-items: center;
-  border-radius: 999px;
-  background: #25d366;
-  color: #ffffff;
-  transition: transform 200ms var(--ease-out), background-color 200ms ease;
-}
-
-.float-wa:hover {
-  transform: translateY(-2px);
-  background: #1ebe5b;
-}
-
 /* n8n chat widget in the site's colours.
    :root:root beats the :root rules of the widget stylesheet, which loads later. */
 :root:root {

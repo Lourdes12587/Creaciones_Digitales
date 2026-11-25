@@ -2,6 +2,7 @@
 // on the right, four vertical lines carry the services as nodes drawn with the logo's underscore.
 
 import { Fragment, useRef } from "react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import useLetterField from "./useLetterField";
 
 const PHOTO = "/img/amanecer-barcelona";
@@ -31,6 +32,15 @@ export default function Hero({ navigate, goToSection }) {
   const sloganRef = useRef(null);
   useLetterField(sectionRef, sloganRef);
 
+  // Gentle scroll motion: the photo drifts down slower than the page and the copy fades as it leaves.
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
+  const photoY = useTransform(smooth, [0, 1], ["0%", "18%"]);
+  const photoScale = useTransform(smooth, [0, 1], [1, 1.08]);
+  const copyY = useTransform(smooth, [0, 1], [0, -80]);
+  const copyOpacity = useTransform(smooth, [0, 0.7], [1, 0]);
+
   function follow(event, href) {
     event.preventDefault();
     if (href.startsWith("/")) navigate(href);
@@ -39,6 +49,7 @@ export default function Hero({ navigate, goToSection }) {
 
   return (
     <section ref={sectionRef} id="inicio" aria-labelledby="hero-title" className="hero">
+      <motion.div className="hero-photo-wrap" style={reduce ? undefined : { y: photoY, scale: photoScale }}>
       <picture>
         <source media="(max-width: 640px)" type="image/avif" srcSet={`${PHOTO}-828.avif`} />
         <source media="(max-width: 640px)" type="image/webp" srcSet={`${PHOTO}-828.webp`} />
@@ -54,6 +65,7 @@ export default function Hero({ navigate, goToSection }) {
           className="hero-photo"
         />
       </picture>
+      </motion.div>
       <div className="hero-scrim" aria-hidden="true" />
 
       <div className="hero-lines" aria-hidden="true">
@@ -63,7 +75,7 @@ export default function Hero({ navigate, goToSection }) {
       </div>
 
       <div className="hero-inner">
-        <div className="hero-copy">
+        <motion.div className="hero-copy" style={reduce ? undefined : { y: copyY, opacity: copyOpacity }}>
           <h1 id="hero-title" className="hero-title">
             <span className="sr-only">Tu negocio, más claro. </span>
             <span ref={sloganRef} className="hero-slogan hero-field" aria-hidden="true">
@@ -93,7 +105,7 @@ export default function Hero({ navigate, goToSection }) {
               <li key={text}>{text}</li>
             ))}
           </ul>
-        </div>
+        </motion.div>
 
         <nav aria-label="Servicios" className="hero-nodes">
           <ul>

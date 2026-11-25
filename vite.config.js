@@ -13,6 +13,8 @@ const siteUrlInHtml = {
 
 export default defineConfig({
   plugins: [siteUrlInHtml, react()],
+  // [PENDIENTE] gaps (case results, testimonials) are shown in local and preview builds only, never in production.
+  define: { __SHOW_PENDING__: JSON.stringify(process.env.VERCEL_ENV !== "production") },
   server: {
     // n8n only allows CORS from the production domain, so in dev the chat talks to n8n through this proxy.
     proxy: {

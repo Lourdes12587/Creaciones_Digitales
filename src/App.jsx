@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Instagram, Mail, MapPin, Phone } from "lucide-react";
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { EASE_OUT, magneticButtons, revealOnScroll, slideIn } from "./motionFx";
-import logoClarea from "./assets/logo-clarea.png";
+import { Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { magneticButtons, revealOnScroll } from "./motionFx";
 import { SITE_HOST, SITE_URL } from "./site";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
+import Cases from "./components/Cases";
+import Process from "./components/Process";
+import Logo from "./components/Logo";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
 import portfolioBlueIslandTablet from "./assets/portfolio-blue-island-tablet.webp";
 import portfolioBlueIslandMobile from "./assets/portfolio-blue-island-mobile.webp";
@@ -393,6 +395,8 @@ const homeFaqs = [
 const portfolioProjects = [
   {
     title: "Reservas de barco que no se pierden entre mensajes",
+    // Problem drafted from the project's own title and summary: review before launch.
+    problem: "Las solicitudes de reserva llegaban por mensajes sueltos y se perdían las de quien no contestaba.",
     category: "Chárter náutico",
     url: "https://blue-island-boat.vercel.app/",
     summary: "Web de presentación con solicitud de presupuesto y seguimiento automático de quien no responde.",
@@ -417,6 +421,7 @@ const portfolioProjects = [
   },
   {
     title: "Citas confirmadas sin llamar a nadie",
+    problem: "Confirmar cada cita exigía llamar a los clientes uno a uno, y los huecos libres se quedaban vacíos.",
     category: "Hotel, guardería y spa canino",
     url: "https://veterinaria-dd.vercel.app/",
     summary: "Reserva online con recordatorio automático y reagenda de los huecos libres.",
@@ -435,6 +440,7 @@ const portfolioProjects = [
   },
   {
     title: "Carta digital con pedido online para restaurantes",
+    problem: "Pedir desde el móvil no era sencillo: el cliente necesitaba ver la carta y completar el pedido en pocos pasos.",
     category: "Restaurante",
     url: "https://zappi-app.vercel.app/",
     summary: "Tienda pensada para móvil: el cliente elige por categorías, añade al carrito y completa su pedido en pocos pasos.",
@@ -454,6 +460,7 @@ const portfolioProjects = [
   },
   {
     title: "Web de noticias a medida, rápida y fácil de ampliar",
+    problem: "El medio necesitaba crecer en secciones y categorías sin tener que rehacer la web cada vez.",
     category: "Medio digital",
     url: "https://you-eyes-net.vercel.app/",
     summary: "Portal desarrollado en React, preparado para sumar secciones y categorías sin rehacer el sitio.",
@@ -476,6 +483,7 @@ const portfolioProjects = [
   },
   {
     title: "Tienda online con carrito, pasarela de pago y envíos",
+    problem: "Vender ropa online y gestionar la tienda sin depender de nadie para cada cambio.",
     category: "Tienda online",
     // Pending: public store URL, admin demo URL and the gateway test card.
     url: "",
@@ -616,8 +624,8 @@ function App({ initialRoute }) {
           <>
             <Hero navigate={navigate} goToSection={goToSection} />
             <Services navigate={navigate} schema={servicesSchema} />
-            <Work navigate={navigate} />
-            <HowItWorks />
+            <Cases projects={portfolioProjects} navigate={navigate} Showcase={DeviceShowcase} />
+            <Process />
             <Faq items={homeFaqs} />
             <Contact selectedService={selectedService} onServiceChange={setSelectedService} navigate={navigate} />
           </>
@@ -763,8 +771,8 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
   return (
     <div ref={frameRef} className={`relative mx-auto aspect-[16/9] w-full ${wide ? "max-w-5xl" : "max-w-3xl"}`}>
       <div className={`absolute top-[6%] ${hasDevices ? "right-[3%] w-[64%]" : "left-1/2 w-[80%] -translate-x-1/2"}`}>
-        <div className="rounded-t-[0.9rem] bg-ink p-[1.4%]">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-[0.35rem] bg-ink">
+        <div className="rounded-t-[0.9rem] bg-on-primary p-[1.4%]">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-[0.35rem] bg-on-primary">
             {screens.map(([src, caption], index) => (
               <img
                 key={caption}
@@ -789,7 +797,7 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
                 aria-pressed={index === screen}
                 className="grid h-6 place-items-center px-0.5"
               >
-                <span className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ${index === screen ? "w-5 bg-ink" : "w-1.5 bg-muted"}`} />
+                <span className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ${index === screen ? "w-5 bg-primary" : "w-1.5 bg-muted"}`} />
               </button>
             ))}
           </div>
@@ -798,8 +806,8 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
 
       {hasDevices && (
         <>
-          <motion.div style={{ y: tabletY }} className="absolute left-[2%] top-[20%] w-[27%] rounded-[1.1rem] bg-ink p-[1.6%]">
-            <div className="relative aspect-[41/59] overflow-hidden rounded-[0.6rem] bg-ink">
+          <motion.div style={{ y: tabletY }} className="absolute left-[2%] top-[20%] w-[27%] rounded-[1.1rem] bg-on-primary p-[1.6%]">
+            <div className="relative aspect-[41/59] overflow-hidden rounded-[0.6rem] bg-on-primary">
               {screens.map(([, caption, tablet], index) => (
                 <img
                   key={caption}
@@ -812,8 +820,8 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
               ))}
             </div>
           </motion.div>
-          <motion.div style={{ y: phoneY }} className="absolute left-[22%] top-[32%] w-[12.5%] rounded-[1.1rem] border-[3px] border-surface bg-ink p-[1%]">
-            <div className="relative aspect-[39/84] overflow-hidden rounded-[0.8rem] bg-ink">
+          <motion.div style={{ y: phoneY }} className="absolute left-[22%] top-[32%] w-[12.5%] rounded-[1.1rem] border-[3px] border-surface bg-on-primary p-[1%]">
+            <div className="relative aspect-[39/84] overflow-hidden rounded-[0.8rem] bg-on-primary">
               {screens.map(([, caption, , mobile], index) => (
                 <img
                   key={caption}
@@ -829,129 +837,6 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
         </>
       )}
     </div>
-  );
-}
-
-function Work({ navigate }) {
-  const [active, setActive] = useState(0);
-  const [touchStart, setTouchStart] = useState(null);
-  const direction = useRef(1);
-  const slides = useRef([]);
-  const firstRender = useRef(true);
-  const total = portfolioProjects.length;
-  const go = (step) => {
-    direction.current = step;
-    setActive((current) => (current + step + total) % total);
-  };
-  const pick = (index) => {
-    direction.current = index >= active ? 1 : -1;
-    setActive(index);
-  };
-  const project = portfolioProjects[active];
-
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-    slideIn(slides.current[active], direction.current);
-  }, [active]);
-
-  const arrowClass =
-    "absolute top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-ink text-bg transition-colors duration-200 hover:bg-accent hover:text-ink sm:h-12 sm:w-12";
-
-  return (
-    <section id="trabajos" aria-labelledby="trabajos-title" className="section wrap">
-      <h2 id="trabajos-title" data-reveal className="t-head">
-        Webs hechas
-      </h2>
-
-      <div
-        data-reveal
-        style={{ "--d": 1 }}
-        className="relative mt-12 rounded-[1.75rem] bg-surface px-12 py-6 sm:px-20 sm:py-10"
-        aria-roledescription="carrusel"
-        aria-label="Proyectos"
-        onTouchStart={(event) => setTouchStart(event.touches[0].clientX)}
-        onTouchEnd={(event) => {
-          if (touchStart === null) return;
-          const distance = event.changedTouches[0].clientX - touchStart;
-          if (Math.abs(distance) > 40) go(distance < 0 ? 1 : -1);
-          setTouchStart(null);
-        }}
-      >
-        {portfolioProjects.map((item, index) => (
-          <div key={item.name} ref={(el) => (slides.current[index] = el)} hidden={index !== active} aria-roledescription="diapositiva" aria-label={`${index + 1} de ${total}: ${item.name}`}>
-            <DeviceShowcase project={item} eager={index === 0} active={index === active} wide />
-          </div>
-        ))}
-
-        <button type="button" onClick={() => go(-1)} aria-label="Proyecto anterior" className={`${arrowClass} left-2 sm:left-5`}>
-          <ArrowLeft size={20} strokeWidth={2} aria-hidden="true" />
-        </button>
-        <button type="button" onClick={() => go(1)} aria-label="Proyecto siguiente" className={`${arrowClass} right-2 sm:right-5`}>
-          <ArrowRight size={20} strokeWidth={2} aria-hidden="true" />
-        </button>
-      </div>
-
-      <div className="mt-6 flex justify-center gap-2" role="tablist" aria-label="Elegir proyecto">
-        {portfolioProjects.map((item, index) => (
-          <button
-            key={item.name}
-            type="button"
-            role="tab"
-            aria-selected={index === active}
-            aria-label={item.name}
-            onClick={() => pick(index)}
-            className="grid h-11 place-items-center px-1"
-          >
-            <span className={`block h-2.5 rounded-full transition-[width,background-color] duration-300 ${index === active ? "w-8 bg-accent" : "w-2.5 bg-muted"}`} />
-          </button>
-        ))}
-      </div>
-
-      <div aria-live="polite">
-      <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={project.name}
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.35, ease: EASE_OUT }}
-        className="grid12 mt-10 gap-y-6"
-      >
-        <div className="col-span-12 lg:col-span-5">
-          <p className="t-lead font-medium">{project.name}</p>
-          <p className="t-small muted mt-1">
-            {project.category} · {project.webType}
-          </p>
-        </div>
-        <div className="col-span-12 lg:col-span-6 lg:col-start-7">
-          <p className="max-w-[60ch]">{project.summary}</p>
-          <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4">
-            {project.url ? (
-              <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn">
-                Abrir la web <span className="arrow" aria-hidden="true">→</span>
-              </a>
-            ) : (
-              <p className="muted">Enlace de prueba disponible pronto.</p>
-            )}
-            <a
-              href="/portfolio"
-              onClick={(event) => {
-                event.preventDefault();
-                navigate("/portfolio");
-              }}
-              className="link"
-            >
-              Ver el portfolio completo
-            </a>
-          </div>
-        </div>
-      </motion.div>
-      </AnimatePresence>
-      </div>
-    </section>
   );
 }
 
@@ -977,88 +862,24 @@ function Lineup({ groups }) {
   );
 }
 
-function HowItWorks() {
-  return (
-    <section id="proceso" aria-labelledby="proceso-title" className="section wrap">
-      <div className="mx-auto max-w-[560px] lg:ml-[25%] lg:mr-0">
-        <h2 id="proceso-title" data-reveal className="t-head mb-14">
-          Cómo trabajo
-        </h2>
-
-        <div data-reveal className="mb-[88px]">
-          <p className="t-lead font-medium">Primero, me cuentas cómo trabajas. Son 30 minutos y no cuestan nada.</p>
-          <div data-ui className="ui-input mt-4">
-            <p className="ui-from">Tú, por WhatsApp</p>
-            <p className="mt-1">Hola, tengo una clínica y cada semana se me escapan citas por olvidos.</p>
-          </div>
-          <div data-ui className="ui-reply mt-4 sm:ml-14">
-            <p className="ui-label">Lo que te llevas de la auditoría</p>
-            <p className="mt-1 font-medium">Las tres tareas que más compensa automatizar, en orden.</p>
-          </div>
-        </div>
-
-        <div data-reveal className="mb-[88px]">
-          <p className="t-lead font-medium">Después, te envío un precio cerrado en 48 horas.</p>
-          <div data-ui className="ui-input mt-4">
-            <p className="ui-from">Tú</p>
-            <p className="mt-1">¿Cuánto costaría la agenda con recordatorios?</p>
-          </div>
-          <div data-ui className="ui-reply mt-4 sm:ml-14">
-            <p className="ui-label">Propuesta</p>
-            <p className="mt-1 font-medium">Agenda automática · 390 € · lista en 5 días · 30 días de soporte incluidos</p>
-          </div>
-        </div>
-
-        <div data-reveal className="mb-[88px]">
-          <p className="t-lead font-medium">Luego lo construyo y lo pruebas antes del segundo pago.</p>
-          <div data-ui className="ui-input mt-4">
-            <p className="ui-from">Tú</p>
-            <p className="mt-1">¿Puedo verlo antes de que esté terminado?</p>
-          </div>
-          <div data-ui className="ui-reply mt-4 sm:ml-14">
-            <p className="ui-label">Versión de prueba</p>
-            <p className="mt-1 font-medium">Un enlace para reservar una cita de prueba y recibir tu propio recordatorio.</p>
-          </div>
-        </div>
-
-        <div data-reveal>
-          <p className="t-lead font-medium">Al final, funciona solo, y lo vigilo durante el primer mes.</p>
-        </div>
-      </div>
-
-      <div data-reveal className="mx-auto mt-6 max-w-[760px] lg:ml-[25%] lg:mr-0">
-        <div data-ui className="ui-chat" aria-label="Ejemplo del recordatorio por WhatsApp que recibe un cliente">
-          <div className="ui-bubble">
-            <p>Hola Marta, te recordamos tu cita de mañana a las 10:30. Responde 1 para confirmarla o 2 para cambiarla.</p>
-            <p className="ui-time mt-1 text-right">9:00</p>
-          </div>
-          <div className="ui-bubble me mt-3">
-            <p>1</p>
-            <p className="ui-time mt-1 text-right">9:04</p>
-          </div>
-          <div className="ui-bubble mt-3">
-            <p>Perfecto, cita confirmada. ¡Hasta mañana!</p>
-            <p className="ui-time mt-1 text-right">9:04</p>
-          </div>
-        </div>
-        <p className="t-small muted mt-3">Ejemplo de recordatorio, 24 horas antes de la cita.</p>
-      </div>
-    </section>
-  );
-}
-
+// Questions as an accessible accordion (<details>/<summary>, keyboard and screen readers for free),
+// styled after the neubrutalist accordion from 21st.dev: thick outline, hard shadow, a + that turns into ×.
 function Faq({ items, title = "Preguntas frecuentes", id = "preguntas" }) {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="section wrap bg-surface">
-      <div className="grid12 gap-y-8">
-        <h2 id={`${id}-title`} data-reveal className="t-lead col-span-12 font-medium lg:col-span-3">
+    <section id={id} aria-labelledby={`${id}-title`} className="faq section wrap">
+      <div className="faq-grid">
+        <h2 id={`${id}-title`} data-reveal className="faq-title">
           {title}
         </h2>
-        <div className="faq-text col-span-12 lg:col-span-8 lg:col-start-5">
+        <div className="faq-list">
           {items.map(([question, answer], index) => (
-            <p key={question} data-reveal style={{ "--d": index % 3 }}>
-              <strong className="font-medium">{question}</strong> {answer}
-            </p>
+            <details key={question} data-reveal style={{ "--d": index % 3 }} className="faq-item">
+              <summary>
+                <span>{question}</span>
+                <span className="faq-icon" aria-hidden="true" />
+              </summary>
+              <p>{answer}</p>
+            </details>
           ))}
         </div>
       </div>
@@ -1132,18 +953,18 @@ function Contact({ selectedService, onServiceChange, navigate }) {
   const labelClass = "t-small block font-medium";
 
   return (
-    <section id="contacto" aria-labelledby="contacto-title" className="on-dark wrap flex min-h-[100svh] flex-col justify-between gap-16 pb-10 pt-[var(--section)]">
+    <section id="contacto" aria-labelledby="contacto-title" className="contact on-dark wrap flex min-h-[100svh] flex-col justify-between gap-16 pb-10 pt-[var(--section)]">
       <div className="grid12 gap-y-10">
         <div className="col-span-12 lg:col-span-4">
-          <h2 id="contacto-title" data-reveal className="t-lead max-w-[24ch] font-medium">
+          <h2 id="contacto-title" data-reveal className="contact-title">
             Cuéntame qué repites cada semana y te digo cómo quitártelo de encima.
           </h2>
-          <p data-reveal style={{ "--d": 1 }} className="muted mt-4 max-w-[34ch]">
+          <p data-reveal style={{ "--d": 1 }} className="muted mt-6 max-w-[34ch]">
             La auditoría dura 30 minutos y es gratis. Te respondo en menos de 24 horas laborables.
           </p>
         </div>
 
-        <form data-reveal style={{ "--d": 2 }} onSubmit={handleSubmit} className="col-span-12 grid gap-5 lg:col-span-7 lg:col-start-6 sm:grid-cols-2">
+        <form data-reveal style={{ "--d": 2 }} onSubmit={handleSubmit} className="contact-card col-span-12 grid gap-5 lg:col-span-7 lg:col-start-6 sm:grid-cols-2">
           <label className={labelClass}>
             Nombre
             <input name="nombre" autoComplete="name" required placeholder="Tu nombre" className="field" />
@@ -1181,6 +1002,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
             Presupuesto <span className="muted font-normal">(opcional)</span>
             <select name="presupuesto" defaultValue="" className="field cursor-pointer">
               <option value="">Elige un rango</option>
+              <option value="menos-500">Menos de 500 €</option>
               <option value="500-1000">500 € – 1.000 €</option>
               <option value="1000-3000">1.000 € – 3.000 €</option>
               <option value="3000-5000">3.000 € – 5.000 €</option>
@@ -1193,10 +1015,10 @@ function Contact({ selectedService, onServiceChange, navigate }) {
           </label>
 
           <div className="sm:col-span-2" aria-live="polite">
-            {status === "error" && <p className="bg-accent px-4 py-3 font-medium text-ink">Revisa el correo antes de enviar.</p>}
+            {status === "error" && <p className="bg-accent px-4 py-3 font-medium text-on-primary">Revisa el correo antes de enviar.</p>}
             {status === "success" && <p className="bg-bg px-4 py-3 font-medium text-ink">Gracias. He recibido tu mensaje y te respondo en menos de 24 horas laborables.</p>}
-            {status === "submit-error" && <p className="bg-accent px-4 py-3 font-medium text-ink">No se pudo enviar tu mensaje. Inténtalo de nuevo o escríbeme por WhatsApp.</p>}
-            {status === "webhook-http-error" && <p className="bg-accent px-4 py-3 font-medium text-ink">Para usarlo en Vercel, el webhook de n8n debe ser HTTPS.</p>}
+            {status === "submit-error" && <p className="bg-accent px-4 py-3 font-medium text-on-primary">No se pudo enviar tu mensaje. Inténtalo de nuevo o escríbeme por WhatsApp.</p>}
+            {status === "webhook-http-error" && <p className="bg-accent px-4 py-3 font-medium text-on-primary">Para usarlo en Vercel, el webhook de n8n debe ser HTTPS.</p>}
           </div>
 
           <div className="flex flex-col gap-4 sm:col-span-2">
@@ -1214,7 +1036,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
               </a>
               .
             </p>
-            <button type="submit" disabled={status === "loading"} className="btn btn-accent self-start disabled:cursor-wait disabled:opacity-60">
+            <button type="submit" disabled={status === "loading"} className="btn self-start disabled:cursor-wait disabled:opacity-60">
               {status === "loading" ? "Enviando…" : "Pedir auditoría gratis"} <span className="arrow" aria-hidden="true">→</span>
             </button>
           </div>
@@ -1587,14 +1409,12 @@ function Footer({ navigate, goToSection }) {
   }
 
   return (
-    <footer className="on-accent wrap pb-6 pt-10">
+    <footer className="site-footer wrap pb-6 pt-20">
       <div className="mx-auto max-w-7xl text-[15px] leading-normal md:text-base">
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:gap-x-16">
           <div className="col-span-2 max-w-sm sm:col-span-3 lg:col-span-1">
-            <div>
-              <img src={logoClarea} alt="Clarea" width="1367" height="324" loading="lazy" className="h-10 w-auto" />
-              <p className="muted mt-3">Desarrollo web y automatizaciones</p>
-            </div>
+            <p className="footer-motto">Tecnología clara, sin miedo.</p>
+            <p className="muted mt-3">Webs y automatizaciones para negocios en Barcelona.</p>
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="link muted mt-4 inline-flex min-h-[44px] items-center gap-2 no-underline hover:underline">
               <Instagram size={17} strokeWidth={2} className="shrink-0" aria-hidden="true" />
               @holaclarea
@@ -1674,6 +1494,11 @@ function Footer({ navigate, goToSection }) {
             </a>
           </nav>
         </div>
+      </div>
+
+      {/* The name returns at full width to close the page (pattern from the 21st.dev "Footer with Big Wordmark"). */}
+      <div className="footer-wordmark" aria-hidden="true">
+        <Logo label="" className="footer-logo" />
       </div>
     </footer>
   );

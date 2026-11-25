@@ -365,6 +365,19 @@ const serviceCatalog = [
   },
 ];
 
+// Anchor id for every catalog card, e.g. "Landing page" -> "landing-page".
+function cardId(name) {
+  return name
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+// Where each catalog block is explained in detail: the service page of its category.
+const catalogPage = { web: "/servicios/desarrollo-web-ecommerce", automatizaciones: "/servicios/automatizacion-a-medida" };
+
 // schema.org Service for every card, rendered into the prerendered HTML.
 const servicesSchema = {
   "@context": "https://schema.org",
@@ -374,7 +387,7 @@ const servicesSchema = {
       name: item.name,
       description: item.text,
       serviceType: block.tab,
-      url: `${SITE_URL}${item.page || block.page}`,
+      url: `${SITE_URL}${catalogPage[block.id]}#${cardId(item.name)}`,
       areaServed: { "@type": "Country", name: "España" },
       provider: { "@type": "ProfessionalService", name: "Clarea", url: `${SITE_URL}/`, telephone: PHONE },
     })),
@@ -559,9 +572,16 @@ function App({ initialRoute }) {
   const currentService = services.find((service) => servicePath(service) === route);
 
   function navigate(path) {
-    window.history.pushState({}, "", path);
-    setRoute(path);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const [pathname, hash] = path.split("#");
+    window.history.pushState({}, "", pathname || "/");
+    setRoute(normalizePath(pathname || "/"));
+    if (hash) {
+      // Once the new page has rendered, set the hash without a new history entry: the browser scrolls to
+      // the card and :target highlights it.
+      window.setTimeout(() => window.location.replace(`#${hash}`), 120);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }
 
   function goToSection(hash) {
@@ -623,7 +643,7 @@ function App({ initialRoute }) {
         ) : (
           <>
             <Hero navigate={navigate} goToSection={goToSection} />
-            <Services navigate={navigate} schema={servicesSchema} />
+            <Services navigate={navigate} schema={servicesSchema} catalog={serviceCatalog} catalogPage={catalogPage} cardId={cardId} />
             <Cases projects={portfolioProjects} navigate={navigate} Showcase={DeviceShowcase} />
             <Process />
             <Faq items={homeFaqs} />
@@ -1067,9 +1087,56 @@ function Contact({ selectedService, onServiceChange, navigate }) {
   );
 }
 
+// Every service of one category explained in detail, one card each, as on the home page before the
+// redesign: hook, what it is, what it includes and how long it takes. Each card has an anchor so the
+// home page can link straight to it.
+function ServiceCatalog({ block, navigate }) {
+  return (
+    <section id="catalogo" aria-labelledby="catalogo-title" className="catalog section wrap">
+      <h2 id="catalogo-title" data-reveal className="catalog-title">
+        {block.id === "web" ? "Todas las webs que hago" : "Todo lo que automatizo"}
+      </h2>
+      <p data-reveal style={{ "--d": 1 }} className="catalog-intro">
+        {block.intro}
+      </p>
+      <ul className="catalog-grid">
+        {block.items.map((item, index) => (
+          <li key={item.name} id={cardId(item.name)} data-reveal style={{ "--d": index % 3 }} className={`catalog-card${item.featured ? " is-featured" : ""}`}>
+            <h3 className="catalog-name">{item.name}</h3>
+            <p className="catalog-hook">{item.hook}</p>
+            <p className="catalog-text">{item.text}</p>
+            <p className="catalog-includes-title">Qué incluye</p>
+            <ul className="catalog-includes">
+              {item.includes.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+            <div className="catalog-foot">
+              <p className="catalog-time">Plazo: {item.time}.</p>
+              {item.page && item.page !== catalogPage[block.id] && (
+                <a
+                  href={item.page}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    navigate(item.page);
+                  }}
+                  className="catalog-link"
+                >
+                  Más detalles en su página
+                </a>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function ServicePage({ service, navigate, onChooseService }) {
   const otherServices = services.filter((other) => other.id !== service.id);
   const isWeb = service.id === "web-profesional";
+  const catalog = serviceCatalog.find((block) => catalogPage[block.id] === servicePath(service));
 
   return (
     <>
@@ -1117,6 +1184,8 @@ function ServicePage({ service, navigate, onChooseService }) {
           </p>
         </div>
       </section>
+
+      {catalog && <ServiceCatalog block={catalog} navigate={navigate} />}
 
       {isWeb && <Lineup groups={[lineup[0]]} />}
 

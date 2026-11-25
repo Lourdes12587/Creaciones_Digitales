@@ -1035,113 +1035,12 @@
   line-height: 1.45;
 }
 
-.services-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: clamp(48px, 7vw, 96px);
-}
-
-@media (min-width: 1024px) {
-  .services-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-/* Square cards with a 2 px black border and no shadow; the featured one is a field of pink. */
-.service {
-  display: flex;
-  flex-direction: column;
-  padding: clamp(24px, 3vw, 40px);
-  border: var(--line) solid var(--color-foreground);
-  background: var(--color-card);
-  box-shadow: var(--shadow-hard);
-  transition: translate 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
-}
-
-.service.is-featured {
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .service:hover {
-    translate: -3px -3px;
-    box-shadow: 8px 8px 0 var(--color-foreground);
-  }
-}
-
 /* The logo's underscore, large, in place of a number. */
 .service-mark {
   display: block;
   width: 56px;
   height: 8px;
   background: var(--color-primary);
-}
-
-.service.is-featured .service-mark,
-.service.is-featured .service-includes li::before {
-  background: var(--color-on-primary);
-}
-
-.service.is-featured .service-link {
-  text-decoration-color: currentColor;
-}
-
-.service-hook {
-  margin-top: 32px;
-  font-size: clamp(1.75rem, 1.2rem + 1.4vw, 2.5rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.service-text {
-  margin-top: 20px;
-  line-height: 1.6;
-}
-
-.service-text strong {
-  font-weight: 600;
-}
-
-.service-includes-title {
-  margin-top: 28px;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.service-includes {
-  display: grid;
-  gap: 8px;
-  margin-top: 12px;
-  font-size: 16px;
-  line-height: 1.45;
-}
-
-.service-includes li {
-  position: relative;
-  padding-left: 24px;
-}
-
-.service-includes li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.7em;
-  width: 12px;
-  height: 3px;
-  background: var(--ink);
-}
-
-.service-foot {
-  display: grid;
-  gap: 16px;
-  margin-top: auto;
-  padding-top: 32px;
-}
-
-.service-terms {
-  font-weight: 600;
 }
 
 /* Secondary link: a 2 px underline that thickens on hover. */
@@ -1168,38 +1067,6 @@
   transform: translateX(4px);
 }
 
-.services-also {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 12px 24px;
-  margin-top: clamp(40px, 5vw, 64px);
-}
-
-.services-also-title {
-  font-weight: 600;
-}
-
-.services-also ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-}
-
-.services-also li {
-  position: relative;
-  padding-left: 20px;
-}
-
-.services-also li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.75em;
-  width: 12px;
-  height: 3px;
-  background: var(--color-primary);
-}
 /* ---------- Shared: section titles in Syne ---------- */
 .cases-title,
 .process-title,
@@ -1659,4 +1526,237 @@
   display: block;
   width: 100%;
   color: var(--color-on-primary);
+}
+/* ---------- Services (home): two blocks, web and automations ---------- */
+.services-split {
+  display: grid;
+  gap: 32px;
+  margin-top: clamp(48px, 7vw, 96px);
+}
+
+@media (min-width: 1024px) {
+  .services-split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+.service-block {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3vw, 40px);
+  border: var(--line) solid var(--color-foreground);
+  background: var(--color-card);
+  box-shadow: var(--shadow-hard);
+}
+
+/* Pink fields carry black text. */
+.service-block.is-featured {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.service-block.is-featured .service-mark {
+  background: var(--color-on-primary);
+}
+
+.service-block.is-featured .service-link {
+  text-decoration-color: currentColor;
+}
+
+.service-block-title {
+  margin-top: 28px;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 1.2rem + 2.4vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.service-block-intro {
+  margin-top: 16px;
+  max-width: 52ch;
+  line-height: 1.6;
+}
+
+.service-list {
+  margin-top: 28px;
+  margin-bottom: 28px;
+  border-top: var(--line) solid currentColor;
+}
+
+/* One row per service: name, its hook, an arrow. The whole row is the link to the detailed card. */
+.service-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 16px;
+  align-items: center;
+  min-height: 64px;
+  padding: 12px 4px;
+  border-bottom: 2px solid currentColor;
+  transition: background-color 200ms ease, padding 250ms var(--ease-out);
+}
+
+.service-row-name {
+  font-family: var(--font-heading);
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.service-row-hook {
+  grid-column: 1;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.service-row-arrow {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  font-size: 1.25rem;
+  font-weight: 700;
+  transition: transform 250ms var(--ease-out);
+}
+
+.service-row:hover {
+  padding-inline: 12px;
+  background: var(--color-background);
+}
+
+.service-block.is-featured .service-row:hover {
+  background: var(--color-secondary);
+}
+
+.service-row:hover .service-row-arrow {
+  transform: translateX(4px);
+}
+
+.service-link {
+  margin-top: auto;
+}
+
+/* ---------- Catalog on the service pages: every service in detail ---------- */
+.catalog {
+  background: var(--color-muted);
+  color: var(--color-foreground);
+}
+
+.catalog-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.25rem, 1.2rem + 4vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.catalog-intro {
+  max-width: 60ch;
+  margin-top: 24px;
+  font-size: var(--step-lead);
+  line-height: 1.45;
+}
+
+.catalog-grid {
+  display: grid;
+  gap: 24px;
+  margin-top: clamp(40px, 6vw, 72px);
+}
+
+@media (min-width: 720px) {
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .catalog-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.catalog-card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 2.4vw, 32px);
+  border: var(--line) solid var(--color-foreground);
+  background: var(--color-card);
+  box-shadow: var(--shadow-hard-sm);
+  scroll-margin-top: calc(var(--header) + 24px);
+  transition: box-shadow 300ms var(--ease-out), translate 300ms var(--ease-out);
+}
+
+.catalog-card.is-featured {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* The card you arrive at from the home page stands out. */
+.catalog-card:target {
+  translate: -3px -3px;
+  box-shadow: 8px 8px 0 var(--color-accent);
+}
+
+.catalog-name {
+  font-family: var(--font-heading);
+  font-size: clamp(1.375rem, 1.1rem + 0.8vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.catalog-hook {
+  margin-top: 8px;
+  font-weight: 700;
+}
+
+.catalog-text {
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+.catalog-includes-title {
+  margin-top: 24px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.catalog-includes {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.catalog-includes li {
+  position: relative;
+  padding-left: 24px;
+}
+
+.catalog-includes li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 12px;
+  height: 3px;
+  background: currentColor;
+}
+
+.catalog-foot {
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.catalog-time {
+  font-weight: 700;
+}
+
+.catalog-link {
+  justify-self: start;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
 }

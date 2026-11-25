@@ -64,6 +64,9 @@ import portfolioDelux from "./assets/portfolio-delux-full.webp";
 const N8N_WEBHOOK_URL = "https://n8n.creaciones-digitales.com/webhook/formularion8n";
 // Production URL of the n8n "Chat Trigger" node. The chat widget stays off while this is empty.
 const N8N_CHAT_URL = "https://n8n.creaciones-digitales.com/webhook/5c3d9e2a-7b41-4f6e-9a12-cd0a8e7f4b21/chat";
+// The legal notice (/aviso-legal) stays off the public site until its [COMPLETAR] details (owner, NIF,
+// address) are filled in. Set to true to publish it: route, footer link and sitemap entry come back.
+const SHOW_LEGAL_NOTICE = false;
 const EMAIL = "ubedadesarrolloweb@gmail.com";
 const PHONE = "+34 697 955 919";
 const INSTAGRAM_URL = "https://www.instagram.com/holaclarea/";
@@ -544,11 +547,16 @@ export const SITE_PAGES = [
     title: "Política de cookies | Clarea",
     description: `Qué cookies usa ${SITE_HOST}: ninguna. Las visitas se miden sin cookies y sin identificar a nadie.`,
   },
-  {
-    route: "/aviso-legal",
-    title: "Aviso legal | Clarea",
-    description: "Datos del titular de la web de Clarea, condiciones de uso, propiedad intelectual y legislación aplicable.",
-  },
+  // Hidden until the owner's details (name, NIF, address) are filled in: see SHOW_LEGAL_NOTICE.
+  ...(SHOW_LEGAL_NOTICE
+    ? [
+        {
+          route: "/aviso-legal",
+          title: "Aviso legal | Clarea",
+          description: "Datos del titular de la web de Clarea, condiciones de uso, propiedad intelectual y legislación aplicable.",
+        },
+      ]
+    : []),
 ];
 
 export const PAGE_TITLES = {
@@ -627,7 +635,7 @@ function App({ initialRoute }) {
           <LegalPage title="Política de privacidad" intro="Cómo trato los datos que me envías a través de esta web, de forma clara y en pocas líneas." sections={privacySections} />
         ) : route === "/cookies" ? (
           <LegalPage title="Política de cookies" intro="Qué cookies usa esta web y cómo puedes gestionarlas." sections={cookieSections} navigate={navigate} />
-        ) : route === "/aviso-legal" ? (
+        ) : SHOW_LEGAL_NOTICE && route === "/aviso-legal" ? (
           <LegalPage
             title="Aviso legal"
             intro="Quién está detrás de esta web y en qué condiciones puedes usarla, como pide la Ley de Servicios de la Sociedad de la Información (LSSI-CE)."
@@ -1526,16 +1534,18 @@ function Footer({ navigate, goToSection }) {
             >
               Política de cookies
             </a>
-            <a
-              href="/aviso-legal"
-              onClick={(event) => {
-                event.preventDefault();
-                navigate("/aviso-legal");
-              }}
-              className="link no-underline hover:underline"
-            >
-              Aviso legal
-            </a>
+            {SHOW_LEGAL_NOTICE && (
+              <a
+                href="/aviso-legal"
+                onClick={(event) => {
+                  event.preventDefault();
+                  navigate("/aviso-legal");
+                }}
+                className="link no-underline hover:underline"
+              >
+                Aviso legal
+              </a>
+            )}
           </nav>
         </div>
       </div>

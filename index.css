@@ -235,6 +235,11 @@
 }
 
 /* ---------- Header ---------- */
+/* The bar uses narrower side margins than the page, so the logo sits closer to the left edge. */
+.site-nav {
+  padding-inline: clamp(16px, 2.5vw, 32px);
+}
+
 .site-header {
   position: fixed;
   inset: 0 0 auto;
@@ -380,11 +385,66 @@
   font-weight: 700;
 }
 
+/* Sized so that "Tu negocio," (about 5.6 em wide) always ends before the first vertical line at 54 %,
+   leaving room for the letters to move away from the pointer. */
 .hero-slogan {
   display: block;
-  font-size: clamp(3rem, 8vw, 7.5rem);
+  font-size: clamp(3rem, min(8vw, calc((54vw - var(--gutter) - 64px) / 5.6)), 7.5rem);
   line-height: 0.95;
   letter-spacing: -0.02em;
+}
+
+.hero-slogan .line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.hero-slogan [data-line] {
+  display: block;
+}
+
+/* Interactive slogan: each letter moves away from the pointer (useLetterField). */
+.hero-field {
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.hero-field .word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.hero-field .ch {
+  display: inline-block;
+  transition: color 220ms var(--ease-out);
+  will-change: transform;
+}
+
+.hero-field .ch.hot {
+  color: var(--clarea-luz);
+}
+
+/* After the entry, displaced letters may leave their line box. */
+.hero-field.is-live .line {
+  overflow: visible;
+}
+
+/* Each line of the slogan rises into place, as in the first version. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero-slogan [data-line] {
+    transform: translateY(105%);
+    animation: line-up 900ms var(--ease-out) forwards;
+    animation-delay: calc(var(--i) * 110ms + 300ms);
+  }
+}
+
+@keyframes line-up {
+  to {
+    transform: none;
+  }
 }
 
 .hero-slogan .caret {
@@ -579,6 +639,10 @@
 
   .hero-copy {
     max-width: 36rem;
+  }
+
+  .hero-slogan {
+    font-size: clamp(3rem, 12vw, 4.5rem);
   }
 
   .hero-inner {

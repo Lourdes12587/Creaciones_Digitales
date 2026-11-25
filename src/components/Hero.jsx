@@ -1,13 +1,18 @@
 // Home hero: Barcelona as the storm opens into dawn ("clarear"). Copy on the dark left side;
 // on the right, four vertical lines carry the services as nodes drawn with the logo's underscore.
 
+import { Fragment, useRef } from "react";
+import useLetterField from "./useLetterField";
+
 const PHOTO = "/img/amanecer-barcelona";
 
+// Always two lines, so the slogan never runs into the vertical lines.
+const SLOGAN = ["Tu negocio,", "más claro_"];
+
 const benefits = [
-  "Desarrollo web desde 500 € en 3 días.",
-  "Automatizaciones que trabajan solas.",
+  "Desarrollo web.",
+  "Automatizaciones y agentes de IA que trabajan solos.",
   "Con la Agenda automática tus clientes reservan, confirman y reciben el recordatorio sin que nadie llame.",
-  "Con n8n conecto correo, hojas de cálculo, CRM y WhatsApp.",
 ];
 
 // x: which of the four lines the node sits on; y: its height on that line.
@@ -22,6 +27,10 @@ const nodes = [
 const LINES = [0, 1, 2, 3];
 
 export default function Hero({ navigate, goToSection }) {
+  const sectionRef = useRef(null);
+  const sloganRef = useRef(null);
+  useLetterField(sectionRef, sloganRef);
+
   function follow(event, href) {
     event.preventDefault();
     if (href.startsWith("/")) navigate(href);
@@ -29,7 +38,7 @@ export default function Hero({ navigate, goToSection }) {
   }
 
   return (
-    <section id="inicio" aria-labelledby="hero-title" className="hero">
+    <section ref={sectionRef} id="inicio" aria-labelledby="hero-title" className="hero">
       <picture>
         <source media="(max-width: 640px)" type="image/avif" srcSet={`${PHOTO}-828.avif`} />
         <source media="(max-width: 640px)" type="image/webp" srcSet={`${PHOTO}-828.webp`} />
@@ -56,8 +65,26 @@ export default function Hero({ navigate, goToSection }) {
       <div className="hero-inner wrap">
         <div className="hero-copy">
           <h1 id="hero-title" className="hero-title">
-            <span className="hero-slogan">
-              Tu negocio, más claro<span className="caret" aria-hidden="true">_</span>
+            <span className="sr-only">Tu negocio, más claro. </span>
+            <span ref={sloganRef} className="hero-slogan hero-field" aria-hidden="true">
+              {SLOGAN.map((line, i) => (
+                <span key={line} className="line">
+                  <span data-line style={{ "--i": i }}>
+                    {line.split(" ").map((word, w) => (
+                      <Fragment key={w}>
+                        {w > 0 ? " " : null}
+                        <span className="word">
+                          {[...word].map((ch, c) => (
+                            <span key={c} data-ch className={`ch${ch === "_" ? " caret" : ""}`}>
+                              {ch}
+                            </span>
+                          ))}
+                        </span>
+                      </Fragment>
+                    ))}
+                  </span>
+                </span>
+              ))}
             </span>
             <span className="hero-sub">Webs y automatizaciones para negocios en Barcelona.</span>
           </h1>

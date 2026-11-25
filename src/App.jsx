@@ -9,6 +9,7 @@ import Services from "./components/Services";
 import Cases from "./components/Cases";
 import Process from "./components/Process";
 import Logo from "./components/Logo";
+import Scene from "./components/Scene";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
 import portfolioBlueIslandTablet from "./assets/portfolio-blue-island-tablet.webp";
 import portfolioBlueIslandMobile from "./assets/portfolio-blue-island-mobile.webp";
@@ -644,9 +645,12 @@ function App({ initialRoute }) {
           <>
             <Hero navigate={navigate} goToSection={goToSection} />
             <Services navigate={navigate} schema={servicesSchema} catalog={serviceCatalog} catalogPage={catalogPage} cardId={cardId} />
+            <Scene image="/img/escenas/anochecer" line="Cae la tarde y tu negocio sigue abierto." from="var(--color-background)" to="var(--color-foreground)" position="center 60%" />
             <Cases projects={portfolioProjects} navigate={navigate} Showcase={DeviceShowcase} />
+            <Scene image="/img/escenas/noche" line="De noche, tu web responde y tu agenda confirma." from="var(--color-foreground)" to="var(--color-muted)" />
             <Process />
             <Faq items={homeFaqs} />
+            <Scene image="/img/escenas/amanecer" line="Por la mañana, todo está más claro." from="var(--color-background)" to="var(--color-foreground)" position="center 40%" />
             <Contact selectedService={selectedService} onServiceChange={setSelectedService} navigate={navigate} />
           </>
         )}
@@ -1529,7 +1533,28 @@ function Footer({ navigate, goToSection }) {
         </div>
 
         <div className="mt-16 flex flex-col gap-2 pr-[80px] text-[13px] sm:flex-row sm:items-center sm:justify-between lg:pr-[96px]">
-          <p>© {new Date().getFullYear()} Clarea. Todos los derechos reservados.</p>
+          <div>
+            <p>© {new Date().getFullYear()} Clarea. Todos los derechos reservados.</p>
+            <p className="footer-credits">
+              Fotos de las escenas, vía Wikimedia Commons:{" "}
+              <a href="https://commons.wikimedia.org/wiki/File:Red_sky_(Unsplash).jpg" target="_blank" rel="noopener noreferrer" className="link">
+                «Red sky»
+              </a>{" "}
+              de Jose Soria (CC0),{" "}
+              <a href="https://commons.wikimedia.org/w/index.php?curid=71443066" target="_blank" rel="noopener noreferrer" className="link">
+                «Night In Diagonal Mar»
+              </a>{" "}
+              de Evgenii Oz (CC0) y{" "}
+              <a href="https://commons.wikimedia.org/w/index.php?curid=71263830" target="_blank" rel="noopener noreferrer" className="link">
+                «Sunrise In Barcelona»
+              </a>{" "}
+              de Pierre Selim Huard (
+              <a href="https://creativecommons.org/licenses/by/3.0/deed.es" target="_blank" rel="noopener noreferrer" className="link">
+                CC BY 3.0
+              </a>
+              ).
+            </p>
+          </div>
           <nav aria-label="Textos legales" className="flex flex-wrap gap-x-6 gap-y-2">
             <a
               href="/privacidad"

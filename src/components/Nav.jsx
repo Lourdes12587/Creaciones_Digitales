@@ -72,7 +72,7 @@ export default function Nav({ navigate, goToSection, isHome }) {
   return (
     // data-menu turns the blur off while the menu is open: a backdrop-filter would trap the full-screen menu inside the bar.
     <header className="site-header" data-light={light || undefined} data-solid={solid || undefined} data-menu={menuOpen || undefined}>
-      <nav aria-label="Principal" className="site-nav flex h-[72px] items-center justify-between gap-4">
+      <nav aria-label="Principal" className="site-nav flex items-start justify-between gap-4 pt-5 sm:pt-6">
         <a
           href="/"
           onClick={(event) => {
@@ -81,9 +81,9 @@ export default function Nav({ navigate, goToSection, isHome }) {
             navigate("/");
           }}
           aria-label="Clarea, inicio"
-          className="flex min-h-[44px] shrink-0 items-center"
+          className="flex h-12 shrink-0 items-center"
         >
-          <Logo label="" className="h-8 sm:h-10" />
+          <Logo label="" className="h-7 sm:h-8" />
         </a>
 
         <div className="flex items-center gap-2 sm:gap-7">

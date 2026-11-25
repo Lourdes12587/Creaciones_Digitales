@@ -303,7 +303,7 @@
 }
 
 .nav-link {
-  font-size: 15px;
+  font-size: var(--step-small);
   font-weight: 500;
   text-decoration: underline;
   text-decoration-color: transparent;
@@ -1382,8 +1382,7 @@
 /* The logo on the left, above the tagline. */
 .footer-logo {
   display: block;
-  height: 28px;
-  margin-bottom: 20px;
+  height: 40px;
   color: var(--color-on-primary);
 }
 
@@ -1775,15 +1774,6 @@
 
 .catalog :focus-visible {
   outline-color: var(--color-border);
-}
-
-.footer-tagline {
-  max-width: 30ch;
-  margin-top: 4px;
-  font-family: var(--font-heading);
-  font-size: clamp(1.25rem, 1rem + 0.8vw, 1.625rem);
-  font-weight: 700;
-  line-height: 1.2;
 }
 
 /* ---------- Services tabs (original structure, current design) ---------- */

@@ -1453,12 +1453,12 @@ function Footer({ navigate, goToSection }) {
   }
 
   return (
-    <footer className="site-footer wrap pb-6 pt-20">
+    <footer className="site-footer wrap pb-6 pt-10">
       <div className="mx-auto max-w-7xl text-[15px] leading-normal md:text-base">
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:gap-x-16">
           <div className="col-span-2 max-w-sm sm:col-span-3 lg:col-span-1">
             <Logo className="footer-logo" />
-            <p className="footer-tagline">Desarrollo web y automatizaciones para tu negocio de Barcelona.</p>
+            <p className="muted mt-3">Desarrollo web y automatizaciones para tu negocio de Barcelona.</p>
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="link muted mt-4 inline-flex min-h-[44px] items-center gap-2 no-underline hover:underline">
               <Instagram size={17} strokeWidth={2} className="shrink-0" aria-hidden="true" />
               @holaclarea

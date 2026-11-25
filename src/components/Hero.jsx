@@ -21,7 +21,7 @@ const nodes = [
   { label: "Agenda automática", href: "/servicios/agenda-automatica", tip: "Reserva online, confirmación al instante y recordatorio por WhatsApp.", x: 1, y: "52%" },
   { label: "Automatizaciones", href: "/servicios/automatizacion-a-medida", tip: "Conecto lo que ya usas para que trabaje solo.", x: 2, y: "34%" },
   { label: "Tienda online", href: "/servicios/desarrollo-web-ecommerce", tip: "Catálogo, carrito, pago y envíos.", x: 3, y: "62%" },
-  { label: "Mantenimiento", href: "#servicios", tip: "Actualizaciones y mejoras cada mes, desde 49 € al mes.", x: 1, y: "78%" },
+  { label: "Mantenimiento", href: "#servicios", tip: "Actualizaciones y mejoras cada mes.", x: 1, y: "78%" },
 ];
 
 const LINES = [0, 1, 2, 3];

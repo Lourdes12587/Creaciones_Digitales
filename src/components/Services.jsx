@@ -1,5 +1,5 @@
 // Home services: three highlighted services, large, and a compact row of everything else.
-// Texts, prices and delivery times are the ones already published on the site.
+// Texts and delivery times are the ones already published on the site. No prices here, as before.
 
 const highlights = [
   {
@@ -16,7 +16,7 @@ const highlights = [
     name: "Web que capta clientes.",
     text: "Una web corporativa con tus servicios, quién eres y una forma clara de contactarte. Cada consulta te llega al momento por correo o WhatsApp.",
     includes: ["Hasta 5 páginas con diseño y textos adaptados a tu negocio", "Formulario y WhatsApp conectados", "Preparada para Google desde el primer día", "Formación para actualizarla tú"],
-    terms: "Lista en 3 días. Desde 500 €.",
+    terms: "Lista en 3 días.",
     page: "/servicios/desarrollo-web-ecommerce",
     linkLabel: "Ver desarrollo web",
     featured: true,
@@ -26,13 +26,13 @@ const highlights = [
     name: "Agenda automática y automatización a medida.",
     text: "Conecto lo que ya usas (WhatsApp, correo, hojas de cálculo, agenda, CRM) para que trabaje solo.",
     includes: ["Análisis del proceso actual", "Automatización conectada a tus herramientas", "Pruebas antes de ponerlo en marcha", "Documentación para tu equipo"],
-    terms: "La agenda, en 5 días; a medida, en 1–2 semanas. Desde 390 €.",
+    terms: "La agenda, en 5 días; a medida, en 1–2 semanas.",
     page: "/servicios/automatizacion-a-medida",
     linkLabel: "Ver automatización a medida",
   },
 ];
 
-const alsoMake = ["Landing page", "Tienda online", "Portafolio", "Rediseño de web", "Blog y SEO", "Aplicación web", "Mantenimiento, desde 49 € al mes"];
+const alsoMake = ["Landing page", "Tienda online", "Portafolio", "Rediseño de web", "Blog y SEO", "Aplicación web", "Mantenimiento mensual"];
 
 export default function Services({ navigate, schema }) {
   function open(event, path) {

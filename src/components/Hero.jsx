@@ -10,12 +10,6 @@ const PHOTO = "/img/amanecer-barcelona";
 // Always two lines, so the slogan never runs into the vertical lines.
 const SLOGAN = ["Tu negocio,", "más claro_"];
 
-const benefits = [
-  "Desarrollo web.",
-  "Automatizaciones y agentes de IA que trabajan solos.",
-  "Con la Agenda automática tus clientes reservan, confirman y reciben el recordatorio sin que nadie llame.",
-];
-
 // x: which of the four lines the node sits on; y: its height on that line.
 const nodes = [
   { label: "Desarrollo web", href: "/servicios/desarrollo-web-ecommerce", tip: "Webs rápidas pensadas para que te escriban, listas en 3 días.", x: 0, y: "24%" },
@@ -98,13 +92,7 @@ export default function Hero({ navigate, goToSection }) {
                 </span>
               ))}
             </span>
-            <span className="hero-sub">Webs y automatizaciones para negocios en Barcelona.</span>
           </h1>
-          <ul className="hero-benefits">
-            {benefits.map((text) => (
-              <li key={text}>{text}</li>
-            ))}
-          </ul>
         </motion.div>
 
         <nav aria-label="Servicios" className="hero-nodes">

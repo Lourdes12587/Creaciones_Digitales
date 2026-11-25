@@ -502,40 +502,6 @@
   }
 }
 
-.hero-sub {
-  display: block;
-  margin-top: 28px;
-  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
-  font-weight: 500;
-  line-height: 1.35;
-  letter-spacing: 0;
-}
-
-.hero-benefits {
-  display: grid;
-  gap: 10px;
-  max-width: 30rem;
-  margin-top: 28px;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-.hero-benefits li {
-  position: relative;
-  padding-left: 26px;
-}
-
-/* Each benefit hangs from the logo's underscore. */
-.hero-benefits li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.8em;
-  width: 14px;
-  height: 3px;
-  background: var(--color-accent);
-}
-
 /* Four vertical 1 px lines and five underscore nodes on the right half.
    difference blending keeps them legible on the dark storm and on the bright sky alike. */
 .hero-lines {
@@ -1825,4 +1791,78 @@
   max-width: 70ch;
   margin-top: 6px;
   opacity: 0.85;
+}
+/* ---------- Services opening: the night balcony as a pinned film shot ---------- */
+.services-film {
+  position: relative;
+  height: 230svh;
+  background: var(--color-foreground);
+}
+
+.services-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.services-photo {
+  position: absolute;
+  inset: -6% 0;
+  will-change: transform;
+}
+
+.services-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 35% 50%;
+}
+
+/* Dark scrim from the bottom left, where the title sits; the lit city stays visible on the right. */
+.services-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, rgba(20, 6, 18, 0.9) 0%, rgba(20, 6, 18, 0.45) 45%, rgba(20, 6, 18, 0) 75%),
+    linear-gradient(90deg, rgba(20, 6, 18, 0.55) 0%, rgba(20, 6, 18, 0) 60%); /* taste-skill-ignore: scrim over the photo */
+}
+
+.services-copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(72px, 12svh, 140px);
+  color: var(--color-card);
+}
+
+.services-copy .services-title {
+  max-width: 20ch;
+  color: var(--color-card);
+}
+
+.services-copy .services-intro {
+  color: var(--color-card);
+  opacity: 0.92;
+}
+
+.services-body {
+  background: var(--color-background);
+}
+
+.services-body .services-split {
+  margin-top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-film {
+    height: 100svh;
+  }
+}
+
+/* On phones "automatizaciones" must fit the width at 375 px. */
+@media (max-width: 640px) {
+  .services-copy .services-title {
+    font-size: clamp(1.875rem, 8.4vw, 2.5rem);
+  }
 }

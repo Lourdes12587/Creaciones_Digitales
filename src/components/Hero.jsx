@@ -62,7 +62,7 @@ export default function Hero({ navigate, goToSection }) {
         ))}
       </div>
 
-      <div className="hero-inner wrap">
+      <div className="hero-inner">
         <div className="hero-copy">
           <h1 id="hero-title" className="hero-title">
             <span className="sr-only">Tu negocio, más claro. </span>

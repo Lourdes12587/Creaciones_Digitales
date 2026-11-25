@@ -57,6 +57,8 @@
   --container: 1280px;
   --section: clamp(80px, 12vw, 160px);
   --header: 72px;
+  /* Narrow side margin shared by the header bar and the hero, so the logo and the slogan line up on the left. */
+  --edge: clamp(16px, 2.5vw, 32px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -237,7 +239,7 @@
 /* ---------- Header ---------- */
 /* The bar uses narrower side margins than the page, so the logo sits closer to the left edge. */
 .site-nav {
-  padding-inline: clamp(16px, 2.5vw, 32px);
+  padding-inline: var(--edge);
 }
 
 .site-header {
@@ -366,6 +368,7 @@
 
 .hero-inner {
   position: relative;
+  padding-inline: var(--edge);
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -377,7 +380,7 @@
 /* The copy ends before the first line (60 % of the width). */
 .hero-copy {
   position: relative;
-  max-width: calc(60vw - max(var(--gutter), (100vw - var(--container)) / 2) - 32px);
+  max-width: calc(60vw - var(--edge) - 32px);
 }
 
 .hero-title {
@@ -389,7 +392,7 @@
    leaving room for the letters to move away from the pointer. */
 .hero-slogan {
   display: block;
-  font-size: clamp(3rem, min(9.5vw, calc((60vw - max(var(--gutter), (100vw - var(--container)) / 2) - 56px) / 5.6)), 9.5rem);
+  font-size: clamp(3rem, min(9.5vw, calc((60vw - var(--edge) - 56px) / 5.6)), 9.5rem);
   line-height: 0.95;
   letter-spacing: -0.02em;
 }

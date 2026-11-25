@@ -1,8 +1,10 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Instagram, Mail, MapPin, Phone, Plus } from "lucide-react";
+import { animate } from "motion";
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { EASE_OUT, cascade, magneticButtons, revealOnScroll, slideIn } from "./motionFx";
-import logoClarea from "./assets/logo-clarea.png";
+import { lockScroll, scrollToTarget, startSmoothScroll } from "./smoothScroll";
+import logoClarea from "./assets/logo-clarea-light.png";
 import portfolioBlueIsland from "./assets/portfolio-blue-island.webp";
 import portfolioBlueIslandTablet from "./assets/portfolio-blue-island-tablet.webp";
 import portfolioBlueIslandMobile from "./assets/portfolio-blue-island-mobile.webp";
@@ -566,13 +568,13 @@ function App({ initialRoute }) {
   function navigate(path) {
     window.history.pushState({}, "", path);
     setRoute(path);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollToTarget(0, { immediate: true });
   }
 
   function goToSection(hash) {
     if (route !== "/") navigate("/");
     window.setTimeout(() => {
-      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+      scrollToTarget(hash);
     }, 80);
   }
 
@@ -591,6 +593,9 @@ function App({ initialRoute }) {
   // Buttons lean towards the mouse.
   useEffect(() => magneticButtons(), []);
 
+  // Inertial scroll for wheel and trackpad (Lenis, see smoothScroll.js).
+  useEffect(() => startSmoothScroll(), []);
+
   useEffect(() => {
     function handlePopState() {
       setRoute(getCurrentRoute());
@@ -604,8 +609,9 @@ function App({ initialRoute }) {
 
   return (
     <div className="min-h-[100dvh] overflow-x-clip">
+      <Preloader />
       <SkipLink />
-      <Nav navigate={navigate} goToSection={goToSection} onAccent={isHome} />
+      <Nav navigate={navigate} goToSection={goToSection} />
       <main id="contenido">
         {route === "/portfolio" ? (
           <PortfolioPage onChooseService={chooseService} />
@@ -620,7 +626,9 @@ function App({ initialRoute }) {
         ) : (
           <>
             <Hero />
+            <Manifesto />
             <Work navigate={navigate} />
+            <ServiceBand />
             <Services navigate={navigate} />
             <HowItWorks />
             <Faq items={homeFaqs} />
@@ -747,9 +755,23 @@ const menuItem = {
   shown: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } },
 };
 
-function Nav({ navigate, goToSection, onAccent }) {
+function Nav({ navigate, goToSection }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const reduceMotion = useReducedMotion();
+
+  // The bar gets a blurred backdrop once the page moves under it.
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 24);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
+  useEffect(() => {
+    lockScroll(menuOpen);
+    return () => lockScroll(false);
+  }, [menuOpen]);
   const links = [
     ["Servicios", "#servicios"],
     ["Trabajos", "/portfolio"],
@@ -765,8 +787,8 @@ function Nav({ navigate, goToSection, onAccent }) {
   }
 
   return (
-    <header className={`absolute inset-x-0 top-0 z-30 ${onAccent ? "text-ink" : "text-ink"}`}>
-      <nav aria-label="Principal" className="wrap flex items-start justify-between gap-4 pt-5 sm:pt-6">
+    <header className={`nav-bar ${scrolled || menuOpen ? "is-scrolled" : ""}`}>
+      <nav aria-label="Principal" className="wrap flex items-center justify-between gap-4 py-3">
         <a
           href="/"
           onClick={(event) => {
@@ -775,18 +797,18 @@ function Nav({ navigate, goToSection, onAccent }) {
             navigate("/");
           }}
           aria-label="Clarea, inicio"
-          className="flex h-12 shrink-0 items-center transition-transform duration-200 hover:-rotate-2"
+          className="flex h-11 shrink-0 items-center transition-transform duration-200 hover:-rotate-2"
         >
-          <img src={logoClarea} alt="Clarea" width="1367" height="324" className="h-7 w-auto sm:h-8" />
+          <img src={logoClarea} alt="Clarea" width="1367" height="324" className="h-6 w-auto sm:h-7" />
         </a>
 
         <div className="hidden items-center gap-7 md:flex">
           {links.map(([label, href]) => (
-            <a key={href} href={href.startsWith("/") ? href : `/${href}`} onClick={(event) => handleNav(event, href)} className="link t-small no-underline hover:underline">
+            <a key={href} href={href.startsWith("/") ? href : `/${href}`} onClick={(event) => handleNav(event, href)} className="nav-link t-small">
               {label}
             </a>
           ))}
-          <a href="/#contacto" onClick={(event) => handleNav(event, "#contacto")} className="btn t-small">
+          <a href="/#contacto" onClick={(event) => handleNav(event, "#contacto")} className="btn btn-accent btn-sm t-small">
             Pedir auditoría gratis
           </a>
         </div>
@@ -796,7 +818,7 @@ function Nav({ navigate, goToSection, onAccent }) {
           onClick={() => setMenuOpen((open) => !open)}
           aria-expanded={menuOpen}
           aria-controls="menu-movil"
-          className="min-h-[44px] px-1 text-[15px] font-medium underline underline-offset-4 md:hidden"
+          className="min-h-[44px] rounded-full border border-white/20 px-4 text-[15px] font-medium md:hidden"
         >
           {menuOpen ? "Cerrar" : "Menú"}
         </button>
@@ -806,7 +828,7 @@ function Nav({ navigate, goToSection, onAccent }) {
         {menuOpen && (
           <motion.div
             id="menu-movil"
-            className="wrap bg-ink pb-8 pt-6 text-bg md:hidden"
+            className="wrap min-h-[calc(100svh-68px)] bg-bg pb-8 pt-6 text-ink md:hidden"
             initial={reduceMotion ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
             animate={reduceMotion ? { opacity: 1 } : { clipPath: "inset(0 0 0% 0)" }}
             exit={reduceMotion ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
@@ -815,7 +837,7 @@ function Nav({ navigate, goToSection, onAccent }) {
             <motion.ul className="grid gap-2" initial="hidden" animate="shown" variants={{ shown: { transition: { staggerChildren: 0.06, delayChildren: 0.12 } } }}>
               {links.map(([label, href]) => (
                 <motion.li key={href} variants={menuItem}>
-                  <a href={href.startsWith("/") ? href : `/${href}`} onClick={(event) => handleNav(event, href)} className="block py-1 text-[2rem] font-medium leading-tight">
+                  <a href={href.startsWith("/") ? href : `/${href}`} onClick={(event) => handleNav(event, href)} className="block py-1 text-[2.5rem] font-medium leading-tight tracking-tight">
                     {label}
                   </a>
                 </motion.li>
@@ -931,14 +953,102 @@ function useLetterField(sectionRef, titleRef) {
   }, [sectionRef, titleRef]);
 }
 
+// The page "lights up" once per visit: a 0→100 counter, then the curtain lifts.
+// index.html decides whether it runs (adds .preload to <html>) so the first paint is already covered.
+function Preloader() {
+  const [phase, setPhase] = useState("off");
+  const countRef = useRef(null);
+  const barRef = useRef(null);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (!root.classList.contains("preload")) return undefined;
+    setPhase("counting");
+    lockScroll(true);
+    const controls = animate(0, 100, {
+      duration: 1.7,
+      ease: [0.65, 0, 0.35, 1],
+      onUpdate: (value) => {
+        const n = Math.round(value);
+        if (countRef.current) countRef.current.textContent = String(n).padStart(3, "0");
+        if (barRef.current) barRef.current.style.transform = `scaleX(${value / 100})`;
+      },
+    });
+    controls.then(() => {
+      root.classList.remove("preload");
+      try {
+        sessionStorage.setItem("clarea-intro", "1");
+      } catch {
+        /* storage can be unavailable; the intro then simply plays again */
+      }
+      lockScroll(false);
+      setPhase("leaving");
+    });
+    return () => {
+      controls.stop();
+      root.classList.remove("preload");
+      lockScroll(false);
+    };
+  }, []);
+
+  if (phase === "off") return null;
+
+  return (
+    <AnimatePresence onExitComplete={() => setPhase("off")}>
+      {phase === "counting" && (
+        <motion.div
+          key="preloader"
+          className="preloader"
+          aria-hidden="true"
+          exit={{ clipPath: "inset(0 0 100% 0)" }}
+          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+        >
+          <div className="flex items-start justify-between">
+            <p className="eyebrow">Clarea — webs y automatizaciones</p>
+            <p className="eyebrow">
+              <span ref={countRef}>000</span> / 100
+            </p>
+          </div>
+          <motion.p
+            className="preloader-title"
+            initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.1, ease: EASE_OUT, delay: 0.15 }}
+          >
+            {HERO_LINES.join(" ")}
+          </motion.p>
+          <div className="preloader-bar">
+            <span ref={barRef} />
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 function Hero() {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   useLetterField(sectionRef, titleRef);
 
+  // The pink light drifts towards the pointer.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return undefined;
+    const move = (event) => {
+      const rect = section.getBoundingClientRect();
+      section.style.setProperty("--gx", `${(((event.clientX - rect.left) / rect.width) * 100).toFixed(1)}%`);
+      section.style.setProperty("--gy", `${(((event.clientY - rect.top) / rect.height) * 100).toFixed(1)}%`);
+    };
+    section.addEventListener("pointermove", move);
+    return () => section.removeEventListener("pointermove", move);
+  }, []);
+
   return (
-    <section ref={sectionRef} aria-labelledby="hero-title" className="on-accent relative flex min-h-[100svh] flex-col justify-between overflow-hidden">
-      <h1 id="hero-title" ref={titleRef} className="hero-name hero-field wrap pt-[30svh] sm:pt-[18svh]">
+    <section ref={sectionRef} aria-labelledby="hero-title" className="hero relative flex min-h-[100svh] flex-col justify-end overflow-hidden">
+      <div className="hero-glow" aria-hidden="true" />
+
+      <h1 id="hero-title" ref={titleRef} className="hero-name hero-field wrap relative pt-[26svh]">
         <span className="sr-only">{HERO_LINES.join(" ").replace(/_$/, "")}</span>
         {HERO_LINES.map((line, i) => (
           <span key={line} className="line" aria-hidden="true">
@@ -960,10 +1070,83 @@ function Hero() {
         ))}
       </h1>
 
-      <div className="hero-after wrap flex flex-col items-start gap-5 pb-[168px] pt-12 sm:items-end sm:pb-10 sm:pr-[112px] sm:text-right">
-        <a href="#contacto" className="btn w-full sm:w-auto">
-          Pedir auditoría gratis <span className="arrow" aria-hidden="true">→</span>
+      <div className="hero-after wrap relative grid gap-8 pb-[140px] pt-10 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-end sm:pb-10">
+        <a href="#trabajos" className="hero-card group hidden sm:block" aria-label="Ver webs hechas">
+          <span className="hero-card-img">
+            <img src={portfolioBlueIsland} alt="" width="640" height="400" loading="eager" />
+          </span>
+          <span className="t-small mt-3 flex items-center gap-2 font-medium">
+            Webs hechas <ArrowUpRight size={16} aria-hidden="true" className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </span>
         </a>
+
+        <div className="flex flex-col items-start gap-6 sm:justify-self-end sm:pr-[88px]">
+          <p className="t-lead max-w-[30ch] text-[color:var(--muted)]">
+            Webs que captan clientes, agendas automáticas con recordatorios por WhatsApp y automatización de procesos para negocios.
+          </p>
+          <a href="#contacto" className="btn btn-accent w-full sm:w-auto">
+            Pedir auditoría gratis <span className="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div className="scroll-cue" aria-hidden="true">
+        <span>Scroll</span>
+        <i />
+      </div>
+    </section>
+  );
+}
+
+// The services pitch, scattered across the screen, falls into place as you scroll.
+const MANIFESTO =
+  "Diseño tu web y automatizo todo lo que pasa después del clic: cada consulta respondida, cada cita confirmada y cada cliente con seguimiento. Tú te dedicas a tu negocio; el sistema se ocupa del resto.";
+
+function seeded(n) {
+  const x = Math.sin(n * 91.345 + 7.1) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+function ScatterWord({ word, index, total, progress }) {
+  const start = (index / total) * 0.45;
+  const end = start + 0.33;
+  const dx = (seeded(index) - 0.5) * 90;
+  const dy = (seeded(index + 40) - 0.5) * 80;
+  const x = useTransform(progress, [start, end], [`${dx.toFixed(1)}vw`, "0vw"]);
+  const y = useTransform(progress, [start, end], [`${dy.toFixed(1)}vh`, "0vh"]);
+  const rotate = useTransform(progress, [start, end], [(seeded(index + 80) - 0.5) * 50, 0]);
+  const scale = useTransform(progress, [start, end], [0.7 + seeded(index + 120) * 0.9, 1]);
+  const opacity = useTransform(progress, [start, end], [0.28, 1]);
+  return (
+    <motion.span className="inline-block will-change-transform" style={{ x, y, rotate, scale, opacity }}>
+      {word}
+    </motion.span>
+  );
+}
+
+function Manifesto() {
+  const ref = useRef(null);
+  const reduceMotion = useReducedMotion();
+  const [live, setLive] = useState(false);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const words = MANIFESTO.split(" ");
+
+  // The prerendered HTML (and reduced motion) gets the sentence already in place.
+  useEffect(() => setLive(!reduceMotion), [reduceMotion]);
+
+  return (
+    <section ref={ref} aria-label="Qué hago" className={`relative ${live ? "h-[280vh]" : ""}`}>
+      <div className={`wrap flex flex-col justify-center gap-8 overflow-hidden ${live ? "sticky top-0 h-[100svh]" : "section"}`}>
+        <p className="eyebrow">(01) Qué hago</p>
+        <p className="manifesto max-w-[26ch]">
+          {live
+            ? words.map((word, index) => (
+                <Fragment key={index}>
+                  <ScatterWord word={word} index={index} total={words.length} progress={scrollYProgress} />{" "}
+                </Fragment>
+              ))
+            : MANIFESTO}
+        </p>
       </div>
     </section>
   );
@@ -993,8 +1176,8 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
   return (
     <div ref={frameRef} className={`relative mx-auto aspect-[16/9] w-full ${wide ? "max-w-5xl" : "max-w-3xl"}`}>
       <div className={`absolute top-[6%] ${hasDevices ? "right-[3%] w-[64%]" : "left-1/2 w-[80%] -translate-x-1/2"}`}>
-        <div className="rounded-t-[0.9rem] bg-ink p-[1.4%]">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-[0.35rem] bg-ink">
+        <div className="rounded-t-[0.9rem] bg-frame p-[1.4%] ring-1 ring-white/10">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-[0.35rem] bg-frame">
             {screens.map(([src, caption], index) => (
               <img
                 key={caption}
@@ -1007,7 +1190,7 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
             ))}
           </div>
         </div>
-        <div className="mx-[-5%] h-[4%] min-h-2 rounded-b-xl bg-[#a9a7a2]" />
+        <div className="mx-[-5%] h-[4%] min-h-2 rounded-b-xl bg-gradient-to-b from-[#56555a] to-[#2b2b2e]" />
         {screens.length > 1 && (
           <div className="mt-2 flex justify-center gap-1" role="group" aria-label={`Pantallas de ${project.name}`}>
             {screens.map(([, caption], index) => (
@@ -1019,7 +1202,7 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
                 aria-pressed={index === screen}
                 className="grid h-6 place-items-center px-0.5"
               >
-                <span className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ${index === screen ? "w-5 bg-ink" : "w-1.5 bg-muted"}`} />
+                <span className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ${index === screen ? "w-5 bg-ink" : "w-1.5 bg-white/25"}`} />
               </button>
             ))}
           </div>
@@ -1028,8 +1211,8 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
 
       {hasDevices && (
         <>
-          <motion.div style={{ y: tabletY }} className="absolute left-[2%] top-[20%] w-[27%] rounded-[1.1rem] bg-ink p-[1.6%]">
-            <div className="relative aspect-[41/59] overflow-hidden rounded-[0.6rem] bg-ink">
+          <motion.div style={{ y: tabletY }} className="absolute left-[2%] top-[20%] w-[27%] rounded-[1.1rem] bg-frame p-[1.6%] ring-1 ring-white/10">
+            <div className="relative aspect-[41/59] overflow-hidden rounded-[0.6rem] bg-frame">
               {screens.map(([, caption, tablet], index) => (
                 <img
                   key={caption}
@@ -1042,8 +1225,8 @@ function DeviceShowcase({ project, eager = false, active = true, wide = false })
               ))}
             </div>
           </motion.div>
-          <motion.div style={{ y: phoneY }} className="absolute left-[22%] top-[32%] w-[12.5%] rounded-[1.1rem] border-[3px] border-surface bg-ink p-[1%]">
-            <div className="relative aspect-[39/84] overflow-hidden rounded-[0.8rem] bg-ink">
+          <motion.div style={{ y: phoneY }} className="absolute left-[22%] top-[32%] w-[12.5%] rounded-[1.1rem] border-[3px] border-[#2a2a2d] bg-frame p-[1%]">
+            <div className="relative aspect-[39/84] overflow-hidden rounded-[0.8rem] bg-frame">
               {screens.map(([, caption, , mobile], index) => (
                 <img
                   key={caption}
@@ -1088,18 +1271,26 @@ function Work({ navigate }) {
   }, [active]);
 
   const arrowClass =
-    "absolute top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-ink text-bg transition-colors duration-200 hover:bg-accent hover:text-ink sm:h-12 sm:w-12";
+    "absolute top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/60 text-ink backdrop-blur transition-colors duration-200 hover:border-accent hover:bg-accent hover:text-[#0b0b0b] sm:h-12 sm:w-12";
 
   return (
     <section id="trabajos" aria-labelledby="trabajos-title" className="section wrap">
-      <h2 id="trabajos-title" data-reveal className="t-head">
-        Webs hechas
-      </h2>
+      <div className="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p data-reveal className="eyebrow mb-6">(02) Trabajos</p>
+          <h2 id="trabajos-title" data-reveal className="t-head">
+            Webs hechas
+          </h2>
+        </div>
+        <p data-reveal className="eyebrow tabular-nums" aria-hidden="true">
+          {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </p>
+      </div>
 
       <div
         data-reveal
         style={{ "--d": 1 }}
-        className="relative mt-12 rounded-[1.75rem] bg-surface px-12 py-6 sm:px-20 sm:py-10"
+        className="stage relative mt-12 px-12 py-6 sm:px-20 sm:py-10"
         aria-roledescription="carrusel"
         aria-label="Proyectos"
         onTouchStart={(event) => setTouchStart(event.touches[0].clientX)}
@@ -1135,7 +1326,7 @@ function Work({ navigate }) {
             onClick={() => pick(index)}
             className="grid h-11 place-items-center px-1"
           >
-            <span className={`block h-2.5 rounded-full transition-[width,background-color] duration-300 ${index === active ? "w-8 bg-accent" : "w-2.5 bg-muted"}`} />
+            <span className={`block h-2.5 rounded-full transition-[width,background-color] duration-300 ${index === active ? "w-8 bg-accent" : "w-2.5 bg-white/25"}`} />
           </button>
         ))}
       </div>
@@ -1256,6 +1447,29 @@ function ServiceCard({ item, page, navigate, index }) {
   );
 }
 
+// Two rows of service names drifting in opposite directions. Decorative: the names are listed below.
+function ServiceBand() {
+  const rows = serviceCatalog.map((block) => block.items.map((item) => item.name));
+  return (
+    <div className="band" aria-hidden="true">
+      {rows.map((names, row) => (
+        <div key={row} className={`band-row ${row % 2 ? "is-reverse is-outline" : ""}`}>
+          {[0, 1].map((copy) => (
+            <div key={copy} className="band-track">
+              {names.map((name) => (
+                <span key={name}>
+                  {name}
+                  <i>✳</i>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Services({ navigate }) {
   const [activeId, setActiveId] = useState(serviceCatalog[0].id);
   const firstTab = useRef(true);
@@ -1285,12 +1499,10 @@ function Services({ navigate }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema).replace(/</g, "\\u003c") }} />
 
       <div className="max-w-[60rem]">
+        <p data-reveal className="eyebrow mb-6">(03) Servicios</p>
         <h2 id="servicios-title" data-reveal className="t-head">
           Webs que captan clientes y automatizaciones que trabajan solas
         </h2>
-        <p data-reveal style={{ "--d": 1 }} className="t-lead mt-8 max-w-[44ch]">
-          Diseño tu web y automatizo todo lo que pasa después del clic: cada consulta respondida, cada cita confirmada y cada cliente con seguimiento. Tú te dedicas a tu negocio; el sistema se ocupa del resto.
-        </p>
       </div>
 
       <div data-reveal style={{ "--d": 2 }} role="tablist" aria-label="Servicios" className="svc-tabs t-lead mt-14 flex flex-wrap gap-x-8 gap-y-2" onKeyDown={handleKeyDown}>
@@ -1338,13 +1550,22 @@ function Services({ navigate }) {
         <h3 data-reveal className="t-lead font-medium">
           Sistemas pensados para tu sector
         </h3>
-        <ul data-reveal style={{ "--d": 1 }} className="mt-6 flex flex-wrap gap-2" aria-label="Sectores">
-          {sectors.map((sector) => (
-            <li key={sector} className="svc-chip">
-              {sector}
-            </li>
-          ))}
-        </ul>
+        <div data-reveal style={{ "--d": 1 }} className="marquee mt-6">
+          <ul className="marquee-track" aria-label="Sectores">
+            {sectors.map((sector) => (
+              <li key={sector} className="svc-chip">
+                {sector}
+              </li>
+            ))}
+          </ul>
+          <ul className="marquee-track" aria-hidden="true">
+            {sectors.map((sector) => (
+              <li key={sector} className="svc-chip">
+                {sector}
+              </li>
+            ))}
+          </ul>
+        </div>
         <p data-reveal style={{ "--d": 2 }} className="muted mt-6 max-w-[60ch]">
           Cada sector tiene sus tareas repetidas. En la auditoría te digo cuáles compensa automatizar primero en el tuyo.
         </p>
@@ -1363,7 +1584,7 @@ function Services({ navigate }) {
         </ul>
       </div>
 
-      <div data-reveal className="on-accent mt-20 p-6 sm:p-10 lg:p-14">
+      <div data-reveal className="cta-panel mt-20 p-6 sm:p-10 lg:p-14">
         <h3 className="t-head max-w-[16ch]">¿Qué tarea repites cada semana?</h3>
         <p className="t-lead mt-6 max-w-[44ch]">En 30 minutos la revisamos juntos y te digo las tres cosas que más compensa automatizar en tu negocio. Gratis y sin compromiso.</p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -1402,15 +1623,53 @@ function Lineup({ groups }) {
   );
 }
 
+const STEPS = ["Auditoría gratis", "Precio cerrado", "Versión de prueba", "Funciona solo"];
+
+// The step being read lights up in the sticky index on the left.
+function useActiveStep(containerRef) {
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    const steps = [...(containerRef.current?.querySelectorAll("[data-step]") ?? [])];
+    if (!steps.length || !("IntersectionObserver" in window)) return undefined;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(Number(entry.target.dataset.step));
+        });
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    steps.forEach((step) => observer.observe(step));
+    return () => observer.disconnect();
+  }, [containerRef]);
+  return active;
+}
+
 function HowItWorks() {
+  const stepsRef = useRef(null);
+  const active = useActiveStep(stepsRef);
+
   return (
     <section id="proceso" aria-labelledby="proceso-title" className="section wrap">
-      <div className="mx-auto max-w-[560px] lg:ml-[25%] lg:mr-0">
-        <h2 id="proceso-title" data-reveal className="t-head mb-14">
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+      <div className="lg:sticky lg:top-28 lg:self-start">
+        <p data-reveal className="eyebrow mb-6">(04) Proceso</p>
+        <h2 id="proceso-title" data-reveal className="t-head">
           Cómo trabajo
         </h2>
+        <ol className="steps-index mt-12 hidden lg:block" aria-hidden="true">
+          {STEPS.map((label, index) => (
+            <li key={label} className={index === active ? "is-active" : ""}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {label}
+            </li>
+          ))}
+        </ol>
+      </div>
 
-        <div data-reveal className="mb-[88px]">
+      <div ref={stepsRef} className="max-w-[640px]">
+        <div data-reveal data-step="0" className="step mb-[88px]">
+          <p className="step-num" aria-hidden="true">01</p>
           <p className="t-lead font-medium">Primero, me cuentas cómo trabajas. Son 30 minutos y no cuestan nada.</p>
           <div data-ui className="ui-input mt-4">
             <p className="ui-from">Tú, por WhatsApp</p>
@@ -1422,7 +1681,8 @@ function HowItWorks() {
           </div>
         </div>
 
-        <div data-reveal className="mb-[88px]">
+        <div data-reveal data-step="1" className="step mb-[88px]">
+          <p className="step-num" aria-hidden="true">02</p>
           <p className="t-lead font-medium">Después, te envío un precio cerrado en 48 horas.</p>
           <div data-ui className="ui-input mt-4">
             <p className="ui-from">Tú</p>
@@ -1434,7 +1694,8 @@ function HowItWorks() {
           </div>
         </div>
 
-        <div data-reveal className="mb-[88px]">
+        <div data-reveal data-step="2" className="step mb-[88px]">
+          <p className="step-num" aria-hidden="true">03</p>
           <p className="t-lead font-medium">Luego lo construyo y lo pruebas antes del segundo pago.</p>
           <div data-ui className="ui-input mt-4">
             <p className="ui-from">Tú</p>
@@ -1446,12 +1707,11 @@ function HowItWorks() {
           </div>
         </div>
 
-        <div data-reveal>
+        <div data-reveal data-step="3" className="step">
+          <p className="step-num" aria-hidden="true">04</p>
           <p className="t-lead font-medium">Al final, funciona solo, y lo vigilo durante el primer mes.</p>
-        </div>
-      </div>
 
-      <div data-reveal className="mx-auto mt-6 max-w-[760px] lg:ml-[25%] lg:mr-0">
+      <div data-reveal className="mt-8">
         <div data-ui className="ui-chat" aria-label="Ejemplo del recordatorio por WhatsApp que recibe un cliente">
           <div className="ui-bubble">
             <p>Hola Marta, te recordamos tu cita de mañana a las 10:30. Responde 1 para confirmarla o 2 para cambiarla.</p>
@@ -1468,22 +1728,32 @@ function HowItWorks() {
         </div>
         <p className="t-small muted mt-3">Ejemplo de recordatorio, 24 horas antes de la cita.</p>
       </div>
+        </div>
+      </div>
+      </div>
     </section>
   );
 }
 
 function Faq({ items, title = "Preguntas frecuentes", id = "preguntas" }) {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="section wrap bg-surface">
+    <section id={id} aria-labelledby={`${id}-title`} className="section wrap">
       <div className="grid12 gap-y-8">
-        <h2 id={`${id}-title`} data-reveal className="t-lead col-span-12 font-medium lg:col-span-3">
-          {title}
-        </h2>
-        <div className="faq-text col-span-12 lg:col-span-8 lg:col-start-5">
+        <div className="col-span-12 lg:col-span-4">
+          <p data-reveal className="eyebrow mb-6">(?) Dudas</p>
+          <h2 id={`${id}-title`} data-reveal className="t-head max-w-[10ch]">
+            {title}
+          </h2>
+        </div>
+        <div className="col-span-12 lg:col-span-7 lg:col-start-6">
           {items.map(([question, answer], index) => (
-            <p key={question} data-reveal style={{ "--d": index % 3 }}>
-              <strong className="font-medium">{question}</strong> {answer}
-            </p>
+            <details key={question} data-reveal style={{ "--d": index % 3 }} className="faq-item" name={id}>
+              <summary>
+                <span>{question}</span>
+                <Plus size={22} strokeWidth={1.75} aria-hidden="true" className="faq-icon" />
+              </summary>
+              <p>{answer}</p>
+            </details>
           ))}
         </div>
       </div>
@@ -1491,12 +1761,35 @@ function Faq({ items, title = "Preguntas frecuentes", id = "preguntas" }) {
   );
 }
 
+const FORM_STEPS = ["Sobre ti", "Tu proyecto"];
+
+// Shows the browser's own message on the first invalid field of a step.
+function stepIsValid(formElement, index) {
+  const fields = formElement.querySelectorAll(`[data-form-step="${index}"] input, [data-form-step="${index}"] select, [data-form-step="${index}"] textarea`);
+  return [...fields].every((field) => field.reportValidity());
+}
+
 function Contact({ selectedService, onServiceChange, navigate }) {
   const [status, setStatus] = useState("idle");
+  // Two steps once the page is interactive; the prerendered form shows every field at once.
+  const [live, setLive] = useState(false);
+  const [step, setStep] = useState(0);
+  const formRef = useRef(null);
+  useEffect(() => setLive(true), []);
+
+  function goToStep(index) {
+    setStep(index);
+    window.requestAnimationFrame(() => formRef.current?.querySelector(`[data-form-step="${index}"] input, [data-form-step="${index}"] select`)?.focus());
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
     const formElement = event.currentTarget;
+    if (live && step === 0) {
+      if (stepIsValid(formElement, 0)) goToStep(1);
+      return;
+    }
+    if (live && !stepIsValid(formElement, 1)) return;
     const form = new FormData(formElement);
     const email = String(form.get("email") || "").trim();
 
@@ -1504,6 +1797,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
     if (String(form.get("website") || "").trim()) {
       formElement.reset();
       onServiceChange("");
+      setStep(0);
       setStatus("success");
       return;
     }
@@ -1548,6 +1842,7 @@ function Contact({ selectedService, onServiceChange, navigate }) {
 
       formElement.reset();
       onServiceChange("");
+      setStep(0);
       setStatus("success");
     } catch (error) {
       setStatus("submit-error");
@@ -1557,10 +1852,12 @@ function Contact({ selectedService, onServiceChange, navigate }) {
   const labelClass = "t-small block font-medium";
 
   return (
-    <section id="contacto" aria-labelledby="contacto-title" className="on-dark wrap flex min-h-[100svh] flex-col justify-between gap-16 pb-10 pt-[var(--section)]">
-      <div className="grid12 gap-y-10">
-        <div className="col-span-12 lg:col-span-4">
-          <h2 id="contacto-title" data-reveal className="t-lead max-w-[24ch] font-medium">
+    <section id="contacto" aria-labelledby="contacto-title" className="contact wrap relative flex min-h-[100svh] flex-col justify-between gap-16 overflow-hidden pb-10 pt-[var(--section)]">
+      <div className="contact-glow" aria-hidden="true" />
+      <div className="grid12 relative gap-y-10">
+        <div className="col-span-12 lg:col-span-5">
+          <p data-reveal className="eyebrow mb-6">(05) Contacto</p>
+          <h2 id="contacto-title" data-reveal className="t-head max-w-[16ch] !text-[clamp(2rem,1.2rem+2.6vw,3.6rem)]">
             Cuéntame qué repites cada semana y te digo cómo quitártelo de encima.
           </h2>
           <p data-reveal style={{ "--d": 1 }} className="muted mt-4 max-w-[34ch]">
@@ -1568,7 +1865,27 @@ function Contact({ selectedService, onServiceChange, navigate }) {
           </p>
         </div>
 
-        <form data-reveal style={{ "--d": 2 }} onSubmit={handleSubmit} className="col-span-12 grid gap-5 lg:col-span-7 lg:col-start-6 sm:grid-cols-2">
+        <form
+          ref={formRef}
+          data-reveal
+          style={{ "--d": 2 }}
+          onSubmit={handleSubmit}
+          noValidate={live}
+          className="form-card col-span-12 lg:col-span-6 lg:col-start-7"
+        >
+          {live && (
+            <div className="mb-8 flex items-center justify-between gap-4">
+              <p className="eyebrow tabular-nums">
+                {String(step + 1).padStart(2, "0")} / {String(FORM_STEPS.length).padStart(2, "0")} · {FORM_STEPS[step]}
+              </p>
+              <div className="form-progress" aria-hidden="true">
+                <span style={{ transform: `scaleX(${(step + 1) / FORM_STEPS.length})` }} />
+              </div>
+            </div>
+          )}
+
+          <fieldset data-form-step="0" hidden={live && step !== 0} className="form-step grid gap-5 sm:grid-cols-2">
+          <legend className="sr-only">{FORM_STEPS[0]}</legend>
           <label className={labelClass}>
             Nombre
             <input name="nombre" autoComplete="name" required placeholder="Tu nombre" className="field" />
@@ -1585,11 +1902,22 @@ function Contact({ selectedService, onServiceChange, navigate }) {
             </label>
           </div>
 
-          <label className={labelClass}>
+          <label className={`${labelClass} sm:col-span-2`}>
             WhatsApp <span className="muted font-normal">(opcional)</span>
             <input name="telefono" type="tel" autoComplete="tel" placeholder="+34 600 000 000" className="field" />
           </label>
-          <label className={labelClass}>
+          {live && (
+            <div className="sm:col-span-2">
+              <button type="submit" className="btn btn-accent">
+                Continuar <span className="arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+          )}
+          </fieldset>
+
+          <fieldset data-form-step="1" hidden={live && step !== 1} className="form-step mt-5 grid gap-5 sm:grid-cols-2">
+          <legend className="sr-only">{FORM_STEPS[1]}</legend>
+          <label className={`${labelClass} sm:col-span-2`}>
             Servicio <span className="muted font-normal">(opcional)</span>
             <select name="servicio" value={selectedService} onChange={(event) => onServiceChange(event.target.value)} className="field cursor-pointer">
               <option value="">Elige un servicio</option>
@@ -1617,12 +1945,6 @@ function Contact({ selectedService, onServiceChange, navigate }) {
             <textarea name="mensaje" required rows={4} placeholder="Cuéntame qué proceso repites, qué herramientas usas y qué resultado buscas." className="field" />
           </label>
 
-          <div className="sm:col-span-2" aria-live="polite">
-            {status === "error" && <p className="bg-accent px-4 py-3 font-medium text-ink">Revisa el correo antes de enviar.</p>}
-            {status === "success" && <p className="bg-bg px-4 py-3 font-medium text-ink">Gracias. He recibido tu mensaje y te respondo en menos de 24 horas laborables.</p>}
-            {status === "submit-error" && <p className="bg-accent px-4 py-3 font-medium text-ink">No se pudo enviar tu mensaje. Inténtalo de nuevo o escríbeme por WhatsApp.</p>}
-            {status === "webhook-http-error" && <p className="bg-accent px-4 py-3 font-medium text-ink">Para usarlo en Vercel, el webhook de n8n debe ser HTTPS.</p>}
-          </div>
 
           <div className="flex flex-col gap-4 sm:col-span-2">
             <p className="t-small muted">
@@ -1639,14 +1961,29 @@ function Contact({ selectedService, onServiceChange, navigate }) {
               </a>
               .
             </p>
-            <button type="submit" disabled={status === "loading"} className="btn btn-accent self-start disabled:cursor-wait disabled:opacity-60">
-              {status === "loading" ? "Enviando…" : "Pedir auditoría gratis"} <span className="arrow" aria-hidden="true">→</span>
-            </button>
+            <div className="flex flex-wrap items-center gap-4">
+              {live && (
+                <button type="button" onClick={() => goToStep(0)} className="btn btn-line">
+                  <span aria-hidden="true">←</span> Atrás
+                </button>
+              )}
+              <button type="submit" disabled={status === "loading"} className="btn btn-accent disabled:cursor-wait disabled:opacity-60">
+                {status === "loading" ? "Enviando…" : "Pedir auditoría gratis"} <span className="arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+          </div>
+          </fieldset>
+
+          <div className="mt-5" aria-live="polite">
+            {status === "error" && <p className="rounded-xl bg-accent px-4 py-3 font-medium text-[#0b0b0b]">Revisa el correo antes de enviar.</p>}
+            {status === "success" && <p className="rounded-xl border border-white/15 px-4 py-3 font-medium">Gracias. He recibido tu mensaje y te respondo en menos de 24 horas laborables.</p>}
+            {status === "submit-error" && <p className="rounded-xl bg-accent px-4 py-3 font-medium text-[#0b0b0b]">No se pudo enviar tu mensaje. Inténtalo de nuevo o escríbeme por WhatsApp.</p>}
+            {status === "webhook-http-error" && <p className="rounded-xl bg-accent px-4 py-3 font-medium text-[#0b0b0b]">Para usarlo en Vercel, el webhook de n8n debe ser HTTPS.</p>}
           </div>
         </form>
       </div>
 
-      <div>
+      <div className="relative">
         <a href={`mailto:${EMAIL}`} className="email-display">
           ubedadesarrolloweb@<wbr />
           gmail.com
@@ -1776,8 +2113,8 @@ function PortfolioPage({ onChooseService }) {
       </section>
 
       {portfolioProjects.map((project, index) => (
-        <article key={project.name} aria-labelledby={`proyecto-${index}`} className={`section wrap ${index % 2 ? "bg-surface" : ""}`}>
-          <div data-reveal className={`mx-auto max-w-4xl rounded-[1.75rem] px-6 py-4 sm:px-12 sm:py-6 ${index % 2 ? "bg-bg" : "bg-surface"}`}>
+        <article key={project.name} aria-labelledby={`proyecto-${index}`} className="section wrap">
+          <div data-reveal className="stage mx-auto max-w-4xl px-6 py-4 sm:px-12 sm:py-6">
             <DeviceShowcase project={project} eager={index === 0} />
           </div>
           <div className="grid12 mx-auto mt-10 max-w-4xl gap-y-8">
@@ -1830,8 +2167,9 @@ function PortfolioPage({ onChooseService }) {
         </article>
       ))}
 
-      <section className="section wrap on-accent">
-        <p data-reveal className="t-head max-w-[16ch]">
+      <section className="section wrap">
+        <div data-reveal className="cta-panel p-6 sm:p-10 lg:p-14">
+        <p className="t-head max-w-[16ch]">
           ¿La siguiente es la tuya?
         </p>
         <a
@@ -1844,6 +2182,7 @@ function PortfolioPage({ onChooseService }) {
         >
           Pedir auditoría gratis <span className="arrow" aria-hidden="true">→</span>
         </a>
+        </div>
       </section>
     </>
   );
@@ -1851,7 +2190,8 @@ function PortfolioPage({ onChooseService }) {
 
 function NotFoundPage({ navigate }) {
   return (
-    <section className="on-accent wrap flex min-h-[100svh] flex-col justify-center">
+    <section className="hero wrap relative flex min-h-[100svh] flex-col justify-center overflow-hidden">
+      <div className="hero-glow" aria-hidden="true" />
       <h1 className="t-head">Esta página no existe</h1>
       <p className="t-lead mt-6 max-w-[34ch]">Puede que el enlace esté mal escrito o que la página se haya movido.</p>
       <a
@@ -1976,8 +2316,8 @@ function Footer({ navigate, goToSection }) {
   }
 
   return (
-    <footer className="on-accent wrap pb-6 pt-10">
-      <div className="mx-auto max-w-7xl text-[15px] leading-normal md:text-base">
+    <footer className="site-footer wrap relative overflow-hidden pb-6 pt-16">
+      <div className="relative mx-auto max-w-7xl text-[15px] leading-normal md:text-base">
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:gap-x-16">
           <div className="col-span-2 max-w-sm sm:col-span-3 lg:col-span-1">
             <div>
@@ -2028,7 +2368,11 @@ function Footer({ navigate, goToSection }) {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-2 pr-[80px] text-[13px] sm:flex-row sm:items-center sm:justify-between lg:pr-[96px]">
+        <p className="wordmark mt-16" aria-hidden="true">
+          Clarea
+        </p>
+
+        <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-6 pr-[80px] text-[13px] sm:flex-row sm:items-center sm:justify-between lg:pr-[96px]">
           <p>© {new Date().getFullYear()} Clarea. Todos los derechos reservados.</p>
           <nav aria-label="Textos legales" className="flex flex-wrap gap-x-6 gap-y-2">
             <a

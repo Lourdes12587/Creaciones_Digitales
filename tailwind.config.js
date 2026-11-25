@@ -9,6 +9,7 @@ export default {
         ink: "var(--ink)",
         muted: "var(--muted)",
         accent: "var(--accent)",
+        frame: "#1a1a1c",
       },
       fontFamily: {
         sans: ["General Sans", "ui-sans-serif", "system-ui", "sans-serif"],

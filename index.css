@@ -37,6 +37,8 @@
   --color-muted-foreground: #475569;
   --color-border: #fbcfe8;
   --color-destructive: #dc2626;
+  /* Black ground for the reading sections of the home page (the owner prefers it to white). */
+  --color-night: #0b0b0b;
 
   /* Roles used across the site. */
   --bg: var(--color-background);
@@ -1483,14 +1485,11 @@
   line-height: 1;
 }
 
-.footer-wordmark {
-  margin-top: clamp(40px, 6vw, 80px);
-  margin-bottom: -2%;
-}
-
+/* The logo, small, on the left above the motto. */
 .footer-logo {
   display: block;
-  width: 100%;
+  height: 32px;
+  margin-bottom: 20px;
   color: var(--color-on-primary);
 }
 /* ---------- Services (home): two blocks, web and automations ---------- */
@@ -1865,4 +1864,58 @@
   .services-copy .services-title {
     font-size: clamp(1.875rem, 8.4vw, 2.5rem);
   }
+}
+/* ---------- Black ground for services, process and FAQ ---------- */
+.services-body,
+.process,
+.faq {
+  background: var(--color-night);
+  color: var(--color-card);
+}
+
+.services-body :focus-visible,
+.process :focus-visible,
+.faq :focus-visible {
+  outline-color: var(--color-border);
+}
+
+/* Cards keep their own ink on the black ground, with a pink hard shadow. */
+.service-block {
+  color: var(--color-foreground);
+  border-color: var(--color-card);
+  box-shadow: 6px 6px 0 var(--color-primary);
+}
+
+.service-block.is-featured {
+  border-color: var(--color-on-primary);
+  box-shadow: 6px 6px 0 var(--color-card);
+}
+
+.process-rail {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.process-dot {
+  border-color: var(--color-card);
+  background: var(--color-night);
+}
+
+.bubble {
+  color: var(--color-foreground);
+  border-color: var(--color-card);
+}
+
+.bubble-me,
+.process-phone {
+  box-shadow: 6px 6px 0 var(--color-primary);
+}
+
+.faq-item {
+  color: var(--color-foreground);
+  border-color: var(--color-card);
+  box-shadow: 3px 3px 0 var(--color-primary);
+}
+
+.faq-item[open] {
+  box-shadow: 6px 6px 0 var(--color-primary);
 }

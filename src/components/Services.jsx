@@ -53,8 +53,8 @@ export default function Services({ navigate, schema, catalog, catalogPage, cardI
               Diseño tu web y automatizo todo lo que pasa después del clic: cada consulta respondida, cada cita confirmada y cada cliente con seguimiento. Tú te dedicas a tu negocio; el sistema se ocupa del resto.
             </p>
           </motion.div>
-          {/* The shot dips into the light ground of the service blocks, like a cut. */}
-          <motion.div className="scene-dip" style={{ background: "var(--color-background)", opacity: reduce ? 0 : dipOut }} aria-hidden="true" />
+          {/* The shot dips into the black ground of the service blocks, like a cut. */}
+          <motion.div className="scene-dip" style={{ background: "var(--color-night)", opacity: reduce ? 0 : dipOut }} aria-hidden="true" />
         </div>
       </div>
 

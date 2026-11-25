@@ -648,7 +648,7 @@ function App({ initialRoute }) {
             <Cases projects={portfolioProjects} navigate={navigate} Showcase={DeviceShowcase} />
             <Process />
             <Faq items={homeFaqs} />
-            <Scene image="/img/escenas/playa" line="Por la mañana, todo está más claro." from="var(--color-background)" to="var(--color-foreground)" position="50% 60%" />
+            <Scene image="/img/escenas/playa" line="Por la mañana, todo está más claro." from="var(--color-night)" to="var(--color-foreground)" position="50% 60%" />
             <Contact selectedService={selectedService} onServiceChange={setSelectedService} navigate={navigate} />
           </>
         )}
@@ -1484,6 +1484,7 @@ function Footer({ navigate, goToSection }) {
       <div className="mx-auto max-w-7xl text-[15px] leading-normal md:text-base">
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:gap-x-16">
           <div className="col-span-2 max-w-sm sm:col-span-3 lg:col-span-1">
+            <Logo className="footer-logo" />
             <p className="footer-motto">Tecnología clara, sin miedo.</p>
             <p className="muted mt-3">Webs y automatizaciones para negocios en Barcelona.</p>
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="link muted mt-4 inline-flex min-h-[44px] items-center gap-2 no-underline hover:underline">
@@ -1565,11 +1566,6 @@ function Footer({ navigate, goToSection }) {
             </a>
           </nav>
         </div>
-      </div>
-
-      {/* The name returns at full width to close the page (pattern from the 21st.dev "Footer with Big Wordmark"). */}
-      <div className="footer-wordmark" aria-hidden="true">
-        <Logo label="" className="footer-logo" />
       </div>
     </footer>
   );

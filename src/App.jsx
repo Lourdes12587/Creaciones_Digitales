@@ -67,7 +67,7 @@ const N8N_CHAT_URL = "https://n8n.creaciones-digitales.com/webhook/5c3d9e2a-7b41
 // The legal notice (/aviso-legal) stays off the public site until its [COMPLETAR] details (owner, NIF,
 // address) are filled in. Set to true to publish it: route, footer link and sitemap entry come back.
 const SHOW_LEGAL_NOTICE = false;
-const EMAIL = "ubedadesarrolloweb@gmail.com";
+const EMAIL = "hola@holaclarea.com";
 const PHONE = "+34 697 955 919";
 const INSTAGRAM_URL = "https://www.instagram.com/holaclarea/";
 
@@ -1048,8 +1048,8 @@ function Contact({ selectedService, onServiceChange, navigate }) {
 
       <div>
         <a href={`mailto:${EMAIL}`} className="email-display">
-          ubedadesarrolloweb@<wbr />
-          gmail.com
+          hola@<wbr />
+          holaclarea.com
         </a>
         <div className="t-small mt-8 flex flex-col gap-3 sm:flex-row sm:justify-between">
           <p>

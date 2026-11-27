@@ -952,6 +952,90 @@
     --chat--window--right: 1.5rem;
   }
 }
+
+/* ===== Chat n8n · estilo holaclarea =====
+   Va después de los estilos base del chat para sobrescribirlos (:root:root:root gana a :root:root). */
+:root:root:root {
+  --chat--window--border: 2px solid var(--color-line-dark);
+  --chat--header--background: var(--color-night);
+  --chat--header--color: #fff;
+  --chat--body--background: var(--color-night);
+  --chat--footer--background: var(--color-surface-dark);
+
+  --chat--message--border-radius: 0;
+  --chat--message--bot--background: var(--color-surface-dark);
+  --chat--message--bot--color: #fff;
+  --chat--message--user--background: var(--color-primary);
+  --chat--message--user--color: #000;
+
+  --chat--input--background: var(--color-surface-dark);
+  --chat--input--text-color: #fff;
+  --chat--input--send--button--color: #fff;
+  --chat--input--send--button--color-hover: var(--color-primary);
+
+  --chat--button--background--primary: var(--color-primary);
+  --chat--button--color--primary: #000;
+  --chat--button--background--primary--hover: #fff;
+  --chat--button--color--primary--hover: #000;
+
+  --chat--toggle--background: var(--color-primary);
+  --chat--toggle--color: #000;
+  --chat--toggle--hover--background: #fff;
+  --chat--toggle--active--background: var(--color-primary);
+  --chat--toggle--width: 2.75rem;
+  --chat--toggle--height: 2.75rem;
+  --chat--toggle--size: 2.75rem;
+}
+
+.chat-window-wrapper .chat-window {
+  box-shadow: 8px 8px 0 var(--color-primary);
+}
+
+/* Logo blanco sobre fondo negro */
+.n8n-chat .chat-window .chat-header .chat-heading .chat-title {
+  filter: invert(1);
+}
+
+.chat-window .chat-header {
+  border-bottom: 2px solid var(--color-line-dark);
+}
+.chat-window .chat-header p {
+  color: var(--color-text-soft);
+}
+.chat-window .chat-header p::before {
+  background: var(--color-accent); /* punto cian en vez de verde */
+}
+
+.chat-window .chat-message.chat-message-from-bot {
+  border-left: 3px solid var(--color-accent) !important;
+}
+.chat-window .chat-message.chat-message-from-user {
+  border: 2px solid var(--color-foreground);
+  box-shadow: 3px 3px 0 var(--color-foreground);
+}
+
+.chat-window .chat-button {
+  border: 2.4px solid var(--color-foreground);
+  box-shadow: 3px 3px 0 var(--color-foreground);
+  font-weight: 500;
+}
+
+.chat-window .chat-footer {
+  border-top: 2px solid var(--color-line-dark);
+}
+.chat-window textarea::placeholder {
+  color: rgba(255, 255, 255, .5);
+}
+
+.chat-window-wrapper .chat-window-toggle {
+  border: 2px solid #000;
+  box-shadow: 3px 3px 0 var(--color-foreground);
+}
+.chat-window-wrapper .chat-window-toggle svg {
+  width: 22px;
+  height: 22px;
+}
+
 /* ---------- Services (home): stone ground, three highlights, a compact row of the rest ---------- */
 .services {
   background: var(--color-background);
